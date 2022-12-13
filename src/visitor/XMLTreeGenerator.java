@@ -86,7 +86,7 @@ public class XMLTreeGenerator implements  Visitor{
     public Object visit(VarDeclNode item) {
         writer.println("<VarDeclNode>");
 
-        writer.println("<Type>" + Symbols.terminalNames[item.getType()] + "</Type>");
+        writer.println("<Type>" + Symbols.terminalNames[item.getType().get(0)] + "</Type>");
 
         for (IdInitNode i : item.getIdIList())
             i.accept(this);
@@ -148,10 +148,10 @@ public class XMLTreeGenerator implements  Visitor{
 
         //Se ho parametri di ritorno devo mettere il tipo
         if(item.isOut()){
-            writer.println("<Type-out>"+ Symbols.terminalNames[item.getType()]+"</Type-out>");
+            writer.println("<Type-out>"+ Symbols.terminalNames[item.getType().get(0)]+"</Type-out>");
         }
         else{
-            writer.println("<Type-in>"+ Symbols.terminalNames[item.getType()]+"</Type-in>");
+            writer.println("<Type-in>"+ Symbols.terminalNames[item.getType().get(0)]+"</Type-in>");
         }
 
         for (IdentifierExprNode i : item.getIdentifierList()) {

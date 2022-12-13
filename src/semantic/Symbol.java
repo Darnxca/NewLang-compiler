@@ -19,7 +19,9 @@ public class Symbol {
 		this.type.add(type);
 	}
 
-	// simbolo che rappresenta una funzione
+	/* Simbolo che rappresenta una funzione
+		(int x, int y | out float somma) : void
+	    -> type = LIST of INTEGER -> { sym.INT, sym.INT, -1, sym.FLOAT, -1, sym.VOID } */
 	public Symbol(String id, List<Integer> INparamList, List<Integer> OUTparamList , Integer returnType) {
 		identifier = id;
 		this.entryType = SymbolTypes.FUNCTION;
@@ -27,10 +29,10 @@ public class Symbol {
 		
 		if (INparamList != null)
 			type.addAll(INparamList);
-		type.add(SEPARATOR); // usato per separare i tipi dei parametri in input con quelli per riferimento
+		type.add(SEPARATOR); // Separo param di in da param di out
 		if (OUTparamList != null)
 			type.addAll(OUTparamList);
-		type.add(SEPARATOR); // usato per separare i tipi dei parametri con il tipo di ritorno ritorno
+		type.add(SEPARATOR); // Separo param di out da return tipo
 		type.add(returnType);
 	}
 
@@ -40,9 +42,11 @@ public class Symbol {
 
 		ArrayList<List<Integer>> lists = new ArrayList<>();
 
-		int sep = type.indexOf(-1);
-		lists.add(type.subList(0, sep));
-		lists.add(type.subList(sep + 1, type.size()));
+		int sepIn = type.indexOf(-1);
+		lists.add(type.subList(0, sepIn)); //recupero valore parametri in
+		int sepOut = type.lastIndexOf(-1);
+		lists.add(type.subList(sepIn + 1, sepOut)); //recupero valore parametri out
+		lists.add(type.subList(sepOut+1, type.size())); //Recupero valore ritorno
 
 		return lists;
 	}
@@ -52,6 +56,36 @@ public class Symbol {
 			return null;
 
 		return type.get(0);
+	}
+
+	public static void main(String[] args) {
+		List<Integer> in = new ArrayList<>();
+		List<Integer> out = new ArrayList<>();
+
+		in.add(1);
+		in.add(2);
+		out.add(3);
+		out.add(4);
+
+		List<Integer> myList = new ArrayList<>();
+		myList.addAll(in);
+		myList.add(SEPARATOR);
+		myList.addAll(out);
+		myList.add(SEPARATOR);
+		myList.add(6);
+
+		System.out.println("Test myList: " + myList);
+
+		ArrayList<List<Integer>> lists = new ArrayList<>();
+		int sep = myList.indexOf(-1);
+		lists.add(myList.subList(0, sep));
+
+		int sep2 = myList.lastIndexOf(-1);
+		lists.add(myList.subList(sep + 1, sep2));
+		lists.add(myList.subList(sep2+1, myList.size()));
+
+		System.out.println("Test myList: " +lists);
+
 	}
 	
 }
