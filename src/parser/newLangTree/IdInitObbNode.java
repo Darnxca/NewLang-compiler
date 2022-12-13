@@ -2,10 +2,10 @@ package parser.newLangTree;
 
 import parser.newLangTree.expression.IdentifierExprNode;
 import parser.newLangTree.expression.constants.Constant;
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
-public class IdInitObbNode extends Node implements Visitable {
+public class IdInitObbNode extends TypeNode implements Visitable {
 
     private IdentifierExprNode identifier;
     private Constant constantValue;

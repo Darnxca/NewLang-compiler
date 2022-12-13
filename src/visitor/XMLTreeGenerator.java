@@ -1,4 +1,4 @@
-package parser.newLangTree.visitor;
+package visitor;
 
 import parser.newLangTree.*;
 import parser.newLangTree.expression.FunCallExprNode;

@@ -1,13 +1,13 @@
 package parser.newLangTree;
 
 import parser.newLangTree.statements.StatementNode;
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
 import java.util.Collections;
 import java.util.List;
 
-public class BodyNode extends Node implements Visitable {
+public class BodyNode extends TypeNode implements Visitable {
 
     private List<VarDeclNode> varDeclList;
 

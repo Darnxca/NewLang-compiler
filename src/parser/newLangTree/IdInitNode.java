@@ -2,10 +2,10 @@ package parser.newLangTree;
 
 import parser.newLangTree.expression.ExpressionNode;
 import parser.newLangTree.expression.IdentifierExprNode;
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
-public class IdInitNode extends Node implements Visitable {
+public class IdInitNode extends TypeNode implements Visitable {
 
     private IdentifierExprNode identifier;
     private ExpressionNode expression;

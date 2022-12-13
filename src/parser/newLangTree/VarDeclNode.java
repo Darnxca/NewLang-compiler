@@ -1,20 +1,20 @@
 package parser.newLangTree;
 
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class VarDeclNode extends Node implements Visitable {
+public class VarDeclNode extends TypeNode implements Visitable {
 
-    private int type;
+
     private List<IdInitNode> idIList;
     private List<IdInitObbNode> idIObList;
 
     public VarDeclNode(int type) {
         super();
-        this.type = type;
+        this.setType(type);
         this.idIList = new LinkedList<>();
         this.idIObList = new LinkedList<>();
     }
@@ -39,9 +39,7 @@ public class VarDeclNode extends Node implements Visitable {
         return idIObList;
     }
 
-    public int getType() {
-        return type;
-    }
+
 
     @Override
     public Object accept(Visitor v) {

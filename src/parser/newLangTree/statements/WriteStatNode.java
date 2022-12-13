@@ -1,6 +1,6 @@
 package parser.newLangTree.statements;
 
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitor;
 import parser.newLangTree.expression.ExpressionNode;
 
 import java.util.List;

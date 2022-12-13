@@ -1,24 +1,19 @@
+package main.java;
+
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ScannerBuffer;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.*;
-import parser.newLangTree.visitor.XMLTreeGenerator;
-import org.w3c.dom.Document;
+import visitor.XMLTreeGenerator;
 import parser.*;
 import lexer.*;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 public class Tester {
     private static ComplexSymbolFactory csf = new ComplexSymbolFactory();
@@ -52,8 +47,6 @@ public class Tester {
             throw new RuntimeException(e);
         }
 
-
-
     }
 
     private static void lessicalError(String file) throws Exception {
@@ -61,23 +54,6 @@ public class Tester {
         ScannerBuffer lexer = new ScannerBuffer(new Lexer(new BufferedReader(inputFile), csf));
 
         while ((lexer.next_token()).sym != Symbols.EOF){}
-    }
-
-    private static void xmlTreeGenerator(Document document){
-        String xmlFilePath = "xmlFileToyProgram.xml";
-        try {
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(new File(xmlFilePath));
-
-            transformer.transform(domSource, streamResult);
-
-            System.out.println("File Xml creato!");
-
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-        }
     }
 
 }

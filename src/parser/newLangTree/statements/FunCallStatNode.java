@@ -3,7 +3,7 @@ package parser.newLangTree.statements;
 import java_cup.runtime.ComplexSymbolFactory;
 import parser.newLangTree.expression.ExpressionNode;
 import parser.newLangTree.expression.IdentifierExprNode;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitor;
 
 import java.util.Collections;
 import java.util.List;

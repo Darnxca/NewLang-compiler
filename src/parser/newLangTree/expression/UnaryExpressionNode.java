@@ -1,8 +1,8 @@
 package parser.newLangTree.expression;
 
 import java_cup.runtime.ComplexSymbolFactory;
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
 public class UnaryExpressionNode extends ExpressionNode implements Visitable {
 

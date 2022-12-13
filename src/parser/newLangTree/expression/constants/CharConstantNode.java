@@ -1,7 +1,7 @@
 package parser.newLangTree.expression.constants;
 
 import java_cup.runtime.ComplexSymbolFactory;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitor;
 import parser.newLangTree.expression.ExpressionNode;
 
 public class CharConstantNode extends ExpressionNode implements Constant {

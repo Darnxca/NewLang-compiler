@@ -1,7 +1,7 @@
 package parser.newLangTree.statements;
 
 import parser.newLangTree.BodyNode;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitor;
 import parser.newLangTree.expression.ExpressionNode;
 
 public class IfStatNode extends StatementNode {

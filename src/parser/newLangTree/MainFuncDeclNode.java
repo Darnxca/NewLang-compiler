@@ -1,9 +1,9 @@
 package parser.newLangTree;
 
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
-public class MainFuncDeclNode extends Node implements Visitable {
+public class MainFuncDeclNode extends TypeNode implements Visitable {
 
     private FunDeclNode funDeclNode;
 

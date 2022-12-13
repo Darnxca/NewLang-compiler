@@ -1,13 +1,13 @@
 package parser.newLangTree;
 
 import parser.newLangTree.expression.IdentifierExprNode;
-import parser.newLangTree.visitor.Visitable;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitable;
+import visitor.Visitor;
 
 import java.util.Collections;
 import java.util.List;
 
-public class FunDeclNode extends Node implements Visitable {
+public class FunDeclNode extends TypeNode implements Visitable {
 
     private IdentifierExprNode identifier;
     private List<ParamDeclNode> paramDecl;

@@ -1,7 +1,7 @@
 package parser.newLangTree.statements;
 
 import parser.newLangTree.expression.constants.StringConstantNode;
-import parser.newLangTree.visitor.Visitor;
+import visitor.Visitor;
 import parser.newLangTree.expression.IdentifierExprNode;
 
 import java.util.List;
