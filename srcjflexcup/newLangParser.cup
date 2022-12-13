@@ -1,0 +1,348 @@
+package parser;
+import lexer.*;
+import java_cup.runtime.*;
+import parser.newLangTree.expression.*;
+import parser.newLangTree.expression.constants.*;
+import parser.newLangTree.statements.*;
+
+import parser.newLangTree.*;
+import java.util.*;
+
+parser code {:
+    Lexer lex;
+    public Parser(Lexer lex, ComplexSymbolFactory sf) {
+    super(lex,sf);
+  }
+:};
+
+terminal MAIN, DEF;
+terminal SEMI, COMMA, LPAR, RPAR, COLON, LBRAC, RBRAC, PIPE, OUT; //Separatori
+terminal Integer    STRING, CHAR, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
+
+terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN; //Statements
+terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT; //Operatori aritmetici, stringhe
+
+terminal String    STRING_CONST, ID;
+terminal Integer   INTEGER_CONST;
+terminal Float     REAL_CONST;
+terminal char      CHAR_CONST;
+terminal TRUE, FALSE; //Lettarli booleani
+terminal GT, GE, LT, LE, EQ, NE; //Operatori relazionali
+
+terminal RETURN;
+
+non terminal ProgramNode                Program;
+non terminal List<DeclNode>             DeclList;
+non terminal MainFuncDeclNode           MainFunDecl;
+non terminal VarDeclNode                VarDecl;
+non terminal FunDeclNode                FunDecl;
+non terminal Integer                    Type;
+non terminal List<IdInitNode>           IdInitList;
+non terminal List<IdInitObbNode>        IdInitObblList;
+non terminal Constant                   Const;
+non terminal BodyNode                   Body;
+non terminal List<ParamDeclNode>        ParamDeclList;
+non terminal ParamDeclNode              ParDecl;
+non terminal Integer                    TypeOrVoid;
+non terminal List<VarDeclNode>          VarDeclList;
+non terminal StatementNode              Stat;
+non terminal List<StatementNode>        StatList;
+non terminal IfStatNode                 IfStat;
+non terminal WhileStatNode              WhileStat;
+non terminal ForStatNode                ForStat;
+non terminal ReadStatNode               ReadStat;
+non terminal WriteStatNode              WriteStat;
+non terminal List<IdentifierExprNode>   IdList;
+non terminal AssignStatNode             AssignStat;
+non terminal FunCallStatNode            FunCall;
+non terminal List<ExpressionNode>       ExprList;
+non terminal ExpressionNode             Expr;
+
+/* Precedenze */
+precedence left AND;
+precedence left OR;
+precedence left PLUS;
+precedence nonassoc LT, GT, LE, GE, EQ, NE; //Non c'è associatività, non posso utilizzare in sequenza
+precedence right ASSIGN;
+precedence right MINUS; //Per valori negativi, la precendeza è a destra (Esempio: -2 + 3 = 1 e non -5)
+precedence left TIMES, DIV, POW;
+precedence left  STR_CONCAT; //TEMPORANEO
+
+
+
+
+/* Grammatica newLang */
+
+Program ::= DeclList:dl1 MainFunDecl:m DeclList:dl2         {:
+                                                               RESULT = new ProgramNode(dl1,m, dl2);
+                                                            :}
+;
+DeclList ::=   /* empty */                                  {:
+                                                               List<DeclNode> dl = new LinkedList<DeclNode>();
+                                                               RESULT = dl;
+                                                            :}
+          | VarDecl:vd DeclList:dl                          {:
+                                                               List<VarDeclNode> lvd = new LinkedList<VarDeclNode>();
+                                                               lvd.add(vd);
+                                                               DeclNode d = new DeclNode();
+                                                               d.addVarDeclList(lvd);
+                                                               dl.add(0,d);
+                                                               RESULT = dl;
+                                                            :}
+          | FunDecl:fd DeclList:dl                          {:
+                                                               List<FunDeclNode> lfd = new LinkedList<FunDeclNode>();
+                                                               lfd.add(fd);
+                                                               DeclNode d = new DeclNode();
+                                                               d.addFunDeclList(lfd);
+                                                               dl.add(0,d);
+                                                               RESULT = dl;
+                                                            :}
+;
+MainFunDecl ::= MAIN FunDecl:f                              {:
+                                                               RESULT = new MainFuncDeclNode(f);
+                                                            :}
+;
+VarDecl ::= Type:t IdInitList:il SEMI                       {:
+                                                               VarDeclNode vd = new VarDeclNode(t);
+                                                               vd.setIdInitNodeVarDeclNode(il);
+                                                               RESULT = vd;
+                                                            :}
+	         | VAR IdInitObblList:il SEMI                   {:
+	                                                           VarDeclNode vd = new VarDeclNode(Symbols.VAR); vd.setIdInitObbNode(il);
+	                                                           RESULT = vd;
+	                                                        :}
+;
+Type ::=   INTEGER                                          {: RESULT = Symbols.INTEGER; :}
+         | BOOL                                             {: RESULT = Symbols.BOOL; :}
+         | FLOAT                                            {: RESULT = Symbols.FLOAT; :}
+         | STRING                                           {: RESULT = Symbols.STRING; :}
+         | CHAR                                             {: RESULT = Symbols.CHAR; :}
+;
+IdInitList ::=   ID:i                                       {:
+                                                               List<IdInitNode> idl = new LinkedList<IdInitNode>();
+                                                               idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
+                                                               RESULT = idl;
+                                                            :}
+	           | IdInitList:idl COMMA ID:i                  {:
+	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
+	                                                            RESULT = idl;
+	                                                        :}
+	           | ID:i ASSIGN Expr:e                         {:
+	                                                            List<IdInitNode> idl = new LinkedList<IdInitNode>();
+	                                                            idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
+	                                                            RESULT = idl;
+	                                                        :}
+	           | IdInitList:idl COMMA ID:i ASSIGN Expr:e    {:
+	                                                            idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
+                                                                RESULT = idl;
+                                                            :}
+;
+
+IdInitObblList ::= ID:i ASSIGN Const:c                      {:
+                                                                List<IdInitObbNode> idl = new LinkedList<IdInitObbNode>();
+                                                                idl.add( new IdInitObbNode(new IdentifierExprNode(i,ixleft,ixright),c));
+                                                                RESULT = idl;
+                                                            :}
+	| IdInitObblList:idl COMMA ID:i ASSIGN Const:c          {:
+	                                                            idl.add( new IdInitObbNode(new IdentifierExprNode(i,ixleft,ixright),c));
+	                                                            RESULT = idl;
+	                                                        :}
+;
+Const ::= INTEGER_CONST:i                                   {: RESULT = new IntegerConstantNode(i,ixleft,ixright); :}
+          | REAL_CONST:r                                    {: RESULT = new RealConstantNode(r,rxleft,rxright); :}
+          | TRUE:b                                          {: RESULT = new BooleanConstantNode(true,bxleft,bxright);  :}
+          | FALSE:b                                         {: RESULT = new BooleanConstantNode(false,bxleft,bxright);  :}
+          | STRING_CONST:s                                  {: RESULT = new StringConstantNode(s,sxleft,sxright); :}
+          | CHAR_CONST:c                                    {: RESULT = new CharConstantNode(c,cxleft,cxright); :}
+;
+
+
+FunDecl ::= DEF ID:i LPAR ParamDeclList:pl RPAR COLON TypeOrVoid:t Body:b       {:
+                                                                                    IdentifierExprNode id = new IdentifierExprNode(i,ixleft,ixright);
+                                                                                    FunDeclNode fd = new FunDeclNode(id, pl, t, b);
+                                                                                    RESULT = fd;
+                                                                                :}
+            |  DEF ID:i LPAR RPAR COLON TypeOrVoid:t Body:b                     {:
+                                                                                    IdentifierExprNode id = new IdentifierExprNode(i,ixleft,ixright);
+                                                                                    FunDeclNode fd = new FunDeclNode(id, t, b);
+                                                                                    RESULT = fd;
+                                                                                :}
+
+;
+Body ::= LBRAC VarDeclList:vdl StatList:sl RBRAC                    {:
+                                                                       BodyNode bd = new BodyNode(vdl, sl);
+                                                                       RESULT = bd;
+                                                                    :}
+         | LBRAC VarDeclList:vdl RBRAC                              {:
+                                                                       BodyNode bd = new BodyNode();
+                                                                       bd.setVarDeclList(vdl);
+                                                                       RESULT = bd;
+                                                                    :}
+         | LBRAC StatList:sl RBRAC                                  {:
+                                                                       BodyNode bd = new BodyNode();
+                                                                       bd.setStmtNodeList(sl);
+                                                                       RESULT = bd;
+                                                                    :}
+         | LBRAC RBRAC                                              {:
+                                                                       BodyNode bd = new BodyNode();
+                                                                       RESULT = bd;
+                                                                    :}
+;
+ParamDeclList ::=   ParDecl:p                                       {:
+                                                                       List<ParamDeclNode> pl = new LinkedList<ParamDeclNode>();
+                                                                       pl.add(p);
+                                                                       RESULT = pl;
+                                                                    :}
+                  | ParamDeclList:pl PIPE ParDecl:p                 {:
+                                                                        pl.add(p);
+                                                                        RESULT= pl;
+                                                                    :}
+;
+ParDecl ::= Type:t IdList:il                                        {:
+                                                                        ParamDeclNode pd = new ParamDeclNode(t, il);
+                                                                        RESULT = pd;
+                                                                    :}
+	        | OUT Type:t1 IdList:il1                                {:
+                                                                         ParamDeclNode pd1 = new ParamDeclNode(t1, il1, true);
+                                                                         RESULT = pd1;
+	                                                                :}
+;
+TypeOrVoid ::=   Type:t                                             {: RESULT = t; :}
+               | VOID                                               {: RESULT = Symbols.VOID; :}
+;
+VarDeclList ::= VarDecl:vd VarDeclList:vdl                          {:
+                                                                       vdl.add(0, vd);
+                                                                       RESULT = vdl;
+                                                                    :}
+                | VarDecl:vd                                        {:
+                                                                       List<VarDeclNode> vdl = new LinkedList<VarDeclNode>();
+                                                                       vdl.add(vd);
+                                                                       RESULT = vdl;
+                                                                    :}
+;
+StatList ::= Stat:s                                                 {:
+                                                                        List<StatementNode> ls = new LinkedList<StatementNode>();
+                                                                        ls.add(s);
+                                                                        RESULT = ls;
+                                                                    :}
+	         | Stat:s StatList:sl                                   {:
+                                                                        sl.add(0, s);
+                                                                        RESULT = sl;
+	                                                                :}
+;
+Stat ::= IfStat:ifs                                                 {: RESULT = ifs; :}
+    	 | ForStat:fs                                               {: RESULT = fs; :}
+	     | ReadStat:rs SEMI                                         {: RESULT = rs; :}
+	     | WriteStat:wr SEMI                                        {: RESULT = wr; :}
+	     | AssignStat:as SEMI                                       {: RESULT = as; :}
+         | WhileStat:ws                                             {: RESULT = ws; :}
+	     | FunCall:fc SEMI                                          {: RESULT = fc; :}
+	     | RETURN Expr:e SEMI                                       {:
+                                                                       ReturnStatNode rs = new ReturnStatNode(e);
+                                                                       RESULT = rs;
+	                                                                :}
+	     | RETURN SEMI                                              {:
+                                                                       ReturnStatNode rs = new ReturnStatNode();
+                                                                       RESULT = rs;
+                                                                    :}
+;
+IfStat ::= IF Expr:e THEN Body:bt                                   {:
+                                                                        IfStatNode is = new IfStatNode(e, bt);
+                                                                        RESULT = is;
+                                                                    :}
+           | IF Expr:e THEN Body:bt ELSE Body:be                    {:
+                                                                        IfStatNode is = new IfStatNode(e, bt, be);
+                                                                        RESULT = is;
+                                                                    :}
+;
+WhileStat ::= WHILE Expr:e LOOP Body:b                              {:
+                                                                        WhileStatNode ws = new WhileStatNode(e, b);
+                                                                        RESULT = ws;
+                                                                    :}
+;
+ForStat ::= FOR ID:i ASSIGN INTEGER_CONST:fr TO INTEGER_CONST:to LOOP Body:b        {:
+                                                                                        IdentifierExprNode id = new IdentifierExprNode(i,ixleft,ixright);
+                                                                                        IntegerConstantNode ifrom = new IntegerConstantNode(fr, frxleft,frxright);
+                                                                                        IntegerConstantNode ito = new IntegerConstantNode(to, toxleft,toxright);
+                                                                                        ForStatNode fs = new ForStatNode(id, ifrom, ito, b);
+                                                                                        RESULT = fs;
+                                                                                    :}
+;
+ReadStat ::=  IdList:idl READ STRING_CONST:s                        {:
+                                                                        ReadStatNode rs = new ReadStatNode(idl, new StringConstantNode(s, sxleft, sxright));
+                                                                        RESULT = rs;
+                                                                    :}
+        	| IdList:idl READ                                       {:
+                                                                        ReadStatNode rs = new ReadStatNode(idl);
+                                                                        RESULT = rs;
+                                                                    :}
+;
+IdList ::=   ID:i                                                   {:
+                                                                        List<IdentifierExprNode> idl = new LinkedList<IdentifierExprNode>();
+                                                                        IdentifierExprNode id = new IdentifierExprNode(i, ixleft,ixright);
+                                                                        idl.add(id);
+                                                                        RESULT = idl;
+                                                                    :}
+	       | IdList:idl COMMA ID:i                                  {:
+                                                                        idl.add(new IdentifierExprNode(i, ixleft, ixright));
+                                                                        RESULT = idl;
+	                                                                :}
+;
+WriteStat ::= LPAR ExprList:el RPAR WRITE                           {:
+                                                                        WriteStatNode ws = new WriteStatNode(el, false);
+                                                                        RESULT = ws;
+                                                                    :}
+              | LPAR ExprList:el RPAR WRITELN                       {:
+                                                                        WriteStatNode ws = new WriteStatNode(el, true);
+                                                                        RESULT = ws;
+                                                                    :}
+;
+AssignStat ::=  IdList:il ASSIGN:a ExprList:el                      {:
+                                                                        AssignStatNode as = new AssignStatNode(il, el);
+                                                                        RESULT = as;
+                                                                    :}
+;
+
+FunCall ::= ID:i LPAR ExprList:el RPAR         {: RESULT = new FunCallStatNode(new IdentifierExprNode(i,ixleft,ixright),el,ixleft,ixright); :}
+	        | ID:i LPAR RPAR                   {: RESULT = new FunCallStatNode(new IdentifierExprNode(i,ixleft,ixright),ixleft,ixright); :}
+;
+
+ExprList ::= Expr:e                            {:
+                                                    List<ExpressionNode> el = new LinkedList<ExpressionNode>();
+                                                    el.add(e);
+                                                    RESULT = el;
+                                               :}
+	         | Expr:e COMMA ExprList:el        {:
+	                                                el.add(0,e);
+	                                                RESULT = el;
+	                                           :}
+;
+
+
+Expr ::=   TRUE:t                               {: RESULT = new BooleanConstantNode(true,txleft,txright);  :}
+	     | FALSE:f                              {: RESULT = new BooleanConstantNode(false,fxleft,fxright);  :}
+	     | INTEGER_CONST:i                      {: RESULT = new IntegerConstantNode(i,ixleft,ixright); :}
+	     | REAL_CONST:r                         {: RESULT = new RealConstantNode(r,rxleft,rxright); :}
+	     | STRING_CONST:s                       {: RESULT = new StringConstantNode(s,sxleft,sxright); :}
+	     | CHAR_CONST:c                         {: RESULT = new CharConstantNode(c,cxleft,cxright); :}
+	     | ID:i                                 {: RESULT = new IdentifierExprNode(i,ixleft,ixright); :}
+	     | ID:i LPAR ExprList:el RPAR           {: RESULT = new FunCallExprNode(new IdentifierExprNode(i,ixleft,ixright),el,ixleft,ixright); :}
+         | ID:i LPAR RPAR                       {: RESULT = new FunCallExprNode(new IdentifierExprNode(i,ixleft,ixright),ixleft,ixright); :}
+	     | Expr:e1  PLUS:o Expr:e2              {: RESULT = new BinaryExpressionNode(e1,Symbols.PLUS,e2,oxright,oxleft); :}
+	     | Expr:e1  MINUS:o Expr:e2				{: RESULT = new BinaryExpressionNode(e1,Symbols.MINUS,e2,oxright,oxleft); :}
+	     | Expr:e1  TIMES:o Expr:e2				{: RESULT = new BinaryExpressionNode(e1,Symbols.TIMES,e2,oxright,oxleft); :}
+	     | Expr:e1  DIV:o Expr:e2               {: RESULT = new BinaryExpressionNode(e1,Symbols.DIV,e2,oxright,oxleft); :}
+	     | Expr:e1  AND:o Expr:e2      			{: RESULT = new BinaryExpressionNode(e1,Symbols.AND,e2,oxright,oxleft); :}
+	     | Expr:e1 POW:o Expr:e2       			{: RESULT = new BinaryExpressionNode(e1,Symbols.POW,e2,oxright,oxleft); :}
+	     | Expr:e1 STR_CONCAT:o Expr:e2			{: RESULT = new BinaryExpressionNode(e1,Symbols.STR_CONCAT,e2,oxright,oxleft); :}
+	     | Expr:e1  OR:o Expr:e2				{: RESULT = new BinaryExpressionNode(e1,Symbols.OR,e2,oxright,oxleft); :}
+	     | Expr:e1  GT:o Expr:e2                {: RESULT = new BinaryExpressionNode(e1,Symbols.GT,e2,oxright,oxleft); :}
+	     | Expr:e1  GE:o Expr:e2                {: RESULT = new BinaryExpressionNode(e1,Symbols.GE,e2,oxright,oxleft); :}
+	     | Expr:e1  LT:o Expr:e2                {: RESULT = new BinaryExpressionNode(e1,Symbols.LT,e2,oxright,oxleft); :}
+	     | Expr:e1  LE:o Expr:e2                {: RESULT = new BinaryExpressionNode(e1,Symbols.LE,e2,oxright,oxleft); :}
+	     | Expr:e1  EQ:o Expr:e2                {: RESULT = new BinaryExpressionNode(e1,Symbols.EQ,e2,oxright,oxleft); :}
+	     | Expr:e1  NE:o Expr:e2                {: RESULT = new BinaryExpressionNode(e1,Symbols.NE,e2,oxright,oxleft); :}
+	     | MINUS:o Expr:e                       {: RESULT = new UnaryExpressionNode(Symbols.MINUS,e,oxright,oxleft); :}
+	     | NOT:o Expr:e                         {: RESULT = new UnaryExpressionNode(Symbols.NOT,e,oxright,oxleft); :}
+	     | LPAR Expr:e RPAR                     {: RESULT = e; :}
+;

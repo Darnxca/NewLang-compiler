@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> stampaMenu</value>
+</IdentifierExpression>
+<Body>
+<Writeln>
+<StringConstant> Che operazione vuoi eseguire</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 2 - Somma</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 3 - Sottrazione</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 4 - Moltiplicazione</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 5 - Divisione</StringConstant>
+</Writeln>
+</Body>
+</FuncDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> marello</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> carmine</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> t</value>
+</IdentifierExpression>
+<IntegerConstant> 5</IntegerConstant>
+</IdInitObbNode>
+</VarDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<IntegerConstant> 1</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaMenu</value>
+</IdentifierExpression>
+</FunCallStat>
+<ReadStat>
+<StringConstant> Scegli l'operazione da effettuare</StringConstant>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+</ReadStat>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<ReadStat>
+<StringConstant> Inserisci il primo numero</StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</ReadStat>
+<ReadStat>
+<StringConstant> Inserisci il secondo numero</StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</ReadStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> somma</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> sottrai</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 4</IntegerConstant>
+</BinaryExpression>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> moltiplica</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 5</IntegerConstant>
+</BinaryExpression>
+<Body>
+<IfStat>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<FunCallExpr>
+<IdentifierExpression>
+<value> dividi</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</FunCallExpr>
+</UnaryExpression>
+<Body>
+<Write>
+<StringConstant> Errore operazione di divisione non effettuabile!!!</StringConstant>
+</Write>
+</Body>
+</IfStat>
+</Body>
+</IfStat>
+<Write>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<StringConstant> Il risultato dell'operazione scelta tra </StringConstant>
+<Operation> STR_CONCAT</Operation>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> è</StringConstant>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</BinaryExpression>
+</Write>
+<ReadStat>
+<StringConstant> Vuoi continuare? (0: NO, 1: SI)</StringConstant>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+</ReadStat>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<ReadStat>
+<StringConstant> Inserire 0 per terminare, 1 per continuare!</StringConstant>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+</ReadStat>
+</Body>
+</WhileStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaMenu</value>
+</IdentifierExpression>
+</FunCallStat>
+<ReadStat>
+<StringConstant> Scegli loperazione da effettuare</StringConstant>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+</ReadStat>
+</Body>
+</IfStat>
+</Body>
+</WhileStat>
+</Body>
+</FuncDeclNode>
+</Main>
+<Declist>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> somma</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> sottrai</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> MINUS</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> molitplica</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='BOOL'>
+<IdentifierExpression>
+<value> dividi</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</AssignStat>
+<ReturnStat>
+<BooleanConstant> false</BooleanConstant>
+</ReturnStat>
+</Body>
+<Else>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> DIV</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<ReturnStat>
+<BooleanConstant> true</BooleanConstant>
+</ReturnStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+</ProgramNode>

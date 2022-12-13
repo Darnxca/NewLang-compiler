@@ -1,0 +1,11 @@
+/*****************************************************/
+/* stampa.c */
+/* Primo programma in C: Stampa un messaggio a video */
+/*****************************************************/
+
+
+void main(){ /* Inizio del main */
+    int a <-- 5.6E-2;
+    printf("Questa e' la prima stampa");
+    /* funzione di stampa */
+}
