@@ -1,4 +1,7 @@
 parser\Symbols.class
+semantic\SymbolTable.class
+semantic\SymbolTypes.class
 parser\Parser.class
-Tester.class
+semantic\SymbolTableStack.class
 parser\Parser$CUP$Parser$actions.class
+semantic\Symbol.class

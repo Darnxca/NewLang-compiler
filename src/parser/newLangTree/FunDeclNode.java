@@ -1,6 +1,7 @@
 package parser.newLangTree;
 
 import parser.newLangTree.expression.IdentifierExprNode;
+import semantic.SymbolTable;
 import visitor.Visitable;
 import visitor.Visitor;
 
@@ -14,6 +15,8 @@ public class FunDeclNode extends TypeNode implements Visitable {
     private int typeOrVoid; //Valore del simbolo, typeOrVoid è una foglia
 
     private BodyNode body;
+
+    private SymbolTable symbolTableFunScope = new SymbolTable();
 
     public FunDeclNode(IdentifierExprNode identifier, List<ParamDeclNode> paramDeclNode, int typeOrVoid, BodyNode body) {
         super();
@@ -51,8 +54,16 @@ public class FunDeclNode extends TypeNode implements Visitable {
         return paramDecl;
     }
 
+    public SymbolTable getSymbolTableFunScope() {
+        return symbolTableFunScope;
+    }
+
+    public void setSymbolTableFunScope(SymbolTable symbolTableFunScope) {
+        this.symbolTableFunScope = symbolTableFunScope;
+    }
+
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 }

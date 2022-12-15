@@ -42,7 +42,7 @@ public class BodyNode extends TypeNode implements Visitable {
     }
 
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 

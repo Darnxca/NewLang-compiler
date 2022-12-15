@@ -14,6 +14,7 @@ public class ParamDeclNode extends TypeNode implements Visitable {
         super();
         this.setType(type);
         this.identifierList = identifierList;
+        this.out = false;
     }
 
     public ParamDeclNode(int type, List<IdentifierExprNode> identifierList, boolean out) {
@@ -32,7 +33,7 @@ public class ParamDeclNode extends TypeNode implements Visitable {
     }
 
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 }

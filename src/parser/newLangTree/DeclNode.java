@@ -4,6 +4,7 @@ import visitor.Visitable;
 import visitor.Visitor;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DeclNode extends TypeNode implements Visitable {
@@ -12,15 +13,24 @@ public class DeclNode extends TypeNode implements Visitable {
 
     public DeclNode() {
         super();
-        this.funDeclList = Collections.emptyList();
-        this.varDeclList = Collections.emptyList();
+        this.funDeclList = new LinkedList<>();
+        this.varDeclList = new LinkedList<>();
     }
-    public void addVarDeclList(List<VarDeclNode> varDeclList) {
+
+    public void setVarDeclList(List<VarDeclNode> varDeclList) {
         this.varDeclList= varDeclList;
     }
 
-    public void addFunDeclList(List<FunDeclNode> funDeclList) {
+    public void setFunDeclList(List<FunDeclNode> funDeclList) {
         this.funDeclList = funDeclList;
+    }
+
+    public void addVarDeclList(List<VarDeclNode> varDeclList){
+        this.varDeclList.addAll(varDeclList);
+    }
+
+    public void addFunDeclList(List<FunDeclNode> funDeclList){
+        this.funDeclList.addAll(funDeclList);
     }
 
     public List<VarDeclNode> getVarDeclList() {
@@ -33,7 +43,7 @@ public class DeclNode extends TypeNode implements Visitable {
 
 
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 }

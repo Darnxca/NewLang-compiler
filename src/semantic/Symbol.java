@@ -1,5 +1,7 @@
 package semantic;
 
+import parser.Symbols;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Symbol {
 	public Symbol(String id,Integer entryType, Integer type) {
 		identifier = id;
 		this.entryType = entryType;
+		this.type = new LinkedList<>();
 		this.type.add(type);
 	}
 
@@ -56,6 +59,23 @@ public class Symbol {
 			return null;
 
 		return type.get(0);
+	}
+
+	@Override
+	public String toString() {
+		String str= "Symbol{" +
+				"identifier='" + identifier + '\'' +
+				", entryType=" + SymbolTypes.entryNames[entryType] +
+				", type=";
+
+		for (int x: type){
+			if(x != -1){str+= Symbols.terminalNames[x]+" X ";}
+		}
+		String str2="";
+		str2 = str.substring(0, str.lastIndexOf("X")-1);
+		str2 += "}\n";
+
+		return str2;
 	}
 
 	public static void main(String[] args) {

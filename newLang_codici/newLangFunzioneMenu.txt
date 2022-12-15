@@ -8,13 +8,14 @@ def stampaMenu() : void {
 
     integer marello << x ;
     float y, carmine;
-    var t<< 5;
+    var t<< 2;
 
 start: def main(): integer {
 
 	integer  sceltaOp, continuaScelta << 1;
     float result, num1 <<0;
     var num2 << 0;
+    var ciao << "CISIDIIDI";
 
 	stampaMenu();
 	sceltaOp <-- "Scegli l'operazione da effettuare";
@@ -94,3 +95,5 @@ def dividi(float a,b | out float result) : boolean{
 		return true;
 	}
 }
+
+float pippo << 10;

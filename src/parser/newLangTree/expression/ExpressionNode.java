@@ -14,6 +14,6 @@ public abstract class ExpressionNode extends TypeNode implements Visitable {
     public ExpressionNode() {
     }
 
-    abstract public Object accept(Visitor visitor);
+    abstract public Object accept(Visitor visitor) throws Exception;
 
 }

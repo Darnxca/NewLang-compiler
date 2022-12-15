@@ -11,6 +11,9 @@ public class SymbolTableStack {
 		stack = new ArrayDeque<>();
 	}
 
+	public Deque<SymbolTable> getStack() {
+		return stack;
+	}
 	public void enterScope(){
 		stack.push(new SymbolTable());
 	}

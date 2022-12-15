@@ -13,7 +13,6 @@ import parser.newLangTree.statements.*;
 import parser.newLangTree.*;
 import java.util.*;
 import java_cup.runtime.ComplexSymbolFactory.Location;
-import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
   */
@@ -537,7 +536,7 @@ class CUP$Parser$actions {
                                                                List<VarDeclNode> lvd = new LinkedList<VarDeclNode>();
                                                                lvd.add(vd);
                                                                DeclNode d = new DeclNode();
-                                                               d.addVarDeclList(lvd);
+                                                               d.setVarDeclList(lvd);
                                                                dl.add(0,d);
                                                                RESULT = dl;
                                                             
@@ -559,7 +558,7 @@ class CUP$Parser$actions {
                                                                List<FunDeclNode> lfd = new LinkedList<FunDeclNode>();
                                                                lfd.add(fd);
                                                                DeclNode d = new DeclNode();
-                                                               d.addFunDeclList(lfd);
+                                                               d.setFunDeclList(lfd);
                                                                dl.add(0,d);
                                                                RESULT = dl;
                                                             
@@ -669,7 +668,7 @@ class CUP$Parser$actions {
 		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
                                                                List<IdInitNode> idl = new LinkedList<IdInitNode>();
-                                                               idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
+                                                               idl.add(0, new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
                                                                RESULT = idl;
                                                             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -687,7 +686,7 @@ class CUP$Parser$actions {
 		Location ixright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.peek()).xright;
 		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
+	                                                            idl.add(0,new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
 	                                                            RESULT = idl;
 	                                                        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -706,7 +705,7 @@ class CUP$Parser$actions {
 		ExpressionNode e = (ExpressionNode)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
 	                                                            List<IdInitNode> idl = new LinkedList<IdInitNode>();
-	                                                            idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
+	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
 	                                                            RESULT = idl;
 	                                                        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -727,7 +726,7 @@ class CUP$Parser$actions {
 		Location exright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.peek()).xright;
 		ExpressionNode e = (ExpressionNode)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-	                                                            idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
+	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
                                                                 RESULT = idl;
                                                             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

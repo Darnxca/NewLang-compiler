@@ -20,7 +20,7 @@ public class ReturnStatNode extends StatementNode {
     }
 
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 }

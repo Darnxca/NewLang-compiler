@@ -1,39 +1,67 @@
 package parser.newLangTree;
 
+import semantic.SymbolTable;
 import visitor.Visitable;
 import visitor.Visitor;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProgramNode extends TypeNode implements Visitable {
 
-    private List<DeclNode> declList1;
-    private List<DeclNode> declList2;
+    private DeclNode decl;
     private MainFuncDeclNode mainFuncDecl;
+
+    private SymbolTable symbolTableProgramScope = new SymbolTable();
+
+
 
     public ProgramNode(List<DeclNode> declList1, MainFuncDeclNode mainFuncDecl, List<DeclNode> declList2) {
         super();
-        this.declList1 = declList1;
-        this.declList2 = declList2;
+        this.decl = initilizeDeclNode(declList1, declList2);
         this.mainFuncDecl = mainFuncDecl;
     }
 
-    public List<DeclNode> getDeclList1() {
-        return declList1;
-    }
+    private DeclNode initilizeDeclNode(List<DeclNode> declList1, List<DeclNode> declList2){
+        DeclNode temp = new DeclNode();
 
-    public List<DeclNode> getDeclList2() {
-        return declList2;
+        for (DeclNode x: declList1){
+            temp.addVarDeclList(x.getVarDeclList());
+        }
+
+        for (DeclNode x: declList2){
+            temp.addVarDeclList(x.getVarDeclList());
+        }
+
+        for (DeclNode x: declList1){
+            temp.addFunDeclList(x.getFunDeclList());
+        }
+
+        for (DeclNode x: declList2){
+            temp.addFunDeclList(x.getFunDeclList());
+        }
+        return temp;
     }
 
     public MainFuncDeclNode getMainFuncDecl() {
         return mainFuncDecl;
     }
 
+    public DeclNode getDecl() {
+        return decl;
+    }
 
+    public SymbolTable getSymbolTableProgramScope() {
+        return symbolTableProgramScope;
+    }
+
+    public void setSymbolTableProgramScope(SymbolTable symbolTableProgramScope) {
+        this.symbolTableProgramScope = symbolTableProgramScope;
+    }
 
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 }

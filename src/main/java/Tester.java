@@ -9,6 +9,10 @@ import java.io.FileReader;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.*;
+import semantic.SymbolTable;
+import semantic.SymbolTableStack;
+import visitor.ScopeVisitor;
+import visitor.SemanticVisitor;
 import visitor.XMLTreeGenerator;
 import parser.*;
 import lexer.*;
@@ -34,6 +38,16 @@ public class Tester {
 
                 program.accept(tr);
                 tr.flush();
+
+                ScopeVisitor sv = new ScopeVisitor();
+                program.accept(sv);
+
+                /*SemanticVisitor sm = new SemanticVisitor();
+                program.accept(sm);
+
+
+                for (SymbolTable s : sm.stack.getStack())
+                     System.out.println(s);*/
 
                 System.out.println("linguaggio riconosciuto");
 

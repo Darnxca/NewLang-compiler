@@ -3,6 +3,7 @@ package parser.newLangTree;
 import visitor.Visitable;
 import visitor.Visitor;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class VarDeclNode extends TypeNode implements Visitable {
         this.setType(type);
         this.idIList = new LinkedList<>();
         this.idIObList = new LinkedList<>();
+
+
     }
 
     public VarDeclNode() {
@@ -26,7 +29,6 @@ public class VarDeclNode extends TypeNode implements Visitable {
         this.idIList = idIList;
 
     }
-
     public void setIdInitObbNode(List<IdInitObbNode> idIObList) {
         this.idIObList = idIObList;
     }
@@ -42,7 +44,7 @@ public class VarDeclNode extends TypeNode implements Visitable {
 
 
     @Override
-    public Object accept(Visitor v) {
+    public Object accept(Visitor v) throws Exception {
         return v.visit(this);
     }
 }

@@ -15,5 +15,5 @@ public abstract class StatementNode extends TypeNode implements Visitable {
     }
 
     @Override
-    public abstract Object accept(Visitor v);
+    public abstract Object accept(Visitor v) throws Exception;
 }

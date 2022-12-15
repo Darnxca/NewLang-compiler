@@ -2,6 +2,48 @@
 <!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
 <ProgramNode>
 <Declist>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> marello</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> carmine</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> t</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> pippo</value>
+</IdentifierExpression>
+<IntegerConstant> 10</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
 <FuncDeclNode Type='VOID'>
 <IdentifierExpression>
 <value> stampaMenu</value>
@@ -24,39 +66,177 @@
 </Writeln>
 </Body>
 </FuncDeclNode>
-<VarDeclNode>
-<Type>INTEGER</Type>
-<IdInitNode>
+<FuncDeclNode Type='VOID'>
 <IdentifierExpression>
-<value> marello</value>
+<value> somma</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
 </IdentifierExpression>
 <IdentifierExpression>
-<value> x</value>
+<value> b</value>
 </IdentifierExpression>
-</IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>FLOAT</Type>
-<IdInitNode>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
 <IdentifierExpression>
-<value> y</value>
+<value> result</value>
 </IdentifierExpression>
-</IdInitNode>
-<IdInitNode>
+</ParamDecl>
+<Body>
+<AssignStat>
 <IdentifierExpression>
-<value> carmine</value>
+<value> result</value>
 </IdentifierExpression>
-</IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>VAR</Type>
-<IdInitObbNode>
+<BinaryExpression>
 <IdentifierExpression>
-<value> t</value>
+<value> a</value>
 </IdentifierExpression>
-<IntegerConstant> 5</IntegerConstant>
-</IdInitObbNode>
-</VarDeclNode>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> sottrai</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> MINUS</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> molitplica</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='BOOL'>
+<IdentifierExpression>
+<value> dividi</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>FLOAT</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</AssignStat>
+<ReturnStat>
+<BooleanConstant> false</BooleanConstant>
+</ReturnStat>
+</Body>
+<Else>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> DIV</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<ReturnStat>
+<BooleanConstant> true</BooleanConstant>
+</ReturnStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</FuncDeclNode>
 </Declist>
 <Main>
 <FuncDeclNode Type='INTEGER'>
@@ -99,6 +279,15 @@
 <value> num2</value>
 </IdentifierExpression>
 <IntegerConstant> 0</IntegerConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> ciao</value>
+</IdentifierExpression>
+<StringConstant> CISIDIIDI</StringConstant>
 </IdInitObbNode>
 </VarDeclNode>
 <FunCallStat>
@@ -328,177 +517,4 @@
 </Body>
 </FuncDeclNode>
 </Main>
-<Declist>
-<FuncDeclNode Type='VOID'>
-<IdentifierExpression>
-<value> somma</value>
-</IdentifierExpression>
-<ParamDecl>
-<Type-in>FLOAT</Type-in>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</ParamDecl>
-<ParamDecl>
-<Type-out>FLOAT</Type-out>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</ParamDecl>
-<Body>
-<AssignStat>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<Operation> PLUS</Operation>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</BinaryExpression>
-</AssignStat>
-</Body>
-</FuncDeclNode>
-<FuncDeclNode Type='VOID'>
-<IdentifierExpression>
-<value> sottrai</value>
-</IdentifierExpression>
-<ParamDecl>
-<Type-in>FLOAT</Type-in>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</ParamDecl>
-<ParamDecl>
-<Type-out>FLOAT</Type-out>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</ParamDecl>
-<Body>
-<AssignStat>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<Operation> MINUS</Operation>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</BinaryExpression>
-</AssignStat>
-</Body>
-</FuncDeclNode>
-<FuncDeclNode Type='VOID'>
-<IdentifierExpression>
-<value> molitplica</value>
-</IdentifierExpression>
-<ParamDecl>
-<Type-in>FLOAT</Type-in>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</ParamDecl>
-<ParamDecl>
-<Type-out>FLOAT</Type-out>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</ParamDecl>
-<Body>
-<AssignStat>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<Operation> TIMES</Operation>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</BinaryExpression>
-</AssignStat>
-</Body>
-</FuncDeclNode>
-<FuncDeclNode Type='BOOL'>
-<IdentifierExpression>
-<value> dividi</value>
-</IdentifierExpression>
-<ParamDecl>
-<Type-in>FLOAT</Type-in>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</ParamDecl>
-<ParamDecl>
-<Type-out>FLOAT</Type-out>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</ParamDecl>
-<Body>
-<IfStat>
-<BinaryExpression>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-<Operation> EQ</Operation>
-<IntegerConstant> 0</IntegerConstant>
-</BinaryExpression>
-<Body>
-<AssignStat>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-<IntegerConstant> 0</IntegerConstant>
-</AssignStat>
-<ReturnStat>
-<BooleanConstant> false</BooleanConstant>
-</ReturnStat>
-</Body>
-<Else>
-<Body>
-<AssignStat>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<Operation> DIV</Operation>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</BinaryExpression>
-</AssignStat>
-<ReturnStat>
-<BooleanConstant> true</BooleanConstant>
-</ReturnStat>
-</Body>
-</Else>
-</IfStat>
-</Body>
-</FuncDeclNode>
-</Declist>
 </ProgramNode>

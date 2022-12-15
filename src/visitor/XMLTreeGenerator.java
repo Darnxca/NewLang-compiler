@@ -18,7 +18,7 @@ public class XMLTreeGenerator implements  Visitor{
 
     PrintWriter writer;
 
-    public XMLTreeGenerator(String filename) {
+    public XMLTreeGenerator(String filename)  {
         try {
             writer = new PrintWriter( "XMLTreeCode/"+filename+".xml");
             writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -35,30 +35,24 @@ public class XMLTreeGenerator implements  Visitor{
 
 
     @Override
-    public Object visit(ProgramNode item) {
+    public Object visit(ProgramNode item) throws Exception {
 
         writer.println("<ProgramNode>");
 
         writer.println("<Declist>");
-        for (DeclNode i : item.getDeclList1())
-            i.accept(this);
+
+        item.getDecl().accept(this);
+
         writer.println("</Declist>");
 
         item.getMainFuncDecl().accept(this);
-
-        writer.println("<Declist>");
-        for (DeclNode i : item.getDeclList2())
-            i.accept(this);
-        writer.println("</Declist>");
 
         writer.println("</ProgramNode>");
         return null;
     }
 
     @Override
-    public Object visit(DeclNode item) {
-
-
+    public Object visit(DeclNode item) throws Exception {
 
         for (VarDeclNode i : item.getVarDeclList())
              i.accept(this);
@@ -66,13 +60,11 @@ public class XMLTreeGenerator implements  Visitor{
         for (FunDeclNode i : item.getFunDeclList())
              i.accept(this);
 
-
-
         return null;
     }
 
     @Override
-    public Object visit(MainFuncDeclNode item) {
+    public Object visit(MainFuncDeclNode item)throws Exception {
 
         writer.println("<Main>");
 
@@ -83,7 +75,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(VarDeclNode item) {
+    public Object visit(VarDeclNode item) throws Exception {
         writer.println("<VarDeclNode>");
 
         writer.println("<Type>" + Symbols.terminalNames[item.getType().get(0)] + "</Type>");
@@ -99,7 +91,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(IdInitNode item) {
+    public Object visit(IdInitNode item) throws Exception{
         writer.println("<IdInitNode>");
 
         item.getIdentifier().accept(this);
@@ -112,7 +104,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(IdInitObbNode item) {
+    public Object visit(IdInitObbNode item) throws Exception{
         writer.println("<IdInitObbNode>");
 
         item.getIdentifier().accept(this);
@@ -125,7 +117,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(FunDeclNode item) {
+    public Object visit(FunDeclNode item) throws Exception{
         writer.println("<FuncDeclNode Type='"+Symbols.terminalNames[item.getTypeOrVoid()]+"'>");
 
         item.getIdentifier().accept(this);
@@ -142,7 +134,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(ParamDeclNode item) {
+    public Object visit(ParamDeclNode item) throws Exception{
 
         writer.println("<ParamDecl>");
 
@@ -164,7 +156,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(BodyNode item) {
+    public Object visit(BodyNode item)throws Exception {
 
         writer.println("<Body>");
 
@@ -180,7 +172,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(IfStatNode item) {
+    public Object visit(IfStatNode item) throws Exception{
         writer.println("<IfStat>");
 
         item.getExpression().accept(this);
@@ -198,7 +190,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(AssignStatNode item) {
+    public Object visit(AssignStatNode item) throws Exception{
         writer.println("<AssignStat>");
 
         for (IdentifierExprNode i : item.getIdentifierList())
@@ -215,7 +207,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(ForStatNode item) {
+    public Object visit(ForStatNode item) throws Exception{
         writer.println("<ForStat fromValue='"+item.getCostantFrom()+"' toValue='"+item.getCostantTo()+"'>");
 
 
@@ -228,7 +220,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(ReadStatNode item) {
+    public Object visit(ReadStatNode item) throws Exception{
         writer.println("<ReadStat>");
 
         item.getStringCostant().accept(this);
@@ -242,7 +234,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(ReturnStatNode item) {
+    public Object visit(ReturnStatNode item)throws Exception {
 
         writer.println("<ReturnStat>");
 
@@ -253,7 +245,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(WhileStatNode item) {
+    public Object visit(WhileStatNode item) throws Exception{
         writer.println("<WhileStat>");
 
         item.getExpression().accept(this);
@@ -265,7 +257,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(WriteStatNode item){
+    public Object visit(WriteStatNode item) throws Exception{
         if(item.isNewLine())
         {
             writer.println("<Writeln>");
@@ -295,7 +287,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(IntegerConstantNode item) {
+    public Object visit(IntegerConstantNode item) throws Exception{
 
 
         writer.println("<IntegerConstant> " + item.getValue() + "</IntegerConstant>");
@@ -304,28 +296,28 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(BooleanConstantNode item) {
+    public Object visit(BooleanConstantNode item) throws Exception{
         writer.println("<BooleanConstant> " + item.getValue() + "</BooleanConstant>");
 
         return null;
     }
 
     @Override
-    public Object visit(RealConstantNode item) {
+    public Object visit(RealConstantNode item) throws Exception{
         writer.println("<RealConstant> " + item.getValue() + "</RealConstant>");
 
         return null;
     }
 
     @Override
-    public Object visit(StringConstantNode item) {
+    public Object visit(StringConstantNode item) throws Exception{
         writer.println("<StringConstant> " + item.getValue() + "</StringConstant>");
 
         return null;
     }
 
     @Override
-    public Object visit(CharConstantNode item) {
+    public Object visit(CharConstantNode item) throws Exception{
 
         writer.println("<CharConstant> " + item.getValue() + "</CharConstant>");
 
@@ -333,7 +325,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(FunCallExprNode item) {
+    public Object visit(FunCallExprNode item) throws Exception{
         writer.println("<FunCallExpr>");
 
         item.getIdentifier().accept(this);
@@ -347,7 +339,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(FunCallStatNode item) {
+    public Object visit(FunCallStatNode item) throws Exception{
         writer.println("<FunCallStat>");
 
         item.getIdentifier().accept(this);
@@ -361,7 +353,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(IdentifierExprNode item) {
+    public Object visit(IdentifierExprNode item) throws Exception{
         writer.println("<IdentifierExpression>");
         writer.println("<value> " + item.getValue()+ "</value>");
         writer.println("</IdentifierExpression>");
@@ -370,7 +362,7 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
-    public Object visit(BinaryExpressionNode item) {
+    public Object visit(BinaryExpressionNode item) throws Exception{
         writer.println("<BinaryExpression>");
         item.getLeftExpression().accept(this);
         writer.println("<Operation> " + Symbols.terminalNames[item.getOperation()] + "</Operation>");
@@ -379,7 +371,7 @@ public class XMLTreeGenerator implements  Visitor{
         return null;
     }
     @Override
-    public Object visit(UnaryExpressionNode item) {
+    public Object visit(UnaryExpressionNode item) throws Exception{
         writer.println("<UnaryExpression>");
         writer.println("<Operation> " + Symbols.terminalNames[item.getOperation()] + "</Operation>");
         item.getRightExpression().accept(this);
