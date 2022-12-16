@@ -74,7 +74,7 @@ Identifier = ({letter_$})+({letter_$}{digit})*
 FloatNumber = (({digit1}+{digit}* | {zero}))(.{digits})?
 IntegerNumber = (({digit1}+{digit}* | {zero}))
 
-%state STRING
+%state STRING_STATE
 
 %%
 
@@ -149,7 +149,7 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
     {FloatNumber}        {return symbol("REAL_CONST", REAL_CONST, Float.parseFloat(yytext())); }
 
     /* Stringhe letterali */
-    \"                  { string.setLength(0); yybegin(STRING); }
+    \"                  { string.setLength(0); yybegin(STRING_STATE); }
     //Caratteri
     \'.\'                { return symbol("CHAR_CONST", CHAR_CONST, yytext().charAt(1), 1); }
 
@@ -160,7 +160,7 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
     {Whitespace} { /* ignore */ }
 
 }
-<STRING> {
+<STRING_STATE> {
     \"              {yybegin(YYINITIAL); return symbol("STRING_CONST",STRING_CONST, string.toString(), string.length()); }
     [^\n\r\"\\]+    { string.append( yytext() ); }
     \\t             { string.append('\t'); }

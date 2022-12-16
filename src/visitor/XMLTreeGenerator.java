@@ -1,13 +1,13 @@
 package visitor;
 
-import parser.newLangTree.*;
-import parser.newLangTree.expression.FunCallExprNode;
-import parser.newLangTree.expression.BinaryExpressionNode;
-import parser.newLangTree.expression.ExpressionNode;
-import parser.newLangTree.expression.IdentifierExprNode;
-import parser.newLangTree.expression.UnaryExpressionNode;
-import parser.newLangTree.expression.constants.*;
-import parser.newLangTree.statements.*;
+import parser.newLangTree.nodes.*;
+import parser.newLangTree.nodes.expression.FunCallExprNode;
+import parser.newLangTree.nodes.expression.BinaryExpressionNode;
+import parser.newLangTree.nodes.expression.ExpressionNode;
+import parser.newLangTree.nodes.expression.IdentifierExprNode;
+import parser.newLangTree.nodes.expression.UnaryExpressionNode;
+import parser.newLangTree.nodes.expression.constants.*;
+import parser.newLangTree.nodes.statements.*;
 import org.w3c.dom.Element;
 import parser.Symbols;
 
@@ -78,7 +78,7 @@ public class XMLTreeGenerator implements  Visitor{
     public Object visit(VarDeclNode item) throws Exception {
         writer.println("<VarDeclNode>");
 
-        writer.println("<Type>" + Symbols.terminalNames[item.getType().get(0)] + "</Type>");
+        writer.println("<Type>" + Symbols.terminalNames[item.getType()] + "</Type>");
 
         for (IdInitNode i : item.getIdIList())
             i.accept(this);
@@ -140,10 +140,10 @@ public class XMLTreeGenerator implements  Visitor{
 
         //Se ho parametri di ritorno devo mettere il tipo
         if(item.isOut()){
-            writer.println("<Type-out>"+ Symbols.terminalNames[item.getType().get(0)]+"</Type-out>");
+            writer.println("<Type-out>"+ Symbols.terminalNames[item.getType()]+"</Type-out>");
         }
         else{
-            writer.println("<Type-in>"+ Symbols.terminalNames[item.getType().get(0)]+"</Type-in>");
+            writer.println("<Type-in>"+ Symbols.terminalNames[item.getType()]+"</Type-in>");
         }
 
         for (IdentifierExprNode i : item.getIdentifierList()) {
