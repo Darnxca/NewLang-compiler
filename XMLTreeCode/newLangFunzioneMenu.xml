@@ -3,39 +3,6 @@
 <ProgramNode>
 <Declist>
 <VarDeclNode>
-<Type>INTEGER</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> marello</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> x</value>
-</IdentifierExpression>
-</IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>FLOAT</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> carmine</value>
-</IdentifierExpression>
-</IdInitNode>
-<IdInitNode>
-<IdentifierExpression>
-<value> y</value>
-</IdentifierExpression>
-</IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>VAR</Type>
-<IdInitObbNode>
-<IdentifierExpression>
-<value> t</value>
-</IdentifierExpression>
-<IntegerConstant> 2</IntegerConstant>
-</IdInitObbNode>
-</VarDeclNode>
-<VarDeclNode>
 <Type>FLOAT</Type>
 <IdInitNode>
 <IdentifierExpression>

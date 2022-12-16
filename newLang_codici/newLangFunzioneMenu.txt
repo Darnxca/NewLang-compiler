@@ -1,3 +1,4 @@
+
 def stampaMenu() : void {
 	("Che operazione vuoi eseguire") -->!;
 	("2 - Somma") -->!;
@@ -5,10 +6,6 @@ def stampaMenu() : void {
 	("4 - Moltiplicazione") -->!;
 	("5 - Divisione") -->!;
 }
-
-    integer marello << x ;
-    float y, carmine;
-    var t<< 2;
 
 start: def main(): integer {
 
@@ -79,9 +76,7 @@ def sottrai(float a,b | out float result) : void {
 
 
 def molitplica(float a,b | out float result) : void {
-
 	result << a * b;
-
 }
 
 def dividi(float a,b | out float result) : boolean{

@@ -1,9 +1,9 @@
 package visitor;
 
-import parser.newLangTree.*;
-import parser.newLangTree.expression.*;
-import parser.newLangTree.expression.constants.*;
-import parser.newLangTree.statements.*;
+import parser.newLangTree.nodes.*;
+import parser.newLangTree.nodes.expression.*;
+import parser.newLangTree.nodes.expression.constants.*;
+import parser.newLangTree.nodes.statements.*;
 
 public interface Visitor {
 

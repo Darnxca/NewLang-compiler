@@ -1,9 +1,9 @@
 package parser;
 import lexer.*;
 import java_cup.runtime.*;
-import parser.newLangTree.expression.*;
-import parser.newLangTree.expression.constants.*;
-import parser.newLangTree.statements.*;
+import parser.newLangTree.nodes.expression.*;
+import parser.newLangTree.nodes.expression.constants.*;
+import parser.newLangTree.nodes.statements.*;
 
 import parser.newLangTree.*;
 import java.util.*;
@@ -17,7 +17,7 @@ parser code {:
 
 terminal MAIN, DEF;
 terminal SEMI, COMMA, LPAR, RPAR, COLON, LBRAC, RBRAC, PIPE, OUT; //Separatori
-terminal Integer    STRING, CHAR, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
+terminal Integer  CHAR, STRING, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
 
 terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN; //Statements
 terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT; //Operatori aritmetici, stringhe
@@ -108,7 +108,8 @@ VarDecl ::= Type:t IdInitList:il SEMI                       {:
                                                                RESULT = vd;
                                                             :}
 	         | VAR IdInitObblList:il SEMI                   {:
-	                                                           VarDeclNode vd = new VarDeclNode(Symbols.VAR); vd.setIdInitObbNode(il);
+	                                                           VarDeclNode vd = new VarDeclNode(Symbols.VAR);
+	                                                           vd.setIdInitObbNode(il);
 	                                                           RESULT = vd;
 	                                                        :}
 ;

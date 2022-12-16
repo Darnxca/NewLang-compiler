@@ -7,10 +7,11 @@ package parser;
 
 import lexer.*;
 import java_cup.runtime.*;
-import parser.newLangTree.expression.*;
-import parser.newLangTree.expression.constants.*;
-import parser.newLangTree.statements.*;
-import parser.newLangTree.*;
+import parser.newLangTree.nodes.*;
+import parser.newLangTree.nodes.expression.*;
+import parser.newLangTree.nodes.expression.constants.*;
+import parser.newLangTree.nodes.statements.*;
+
 import java.util.*;
 import java_cup.runtime.ComplexSymbolFactory.Location;
 
@@ -73,29 +74,29 @@ public class Parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\261\000\022\004\uffff\005\015\017\012\020\017\022" +
+    "\000\261\000\022\004\uffff\005\015\017\017\020\012\022" +
     "\013\023\005\024\007\025\016\001\002\000\004\053\253" +
     "\001\002\000\006\013\ufff9\053\ufff9\001\002\000\004\002" +
     "\252\001\002\000\006\013\ufff8\053\ufff8\001\002\000\024" +
-    "\002\uffff\004\uffff\005\015\017\012\020\017\022\013\023" +
+    "\002\uffff\004\uffff\005\015\017\017\020\012\022\013\023" +
     "\005\024\007\025\016\001\002\000\024\002\uffff\004\uffff" +
-    "\005\015\017\012\020\017\022\013\023\005\024\007\025" +
+    "\005\015\017\017\020\012\022\013\023\005\024\007\025" +
     "\016\001\002\000\006\013\ufff6\053\ufff6\001\002\000\004" +
     "\053\231\001\002\000\004\004\225\001\002\000\004\053" +
     "\020\001\002\000\006\013\ufff7\053\ufff7\001\002\000\006" +
     "\013\ufff5\053\ufff5\001\002\000\004\010\021\001\002\000" +
-    "\020\011\025\016\026\017\012\020\017\023\005\024\007" +
+    "\020\011\025\016\026\017\017\020\012\023\005\024\007" +
     "\025\016\001\002\000\006\011\217\015\220\001\002\000" +
     "\004\053\030\001\002\000\006\011\uffe2\015\uffe2\001\002" +
-    "\000\004\012\034\001\002\000\014\017\012\020\017\023" +
+    "\000\004\012\034\001\002\000\014\017\017\020\012\023" +
     "\005\024\007\025\016\001\002\000\004\053\030\001\002" +
     "\000\010\007\uffc9\011\uffc9\015\uffc9\001\002\000\010\007" +
     "\032\011\uffdf\015\uffdf\001\002\000\004\053\033\001\002" +
     "\000\014\007\uffc8\011\uffc8\015\uffc8\033\uffc8\040\uffc8\001" +
-    "\002\000\016\017\012\020\017\021\037\023\005\024\007" +
+    "\002\000\016\017\017\020\012\021\037\023\005\024\007" +
     "\025\016\001\002\000\004\013\040\001\002\000\004\013" +
     "\uffde\001\002\000\004\013\uffdd\001\002\000\034\010\064" +
-    "\014\054\017\012\020\017\022\013\023\005\024\007\025" +
+    "\014\054\017\017\020\012\022\013\023\005\024\007\025" +
     "\016\026\063\030\051\031\046\053\052\067\047\001\002" +
     "\000\024\002\uffe7\004\uffe7\005\uffe7\017\uffe7\020\uffe7\022" +
     "\uffe7\023\uffe7\024\uffe7\025\uffe7\001\002\000\020\010\uffd7" +
@@ -115,7 +116,7 @@ public class Parser extends java_cup.runtime.lr_parser {
     "\uffe3\031\uffe3\032\uffe3\053\uffe3\067\uffe3\001\002\000\020" +
     "\010\064\014\170\026\063\030\051\031\046\053\052\067" +
     "\047\001\002\000\010\007\032\033\163\040\164\001\002" +
-    "\000\034\010\uffdb\014\uffdb\017\012\020\017\022\013\023" +
+    "\000\034\010\uffdb\014\uffdb\017\017\020\012\022\013\023" +
     "\005\024\007\025\016\026\uffdb\030\uffdb\031\uffdb\053\uffdb" +
     "\067\uffdb\001\002\000\020\010\uffd3\014\uffd3\026\uffd3\030" +
     "\uffd3\031\uffd3\053\uffd3\067\uffd3\001\002\000\004\006\161" +
@@ -290,13 +291,13 @@ public class Parser extends java_cup.runtime.lr_parser {
     "\067\uffd4\001\002\000\004\014\uffd9\001\002\000\020\010" +
     "\uffd6\014\uffd6\026\uffd6\030\uffd6\031\uffd6\053\uffd6\067\uffd6" +
     "\001\002\000\010\007\032\011\uffe0\015\uffe0\001\002\000" +
-    "\004\012\222\001\002\000\016\016\026\017\012\020\017" +
+    "\004\012\222\001\002\000\016\016\026\017\017\020\012" +
     "\023\005\024\007\025\016\001\002\000\006\011\uffe1\015" +
-    "\uffe1\001\002\000\016\017\012\020\017\021\037\023\005" +
+    "\uffe1\001\002\000\016\017\017\020\012\021\037\023\005" +
     "\024\007\025\016\001\002\000\004\013\040\001\002\000" +
     "\024\002\uffe8\004\uffe8\005\uffe8\017\uffe8\020\uffe8\022\uffe8" +
     "\023\uffe8\024\uffe8\025\uffe8\001\002\000\004\005\015\001" +
-    "\002\000\022\002\uffff\005\015\017\012\020\017\022\013" +
+    "\002\000\022\002\uffff\005\015\017\017\020\012\022\013" +
     "\023\005\024\007\025\016\001\002\000\004\002\001\001" +
     "\002\000\022\002\ufffc\005\ufffc\017\ufffc\020\ufffc\022\ufffc" +
     "\023\ufffc\024\ufffc\025\ufffc\001\002\000\004\040\246\001" +
@@ -536,7 +537,7 @@ class CUP$Parser$actions {
                                                                List<VarDeclNode> lvd = new LinkedList<VarDeclNode>();
                                                                lvd.add(vd);
                                                                DeclNode d = new DeclNode();
-                                                               d.setVarDeclList(lvd);
+                                                               d.addVarDeclList(lvd);
                                                                dl.add(0,d);
                                                                RESULT = dl;
                                                             
@@ -558,7 +559,7 @@ class CUP$Parser$actions {
                                                                List<FunDeclNode> lfd = new LinkedList<FunDeclNode>();
                                                                lfd.add(fd);
                                                                DeclNode d = new DeclNode();
-                                                               d.setFunDeclList(lfd);
+                                                               d.addFunDeclList(lfd);
                                                                dl.add(0,d);
                                                                RESULT = dl;
                                                             
@@ -607,7 +608,8 @@ class CUP$Parser$actions {
 		Location ilxright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).xright;
 		List<IdInitObbNode> il = (List<IdInitObbNode>)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-	                                                           VarDeclNode vd = new VarDeclNode(Symbols.VAR); vd.setIdInitObbNode(il);
+	                                                           VarDeclNode vd = new VarDeclNode(Symbols.VAR);
+	                                                           vd.setIdInitObbNode(il);
 	                                                           RESULT = vd;
 	                                                        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("VarDecl",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -668,7 +670,7 @@ class CUP$Parser$actions {
 		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
                                                                List<IdInitNode> idl = new LinkedList<IdInitNode>();
-                                                               idl.add(0, new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
+                                                               idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
                                                                RESULT = idl;
                                                             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -686,7 +688,7 @@ class CUP$Parser$actions {
 		Location ixright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.peek()).xright;
 		String i = (String)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-	                                                            idl.add(0,new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
+	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright)));
 	                                                            RESULT = idl;
 	                                                        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -705,7 +707,7 @@ class CUP$Parser$actions {
 		ExpressionNode e = (ExpressionNode)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
 	                                                            List<IdInitNode> idl = new LinkedList<IdInitNode>();
-	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
+	                                                            idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
 	                                                            RESULT = idl;
 	                                                        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -726,7 +728,7 @@ class CUP$Parser$actions {
 		Location exright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.peek()).xright;
 		ExpressionNode e = (ExpressionNode)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-	                                                            idl.add(new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
+	                                                            idl.add( new IdInitNode(new IdentifierExprNode(i,ixleft,ixright),e));
                                                                 RESULT = idl;
                                                             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IdInitList",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

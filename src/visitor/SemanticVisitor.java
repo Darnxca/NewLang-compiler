@@ -2,13 +2,13 @@ package visitor;
 
 
 import parser.Symbols;
-import parser.newLangTree.*;
-import parser.newLangTree.expression.BinaryExpressionNode;
-import parser.newLangTree.expression.FunCallExprNode;
-import parser.newLangTree.expression.IdentifierExprNode;
-import parser.newLangTree.expression.UnaryExpressionNode;
-import parser.newLangTree.expression.constants.*;
-import parser.newLangTree.statements.*;
+import parser.newLangTree.nodes.*;
+import parser.newLangTree.nodes.expression.BinaryExpressionNode;
+import parser.newLangTree.nodes.expression.FunCallExprNode;
+import parser.newLangTree.nodes.expression.IdentifierExprNode;
+import parser.newLangTree.nodes.expression.UnaryExpressionNode;
+import parser.newLangTree.nodes.expression.constants.*;
+import parser.newLangTree.nodes.statements.*;
 import semantic.Symbol;
 import semantic.SymbolTableStack;
 import semantic.SymbolTypes;
@@ -56,7 +56,7 @@ public class SemanticVisitor implements Visitor {
 
         for (int i = 0; i < item.getIdIList().size(); i++) {
             IdInitNode id = item.getIdIList().get(i);
-            id.setType(item.getType().get(0));
+            id.setType(item.getType());
             id.accept(this);
         }
         return null;
@@ -72,7 +72,7 @@ public class SemanticVisitor implements Visitor {
             item.getExpression().accept(this);
         }
 
-        stack.addId(new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, item.getType().get(0)));
+        stack.addId(new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, item.getType()));
 
         return null;
     }

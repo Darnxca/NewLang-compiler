@@ -8,11 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.regex.Pattern;
 
-import parser.newLangTree.*;
-import semantic.SymbolTable;
-import semantic.SymbolTableStack;
+import parser.newLangTree.nodes.ProgramNode;
 import visitor.ScopeVisitor;
-import visitor.SemanticVisitor;
 import visitor.XMLTreeGenerator;
 import parser.*;
 import lexer.*;

@@ -10,7 +10,7 @@ public interface Symbols {
   /* terminals */
   public static final int CHAR_CONST = 44;
   public static final int POW = 38;
-  public static final int CHAR = 14;
+  public static final int CHAR = 13;
   public static final int GE = 48;
   public static final int INTEGER_CONST = 42;
   public static final int INTEGER = 17;
@@ -55,7 +55,7 @@ public interface Symbols {
   public static final int THEN = 28;
   public static final int NE = 52;
   public static final int LPAR = 6;
-  public static final int STRING = 13;
+  public static final int STRING = 14;
   public static final int DEF = 3;
   public static final int LBRAC = 9;
   public static final int FALSE = 46;
@@ -76,8 +76,8 @@ public interface Symbols {
   "RBRAC",
   "PIPE",
   "OUT",
-  "STRING",
   "CHAR",
+  "STRING",
   "VOID",
   "VAR",
   "INTEGER",

@@ -20,7 +20,7 @@ public class Lexer implements Symbols, java_cup.runtime.Scanner {
 
   // Lexical states.
   public static final int YYINITIAL = 0;
-  public static final int STRING = 2;
+  public static final int STRING_STATE = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -826,7 +826,7 @@ public class Lexer implements Symbols, java_cup.runtime.Scanner {
         zzAtEOF = true;
             zzDoEOF();
             switch (zzLexicalState) {
-            case STRING: {
+            case STRING_STATE: {
               yybegin(YYINITIAL); error("Stringa non chiusa !!!!");
             }  // fall though
             case 146: break;
@@ -849,7 +849,7 @@ public class Lexer implements Symbols, java_cup.runtime.Scanner {
             // fall through
           case 63: break;
           case 3:
-            { string.setLength(0); yybegin(STRING);
+            { string.setLength(0); yybegin(STRING_STATE);
             }
             // fall through
           case 64: break;
