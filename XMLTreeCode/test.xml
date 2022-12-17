@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> pippo1</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> pippo2</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> pippo</value>
+</IdentifierExpression>
+<IntegerConstant> 10</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> stampaNNumeri</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 1</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> LE</Operation>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Operation> OR</Operation>
+<IdentifierExpression>
+<value> okay</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> okay</value>
+</IdentifierExpression>
+<BooleanConstant> false</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> DIV</Operation>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<Writeln>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+</Writeln>
+<AssignStat>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+<Else>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> okay</value>
+</IdentifierExpression>
+<BooleanConstant> true</BooleanConstant>
+</AssignStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</WhileStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> stampaSciocchezze</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>INTEGER</Type-out>
+<IdentifierExpression>
+<value> volte</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<ForStat fromValue='parser.newLangTree.nodes.expression.constants.IntegerConstantNode@1de0aca6' toValue='parser.newLangTree.nodes.expression.constants.IntegerConstantNode@255316f2'>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> volta</StringConstant>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> volte</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> volte</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<Writeln>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</Writeln>
+</Body>
+</ForStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<StringConstant> CIAOOO!</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> Inserisci quanti numeri vuoi stampare</StringConstant>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</ReadStat>
+<IfStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> OR</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> quanti</value>
+</IdentifierExpression>
+<IntegerConstant> 1000000</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> quanti</value>
+</IdentifierExpression>
+</AssignStat>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaNNumeri</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+<Else>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> quanti</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaNNumeri</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> quanti</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>
