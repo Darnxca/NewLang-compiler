@@ -23,7 +23,7 @@ public class ReadStatNode extends StatementNode {
     }
 
     @Override
-    public Object accept(Visitor v) throws Exception {
+    public Object accept(Visitor v){
         return v.visit(this);
     }
 

@@ -1,10 +1,13 @@
 package semantic;
 
+import semantic.symbols.Symbol;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class SymbolTableStack {
-	// Il manuale di Java consiglia di usare la classe Deque come stack poiché la classe stack è definita come legacy
+	// Il manuale di Java consiglia di usare la classe Deque come stack poiché
+	// la classe stack è definita come legacy
 	private Deque<SymbolTable> stack;
 
 	public SymbolTableStack() {
@@ -25,7 +28,6 @@ public class SymbolTableStack {
 	public Symbol lookup(String item){
 
 		Symbol found = null;
-
 		for (SymbolTable current : stack){
 			found = current.get(item);
 			if(found != null)
@@ -41,15 +43,15 @@ public class SymbolTableStack {
 
 		for (SymbolTable current : stack){
 			found = current.get(item);
-			if(found != null && found.entryType == type)
+			if(found != null && found.getEntryType() == type)
 				break;
 		}
 
-		return found != null && found.entryType == type ? found : null;
+		return found != null && found.getEntryType() == type ? found : null;
 	}
 
 	public boolean probe(Symbol item){
-		return stack.peek().containsKey(item.identifier);
+		return stack.peek().containsKey(item.getIdentifier());
 	}
 
 	public boolean probe(String item){
@@ -57,10 +59,10 @@ public class SymbolTableStack {
 	}
 
 	public boolean addId(Symbol item){
-		if(probe(item.identifier))
+		if(probe(item.getIdentifier()))
 			return false;
 		
-		stack.peek().put(item.identifier,item);
+		stack.peek().put(item.getIdentifier(),item);
 		return true;
 	}
 

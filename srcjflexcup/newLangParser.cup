@@ -1,6 +1,7 @@
 package parser;
 import lexer.*;
 import java_cup.runtime.*;
+import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;

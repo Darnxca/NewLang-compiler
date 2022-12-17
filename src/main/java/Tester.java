@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.nodes.ProgramNode;
+import parser.newLangTree.nodes.statements.IfStatNode;
 import visitor.ScopeVisitor;
 import visitor.XMLTreeGenerator;
 import parser.*;
@@ -45,6 +46,7 @@ public class Tester {
 
                 for (SymbolTable s : sm.stack.getStack())
                      System.out.println(s);*/
+
 
                 System.out.println("linguaggio riconosciuto");
 

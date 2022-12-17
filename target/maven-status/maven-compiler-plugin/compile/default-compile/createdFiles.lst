@@ -4,4 +4,3 @@ semantic\SymbolTypes.class
 parser\Parser.class
 semantic\SymbolTableStack.class
 parser\Parser$CUP$Parser$actions.class
-semantic\Symbol.class

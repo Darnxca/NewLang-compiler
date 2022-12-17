@@ -18,7 +18,7 @@ public class IntegerConstantNode extends ExpressionNode implements Constant {
     }
 
     @Override
-    public Object accept(Visitor visitor) throws Exception {
+    public Object accept(Visitor visitor){
         return visitor.visit(this);
     }
 

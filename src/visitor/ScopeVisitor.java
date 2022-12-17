@@ -5,28 +5,25 @@ import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
-import semantic.Symbol;
-import semantic.SymbolTable;
-import semantic.SymbolTableStack;
-import semantic.SymbolTypes;
+import semantic.*;
+import semantic.exception.MultipleIdentifierDeclaration;
+import semantic.exception.MultipleMainDeclaration;
+import semantic.symbols.FunSymbol;
+import semantic.symbols.IdSymbol;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class ScopeVisitor implements Visitor{
 
-    private SymbolTable currentScope;
-    private SymbolTable prevScope;
-
     private SymbolTableStack stack;
 
     public ScopeVisitor() {
-        currentScope = new SymbolTable();
         stack = new SymbolTableStack();
     }
 
     @Override
-    public Object visit(ProgramNode item) throws Exception {
+    public Object visit(ProgramNode item) {
         stack.enterScope(item.getSymbolTableProgramScope()); //Aggiorno lo stack
 
         item.getDecl().accept(this);
@@ -39,14 +36,14 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(DeclNode item) throws Exception {
+    public Object visit(DeclNode item) {
 
         for (VarDeclNode i : item.getVarDeclList())
             i.accept(this);
 
         for (FunDeclNode i : item.getFunDeclList()){
             if(i.getIdentifier().getValue().equalsIgnoreCase("main")) {
-                throw new RuntimeException("Errore in (riga:"+i.getIdentifier().getLeft().getLine()+", colonna: "+i.getIdentifier().getLeft().getColumn()+") -> Non è possibile chiamare una funzione  'main'!");
+                throw new MultipleMainDeclaration("Errore in (riga:"+i.getIdentifier().getLeft().getLine()+", colonna: "+i.getIdentifier().getLeft().getColumn()+") -> Non è possibile chiamare una funzione  'main'!");
             }
                 i.accept(this);
            }
@@ -56,7 +53,7 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(MainFuncDeclNode item) throws Exception {
+    public Object visit(MainFuncDeclNode item) {
         
         item.getFunDeclNode().accept(this);
 
@@ -64,7 +61,7 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(VarDeclNode item) throws Exception {
+    public Object visit(VarDeclNode item) {
 
         for (IdInitNode i : item.getIdIList()) {
             i.setType(item.getType());
@@ -78,38 +75,37 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(IdInitNode item) throws Exception {
-        if(currentScope.containsKey(item.getIdentifier().getValue())){
-            throw new RuntimeException("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
+    public Object visit(IdInitNode item) {
+        if(stack.probe(item.getIdentifier().getValue())){
+            throw new MultipleIdentifierDeclaration("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
         }
 
-        currentScope = stack.exitScope(); //Prelevo lo scope precendete e lo aggiorno
-        currentScope.put(item.getIdentifier().getValue(), new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, item.getType()));
-        stack.enterScope(currentScope);
+       //Prelevo lo scope precedente e lo aggiorno
+        stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
+
         return null;
     }
 
     @Override
-    public Object visit(IdInitObbNode item) throws Exception {
-        if(currentScope.containsKey(item.getIdentifier().getValue())){
+    public Object visit(IdInitObbNode item) {
+        if(stack.probe(item.getIdentifier().getValue())){
             throw new RuntimeException("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
         }
         //chiamo il visitor della costante per effettuare l'inferenza di tipo sulla varibile di tipo VAR
         ExpressionNode constant = (ExpressionNode) item.getCostantValue();
         constant.accept(this);
 
-        currentScope = stack.exitScope(); //Prelevo lo scope precendete e lo aggiorno
-        currentScope.put(item.getIdentifier().getValue(), new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, constant.getType() ));
-        stack.enterScope(currentScope);
+        //Aggiorno scope
+        stack.addId(new IdSymbol(item.getIdentifier().getValue(), constant.getType()));
 
         return null;
     }
 
     @Override
-    public Object visit(FunDeclNode item) throws Exception {
+    public Object visit(FunDeclNode item) {
 
         String funName = item.getIdentifier().getValue();
-        if(currentScope.containsKey(funName)){
+        if(stack.probe(funName)){
             throw new RuntimeException("Errore in (riga:"+item.getIdentifier().getLeft().getLine()+", colonna: "+item.getIdentifier().getLeft().getColumn()+") -> Funzione "+funName+" già dichiarata precedentemente!");
         }
 
@@ -127,36 +123,31 @@ public class ScopeVisitor implements Visitor{
         }
 
         // creo il simbolo della funzione
-        Symbol functionSymbol = new Symbol(funName, paramTypeListIN, paramTypeListOUT, item.getTypeOrVoid());
-        currentScope = stack.exitScope(); //Prelevo lo scope precendete e lo aggiorno
 
         // aggiungo la firma della funzione a programm;
-        currentScope.put(funName, functionSymbol);
-        stack.enterScope(currentScope); //Conservo lo scope corrente
+        stack.addId(new FunSymbol(funName, paramTypeListIN, paramTypeListOUT, item.getTypeOrVoid()));
 
-        currentScope = item.getSymbolTableFunScope(); //Cambio scope
-        stack.enterScope(currentScope);
-        /* visito il body per aggiornare la tabella dei simboli della funzione*/
+        //Cambio scope
+        stack.enterScope(item.getSymbolTableFunScope());
 
         for (ParamDeclNode param : item.getParamDecl())
             param.accept(this);
-
 
         item.getBody().accept(this);
 
         System.out.println("Function "+funName+":\n"+item.getSymbolTableFunScope().toString());
 
-        currentScope = stack.exitScope(); //Ripristino lo scope precedente
+        stack.exitScope(); //Ripristino lo scope precedente
 
         return null;
     }
 
     @Override
-    public Object visit(ParamDeclNode item) throws Exception {
+    public Object visit(ParamDeclNode item) {
 
         for(IdentifierExprNode iden : item.getIdentifierList()){
-            if(currentScope.containsKey(iden.getValue())){
-                throw new RuntimeException("Errore in (riga:"+iden.getLeft().getLine()+", colonna: "+iden.getLeft().getColumn()+") -> Variabile "+iden.getValue()+" già dichiarata precedentemente!");
+            if(stack.probe(iden.getValue())){
+                throw new MultipleIdentifierDeclaration("Errore in (riga:"+iden.getLeft().getLine()+", colonna: "+iden.getLeft().getColumn()+") -> Variabile "+iden.getValue()+" già dichiarata precedentemente!");
             }
             iden.setType(item.getType());
             iden.accept(this);
@@ -166,7 +157,7 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(BodyNode item) throws Exception {
+    public Object visit(BodyNode item) {
 
         for(VarDeclNode vd : item.getVarDeclList()){
             vd.accept(this);
@@ -181,55 +172,46 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(IfStatNode item) throws Exception {
+    public Object visit(IfStatNode item) {
 
-        currentScope = stack.exitScope(); //Salvo lo scope corrente
-        stack.enterScope(currentScope);
-
-
-        currentScope = item.getSymbolTableIfScope(); //Lo scope attuale sarà quello dell'if
-        stack.enterScope(currentScope);
+       //Lo scope attuale sarà quello dell'if
+        stack.enterScope(item.getSymbolTableIfScope());
 
         item.getBodyThen().accept(this);
         System.out.println("IF-THEN\n"+item.getSymbolTableIfScope().toString());
+
+        //Ripristino lo scope padre
+        stack.exitScope();
+
         if(item.getBodyElse() != null) {
 
-            //Cambio scope di nuovo, devo conservarlo
-            currentScope = stack.exitScope();
-            currentScope = item.getSymbolTableElseScope(); //Aggiorno lo scope
-            stack.enterScope(currentScope);
+            //Cambio scope di nuovo, devo conservarlo e aggiorno lo scope
+            stack.enterScope(item.getSymbolTableElseScope());
 
             item.getBodyElse().accept(this);
-            currentScope = stack.exitScope(); //Ripristino lo scope
-            stack.enterScope(currentScope);
+            stack.exitScope(); //Ripristino lo scope
 
             System.out.println("IF-ELSE\n"+item.getSymbolTableElseScope().toString());
         }
 
-        //Ripristino lo scope padre
-        currentScope = stack.exitScope();
-
         return null;
     }
 
     @Override
-    public Object visit(AssignStatNode item) throws Exception {
+    public Object visit(AssignStatNode item) {
         return null;
     }
 
     @Override
-    public Object visit(ForStatNode item) throws Exception {
+    public Object visit(ForStatNode item) {
 
-        currentScope = stack.exitScope(); //Salvo lo scope corrente
-        stack.enterScope(currentScope);
-
-        currentScope = item.getSymbolTableFor(); //Cambio scope, aggiorno scope corrente
-        stack.enterScope(currentScope);
+        //Cambio scope, aggiorno scope corrente
+        stack.enterScope(item.getSymbolTableFor());
 
         item.getBody().accept(this);
 
         //Ripristino scope del padre
-        currentScope = stack.exitScope();
+        stack.exitScope();
 
         System.out.println("FOR\n"+item.getSymbolTableFor().toString());
 
@@ -237,94 +219,91 @@ public class ScopeVisitor implements Visitor{
     }
 
     @Override
-    public Object visit(ReadStatNode item) throws Exception {
+    public Object visit(ReadStatNode item) {
         return null;
     }
 
     @Override
-    public Object visit(ReturnStatNode item) throws Exception {
+    public Object visit(ReturnStatNode item) {
         return null;
     }
 
     @Override
-    public Object visit(WhileStatNode item) throws Exception {
+    public Object visit(WhileStatNode item) {
 
-        currentScope = stack.exitScope(); //Salvo lo scope corrente
-        stack.enterScope(currentScope);
-
-        currentScope = item.getSymbolTableWhile(); //Cambio scope, quindi aggiorno quello corrente
-        stack.enterScope(currentScope);
+        //Cambio scope, quindi aggiorno quello corrente
+        stack.enterScope(item.getSymbolTableWhile());
 
         item.getBody().accept(this);
 
         //Ristabilire lo stack del padre
-        currentScope = stack.exitScope(); //Ripristino lo scope padre
+        stack.exitScope(); //Ripristino lo scope padre
+
         System.out.println("WHILE\n"+item.getSymbolTableWhile().toString());
 
         return null;
     }
 
     @Override
-    public Object visit(WriteStatNode item) throws Exception {
+    public Object visit(WriteStatNode item) {
         return null;
     }
 
     @Override
-    public Object visit(IntegerConstantNode item) throws Exception {
+    public Object visit(IntegerConstantNode item) {
         item.setType(Symbols.INTEGER);
         return null;
     }
 
     @Override
-    public Object visit(BooleanConstantNode item) throws Exception {
+    public Object visit(BooleanConstantNode item) {
         item.setType(Symbols.BOOL);
         return null;
     }
 
     @Override
-    public Object visit(RealConstantNode item) throws Exception {
+    public Object visit(RealConstantNode item) {
         item.setType(Symbols.FLOAT);
         return null;
     }
 
     @Override
-    public Object visit(StringConstantNode item) throws Exception {
+    public Object visit(StringConstantNode item) {
         item.setType(Symbols.STRING);
         return null;
     }
 
     @Override
-    public Object visit(CharConstantNode item) throws Exception {
+    public Object visit(CharConstantNode item) {
         item.setType(Symbols.CHAR);
         return null;
     }
 
     @Override
-    public Object visit(FunCallExprNode item) throws Exception {
+    public Object visit(FunCallExprNode item) {
         return null;
     }
 
     @Override
-    public Object visit(FunCallStatNode item) throws Exception {
+    public Object visit(FunCallStatNode item) {
         return null;
     }
 
     @Override
-    public Object visit(IdentifierExprNode item) throws Exception {
+    public Object visit(IdentifierExprNode item) {
 
-        currentScope = stack.exitScope();  //Salvataggio e aggiornamento scope corrente
-        currentScope.put(item.getValue(), new Symbol(item.getValue(),SymbolTypes.VAR, item.getType()));
-        stack.enterScope(currentScope);
+        //Salvataggio e aggiornamento scope corrente
+        stack.addId(new IdSymbol(item.getValue(), item.getType()));
         return null;
     }
 
     @Override
-    public Object visit(UnaryExpressionNode item) throws Exception {
+    public Object visit(UnaryExpressionNode item) {
         return null;
     }
 
     @Override
-    public Object visit(BinaryExpressionNode item) throws Exception {
+    public Object visit(BinaryExpressionNode item) {
         return null;
     }
 }
