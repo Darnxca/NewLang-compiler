@@ -7,6 +7,7 @@ import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
 import semantic.Symbol;
 import semantic.SymbolTable;
+import semantic.SymbolTableStack;
 import semantic.SymbolTypes;
 
 import java.util.LinkedList;
@@ -14,16 +15,19 @@ import java.util.List;
 
 public class ScopeVisitor implements Visitor{
 
-    private SymbolTable currentScope, prevScope;
+    private SymbolTable currentScope;
+    private SymbolTable prevScope;
+
+    private SymbolTableStack stack;
 
     public ScopeVisitor() {
         currentScope = new SymbolTable();
-        prevScope = new SymbolTable();
+        stack = new SymbolTableStack();
     }
 
     @Override
     public Object visit(ProgramNode item) throws Exception {
-        currentScope = item.getSymbolTableProgramScope();
+        stack.enterScope(item.getSymbolTableProgramScope()); //Aggiorno lo stack
 
         item.getDecl().accept(this);
 
@@ -78,7 +82,10 @@ public class ScopeVisitor implements Visitor{
         if(currentScope.containsKey(item.getIdentifier().getValue())){
             throw new RuntimeException("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
         }
+
+        currentScope = stack.exitScope(); //Prelevo lo scope precendete e lo aggiorno
         currentScope.put(item.getIdentifier().getValue(), new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, item.getType()));
+        stack.enterScope(currentScope);
         return null;
     }
 
@@ -91,7 +98,10 @@ public class ScopeVisitor implements Visitor{
         ExpressionNode constant = (ExpressionNode) item.getCostantValue();
         constant.accept(this);
 
+        currentScope = stack.exitScope(); //Prelevo lo scope precendete e lo aggiorno
         currentScope.put(item.getIdentifier().getValue(), new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, constant.getType() ));
+        stack.enterScope(currentScope);
+
         return null;
     }
 
@@ -118,14 +128,14 @@ public class ScopeVisitor implements Visitor{
 
         // creo il simbolo della funzione
         Symbol functionSymbol = new Symbol(funName, paramTypeListIN, paramTypeListOUT, item.getTypeOrVoid());
+        currentScope = stack.exitScope(); //Prelevo lo scope precendete e lo aggiorno
 
         // aggiungo la firma della funzione a programm;
         currentScope.put(funName, functionSymbol);
+        stack.enterScope(currentScope); //Conservo lo scope corrente
 
-        prevScope = currentScope;
-
-        currentScope = item.getSymbolTableFunScope();
-
+        currentScope = item.getSymbolTableFunScope(); //Cambio scope
+        stack.enterScope(currentScope);
         /* visito il body per aggiornare la tabella dei simboli della funzione*/
 
         for (ParamDeclNode param : item.getParamDecl())
@@ -135,8 +145,8 @@ public class ScopeVisitor implements Visitor{
         item.getBody().accept(this);
 
         System.out.println("Function "+funName+":\n"+item.getSymbolTableFunScope().toString());
-        /* ritorno allo scope padre*/
-        currentScope = prevScope;
+
+        currentScope = stack.exitScope(); //Ripristino lo scope precedente
 
         return null;
     }
@@ -172,28 +182,32 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IfStatNode item) throws Exception {
-        //Salvo lo scope corrente
-        prevScope = currentScope;
 
-        //Lo scope attuale sarà quello dell'if
-        currentScope = item.getSymbolTableIfScope();
+        currentScope = stack.exitScope(); //Salvo lo scope corrente
+        stack.enterScope(currentScope);
+
+
+        currentScope = item.getSymbolTableIfScope(); //Lo scope attuale sarà quello dell'if
+        stack.enterScope(currentScope);
 
         item.getBodyThen().accept(this);
         System.out.println("IF-THEN\n"+item.getSymbolTableIfScope().toString());
         if(item.getBodyElse() != null) {
 
-            //Cambio scope di nuovo, devo salvarlo
-            currentScope = prevScope;
-            prevScope = currentScope;
-            currentScope = item.getSymbolTableElseScope();
+            //Cambio scope di nuovo, devo conservarlo
+            currentScope = stack.exitScope();
+            currentScope = item.getSymbolTableElseScope(); //Aggiorno lo scope
+            stack.enterScope(currentScope);
+
             item.getBodyElse().accept(this);
-            currentScope = prevScope;
-            prevScope = currentScope;
+            currentScope = stack.exitScope(); //Ripristino lo scope
+            stack.enterScope(currentScope);
+
             System.out.println("IF-ELSE\n"+item.getSymbolTableElseScope().toString());
         }
 
-        //Ristabilire lo stack del padre
-        currentScope = prevScope;
+        //Ripristino lo scope padre
+        currentScope = stack.exitScope();
 
         return null;
     }
@@ -206,13 +220,16 @@ public class ScopeVisitor implements Visitor{
     @Override
     public Object visit(ForStatNode item) throws Exception {
 
-        prevScope = currentScope;
-        currentScope = item.getSymbolTableFor();
+        currentScope = stack.exitScope(); //Salvo lo scope corrente
+        stack.enterScope(currentScope);
+
+        currentScope = item.getSymbolTableFor(); //Cambio scope, aggiorno scope corrente
+        stack.enterScope(currentScope);
 
         item.getBody().accept(this);
 
-        //Ristabilire lo stack del padre
-        currentScope = prevScope;
+        //Ripristino scope del padre
+        currentScope = stack.exitScope();
 
         System.out.println("FOR\n"+item.getSymbolTableFor().toString());
 
@@ -231,14 +248,17 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(WhileStatNode item) throws Exception {
-        //Cambio scope
-        prevScope = currentScope;
-        currentScope = item.getSymbolTableWhile();
+
+        currentScope = stack.exitScope(); //Salvo lo scope corrente
+        stack.enterScope(currentScope);
+
+        currentScope = item.getSymbolTableWhile(); //Cambio scope, quindi aggiorno quello corrente
+        stack.enterScope(currentScope);
 
         item.getBody().accept(this);
 
         //Ristabilire lo stack del padre
-        currentScope = prevScope;
+        currentScope = stack.exitScope(); //Ripristino lo scope padre
         System.out.println("WHILE\n"+item.getSymbolTableWhile().toString());
 
         return null;
@@ -291,7 +311,10 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IdentifierExprNode item) throws Exception {
+
+        currentScope = stack.exitScope();  //Salvataggio e aggiornamento scope corrente
         currentScope.put(item.getValue(), new Symbol(item.getValue(),SymbolTypes.VAR, item.getType()));
+        stack.enterScope(currentScope);
         return null;
     }
 

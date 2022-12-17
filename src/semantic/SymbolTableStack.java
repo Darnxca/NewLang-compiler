@@ -17,6 +17,10 @@ public class SymbolTableStack {
 	public void enterScope(){
 		stack.push(new SymbolTable());
 	}
+	public void enterScope(SymbolTable s){
+		stack.push(s);
+	}
+
 
 	public Symbol lookup(String item){
 
@@ -60,9 +64,8 @@ public class SymbolTableStack {
 		return true;
 	}
 
-	public void exitScope(){
-		stack.pop();
-	}
+
+	public SymbolTable exitScope() {return stack.pop();}
 
 
 }
