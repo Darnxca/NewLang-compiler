@@ -14,6 +14,14 @@ parser code {:
     public Parser(Lexer lex, ComplexSymbolFactory sf) {
     super(lex,sf);
   }
+
+    public void report_error(String message, Object info) {
+            if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
+                ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
+                throw new RuntimeException("Errore (riga: " + cs.getLeft().getLine() + ", colonna: " + cs.getRight().getColumn()+"): "+ message);
+            }
+        }
+
 :};
 
 terminal MAIN, DEF;
@@ -31,6 +39,7 @@ terminal TRUE, FALSE; //Lettarli booleani
 terminal GT, GE, LT, LE, EQ, NE; //Operatori relazionali
 
 terminal RETURN;
+
 
 non terminal ProgramNode                Program;
 non terminal List<DeclNode>             DeclList;
@@ -58,6 +67,7 @@ non terminal AssignStatNode             AssignStat;
 non terminal FunCallStatNode            FunCall;
 non terminal List<ExpressionNode>       ExprList;
 non terminal ExpressionNode             Expr;
+
 
 /* Precedenze */
 precedence left AND;

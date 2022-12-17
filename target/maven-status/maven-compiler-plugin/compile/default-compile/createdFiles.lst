@@ -1,6 +1,3 @@
-parser\Symbols.class
-semantic\SymbolTable.class
 semantic\SymbolTypes.class
-parser\Parser.class
 semantic\SymbolTableStack.class
-parser\Parser$CUP$Parser$actions.class
+semantic\SymbolTable.class

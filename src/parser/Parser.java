@@ -453,6 +453,14 @@ public class Parser extends java_cup.runtime.lr_parser {
     super(lex,sf);
   }
 
+    public void report_error(String message, Object info) {
+            if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
+                ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
+                throw new RuntimeException("Errore (riga: " + cs.getLeft().getLine() + ", colonna: " + cs.getRight().getColumn()+"): "+ message);
+            }
+        }
+
+
 
 /** Cup generated class to encapsulate user supplied action code.*/
 @SuppressWarnings({"rawtypes", "unchecked", "unused"})

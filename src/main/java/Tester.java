@@ -26,7 +26,6 @@ public class Tester {
             //Usato per restituire eventuali errori lessicali
             lessicalError(args[0]);
 
-            try{
                 ScannerBuffer lexer = new ScannerBuffer(new Lexer(new BufferedReader(new FileReader(args[0])), csf));
                 // start parsing
                 Parser p = new Parser(lexer, csf);
@@ -50,14 +49,12 @@ public class Tester {
 
                 System.out.println("linguaggio riconosciuto");
 
-            } catch (Exception e){
-                e.printStackTrace();
-            }
+
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println(e);
         }
 
     }
