@@ -41,7 +41,7 @@ public class BinaryExpressionNode extends ExpressionNode {
     }
 
     @Override
-    public Object accept(Visitor visitor) throws Exception {
+    public Object accept(Visitor visitor){
         return visitor.visit(this);
     }
 }

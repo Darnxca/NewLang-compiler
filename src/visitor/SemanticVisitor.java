@@ -9,7 +9,8 @@ import parser.newLangTree.nodes.expression.IdentifierExprNode;
 import parser.newLangTree.nodes.expression.UnaryExpressionNode;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
-import semantic.Symbol;
+import semantic.symbols.IdSymbol;
+import semantic.symbols.Symbol;
 import semantic.SymbolTableStack;
 import semantic.SymbolTypes;
 
@@ -26,7 +27,7 @@ public class SemanticVisitor implements Visitor {
     }
 
     @Override
-    public Object visit(ProgramNode item) throws Exception {
+    public Object visit(ProgramNode item) {
         stack.enterScope();
         /*for (DeclNode vd : item.getDeclList())
             vd.accept(this);*/
@@ -38,7 +39,7 @@ public class SemanticVisitor implements Visitor {
     }
 
     @Override
-    public Object visit(DeclNode item) throws Exception {
+    public Object visit(DeclNode item) {
 
         for (VarDeclNode vd : item.getVarDeclList())
                 vd.accept(this);
@@ -52,7 +53,7 @@ public class SemanticVisitor implements Visitor {
     }
 
     @Override
-    public Object visit(VarDeclNode item) throws Exception {
+    public Object visit(VarDeclNode item) {
 
         for (int i = 0; i < item.getIdIList().size(); i++) {
             IdInitNode id = item.getIdIList().get(i);
@@ -63,16 +64,16 @@ public class SemanticVisitor implements Visitor {
     }
 
     @Override
-    public Object visit(IdInitNode item) throws Exception {
+    public Object visit(IdInitNode item) {
 
         if (stack.probe(item.getIdentifier().getValue()) || stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION) != null)
-            throw new Exception("Simbolo non dichiarato");
+            throw new RuntimeException("Simbolo non dichiarato");
 
         if (item.getExpression() != null) {
             item.getExpression().accept(this);
         }
 
-        stack.addId(new Symbol(item.getIdentifier().getValue(), SymbolTypes.VAR, item.getType()));
+        stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
 
         return null;
     }
