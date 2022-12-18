@@ -141,7 +141,7 @@
 </IdentifierExpression>
 </ParamDecl>
 <Body>
-<ForStat fromValue='parser.newLangTree.nodes.expression.constants.IntegerConstantNode@1de0aca6' toValue='parser.newLangTree.nodes.expression.constants.IntegerConstantNode@255316f2'>
+<ForStat fromValue='0' toValue='101010'>
 <IdentifierExpression>
 <value> i</value>
 </IdentifierExpression>

@@ -9,19 +9,28 @@ import parser.newLangTree.nodes.statements.*;
 import parser.newLangTree.*;
 import java.util.*;
 
+
+
 parser code {:
     Lexer lex;
     public Parser(Lexer lex, ComplexSymbolFactory sf) {
     super(lex,sf);
   }
 
-    public void report_error(String message, Object info) {
-            if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
-                ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
-                throw new RuntimeException("Errore (riga: " + cs.getLeft().getLine() + ", colonna: " + cs.getRight().getColumn()+"): "+ message);
-            }
-        }
+    public void report_fatal_error(String message, Object info){
+        report_error(message,info);
+        System.exit(2);
+    }
 
+    private  boolean error = false;
+
+    public void report_error(String message, Object info) {
+        if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
+          ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
+          System.err.println("Errore (riga: " + cs.getLeft().getLine() + ", colonna: " + cs.getRight().getColumn()+"): "+ message);
+          error = true;
+        }
+    }
 :};
 
 terminal MAIN, DEF;
@@ -112,6 +121,7 @@ DeclList ::=   /* empty */                                  {:
 MainFunDecl ::= MAIN FunDecl:f                              {:
                                                                RESULT = new MainFuncDeclNode(f);
                                                             :}
+                | MAIN error  {: if(error){System.err.println(" Errore nella definizione della funzione main"); throw new RuntimeException("");} :}
 ;
 VarDecl ::= Type:t IdInitList:il SEMI                       {:
                                                                VarDeclNode vd = new VarDeclNode(t);

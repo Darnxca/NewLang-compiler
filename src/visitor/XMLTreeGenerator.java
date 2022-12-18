@@ -208,7 +208,7 @@ public class XMLTreeGenerator implements  Visitor{
 
     @Override
     public Object visit(ForStatNode item){
-        writer.println("<ForStat fromValue='"+item.getCostantFrom()+"' toValue='"+item.getCostantTo()+"'>");
+        writer.println("<ForStat fromValue='"+((IntegerConstantNode)item.getCostantFrom()).getValue()+"' toValue='"+((IntegerConstantNode)item.getCostantTo()).getValue()+"'>");
 
 
         item.getIdentifier().accept(this);
