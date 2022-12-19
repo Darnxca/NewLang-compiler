@@ -5,7 +5,8 @@ import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
-import semantic.*;
+import semantic.SymbolTableStack;
+import semantic.SymbolTypes;
 import semantic.exception.MultipleIdentifierDeclaration;
 import semantic.exception.MultipleMainDeclaration;
 import semantic.symbols.FunSymbol;
@@ -14,16 +15,17 @@ import semantic.symbols.IdSymbol;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScopeVisitor implements Visitor{
+public class SemanticVisitorTest implements Visitor{
 
     private SymbolTableStack stack;
 
-    public ScopeVisitor() {
+    public SemanticVisitorTest() {
         stack = new SymbolTableStack();
     }
 
     @Override
     public Object visit(ProgramNode item) {
+
         stack.enterScope(item.getSymbolTableProgramScope()); //Aggiorno lo stack
 
         item.getDecl().accept(this);
@@ -41,12 +43,9 @@ public class ScopeVisitor implements Visitor{
         for (VarDeclNode i : item.getVarDeclList())
             i.accept(this);
 
-        for (FunDeclNode i : item.getFunDeclList()){
-            if(i.getIdentifier().getValue().equalsIgnoreCase("main")) {
-                throw new MultipleMainDeclaration("Errore in (riga:"+i.getIdentifier().getLeft().getLine()+", colonna: "+i.getIdentifier().getLeft().getColumn()+") -> Non è possibile chiamare una funzione  'main'!");
-            }
-                i.accept(this);
-           }
+        /*for (FunDeclNode i : item.getFunDeclList()){
+            i.accept(this);
+        }*/
 
 
         return null;
@@ -54,7 +53,7 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(MainFuncDeclNode item) {
-        
+
         item.getFunDeclNode().accept(this);
 
         return null;
@@ -64,7 +63,6 @@ public class ScopeVisitor implements Visitor{
     public Object visit(VarDeclNode item) {
 
         for (IdInitNode i : item.getIdIList()) {
-            i.setType(item.getType());
             i.accept(this);
         }
 
@@ -76,59 +74,36 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IdInitNode item) {
-        if(stack.probe(item.getIdentifier().getValue())){
-            throw new MultipleIdentifierDeclaration("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
-        }
 
-       //Prelevo lo scope precedente e lo aggiorno
-        stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
+        item.getIdentifier().accept(this);
+        System.out.println(item.getIdentifier().getValue());
+        if(item.getExpression() != null){
+            item.getExpression().accept(this);
+
+            int type = TypeChecker.checkBinaryExpr(Symbols.ASSIGN, item.getIdentifier().getType(), item.getExpression().getType());
+            if(type == -1) {
+
+                throw new RuntimeException("Assegnazione tra "+ item.getIdentifier().getType()+ "e "+item.getExpression().getType()+
+                        " tipi incompatibili (riga: "+item.getExpression().getLeft().getLine() +
+                        ", colonna: "+ item.getExpression().getRight().getColumn()+")");
+            }
+
+        }
 
         return null;
     }
 
     @Override
     public Object visit(IdInitObbNode item) {
-        if(stack.probe(item.getIdentifier().getValue())){
-            throw new RuntimeException("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
-        }
 
-        //chiamo il visitor della costante per effettuare l'inferenza di tipo sulla varibile di tipo VAR
-        ExpressionNode constant = (ExpressionNode) item.getCostantValue();
-        constant.accept(this);
-
-        item.getIdentifier().setType(constant.getType());
-
-        //Aggiorno scope
-        stack.addId(new IdSymbol(item.getIdentifier().getValue(), constant.getType()));
+        item.setType(item.getIdentifier().getType());
 
         return null;
     }
 
+
     @Override
     public Object visit(FunDeclNode item) {
-
-        String funName = item.getIdentifier().getValue();
-        if(stack.probe(funName)){
-            throw new RuntimeException("Errore in (riga:"+item.getIdentifier().getLeft().getLine()+", colonna: "+item.getIdentifier().getLeft().getColumn()+") -> Funzione "+funName+" già dichiarata precedentemente!");
-        }
-
-        List<Integer> paramTypeListIN = new LinkedList<>(); // Lista parametri per valore
-        List<Integer> paramTypeListOUT = new LinkedList<>(); // Lista parametri per riferimento
-
-        for (ParamDeclNode p : item.getParamDecl()){
-            if(!(p.isOut())){
-                for (IdentifierExprNode x : p.getIdentifierList()) // aggiungiamo tanti tipi quanti gli identificatori
-                    paramTypeListIN.add(p.getType());
-            } else{
-                for (IdentifierExprNode x : p.getIdentifierList())
-                    paramTypeListOUT.add(p.getType());
-            }
-        }
-
-        // creo il simbolo della funzione
-
-        // aggiungo la firma della funzione a programm;
-        stack.addId(new FunSymbol(funName, paramTypeListIN, paramTypeListOUT, item.getTypeOrVoid()));
 
         //Cambio scope
         stack.enterScope(item.getSymbolTableFunScope());
@@ -137,8 +112,6 @@ public class ScopeVisitor implements Visitor{
             param.accept(this);
 
         item.getBody().accept(this);
-
-        System.out.println("Function "+funName+":\n"+item.getSymbolTableFunScope().toString());
 
         stack.exitScope(); //Ripristino lo scope precedente
 
@@ -177,7 +150,7 @@ public class ScopeVisitor implements Visitor{
     @Override
     public Object visit(IfStatNode item) {
 
-       //Lo scope attuale sarà quello dell'if
+        //Lo scope attuale sarà quello dell'if
         stack.enterScope(item.getSymbolTableIfScope());
 
         item.getBodyThen().accept(this);
@@ -202,16 +175,6 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(AssignStatNode item) {
-
-        for( IdentifierExprNode i : item.getIdentifierList())
-            i.accept(this);
-        for( ExpressionNode e : item.getExpressionList())
-            e.accept(this);
-
-
-
-
-
         return null;
     }
 
@@ -307,18 +270,51 @@ public class ScopeVisitor implements Visitor{
     @Override
     public Object visit(IdentifierExprNode item) {
 
-        //Salvataggio e aggiornamento scope corrente
-        stack.addId(new IdSymbol(item.getValue(), item.getType()));
+        IdSymbol idSym;
+        if((idSym = (IdSymbol) stack.lookup(item.getValue(), SymbolTypes.VAR) ) == null)
+            throw new RuntimeException("Variabile "+ item.getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
+                    + item.getRight().getColumn() + " non dichiarata precedentemente");
+
+        item.setType(idSym.getType());
+
+
         return null;
     }
 
     @Override
     public Object visit(UnaryExpressionNode item) {
+
+        item.getRightExpression().accept(this);
+
+        int type = TypeChecker.checkUnaryExpr(item.getOperation(), item.getRightExpression().getType());
+
+        if(type != -1){
+            item.setType(type);
+        }
+        else {
+            new RuntimeException("Tipo non compatibile!");
+        }
+
         return null;
     }
 
     @Override
     public Object visit(BinaryExpressionNode item) {
+
+        item.getLeftExpression().accept(this);
+        item.getRightExpression().accept(this);
+
+        int type = TypeChecker.checkBinaryExpr(item.getOperation(), item.getLeftExpression().getType(), item.getRightExpression().getType());
+
+        if(type != -1){
+            item.setType(type);
+        }
+        else {
+            new RuntimeException("Tipo non compatibile!");
+        }
+
+
         return null;
     }
+
 }
