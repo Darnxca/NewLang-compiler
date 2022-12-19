@@ -2,7 +2,7 @@ package parser.newLangTree;
 
 import java_cup.runtime.ComplexSymbolFactory.Location;
 
-public abstract class SingleTypeNode extends Nodes {
+public abstract class SingleTypeNode extends Node {
 
 
 	private Integer type;

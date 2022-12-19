@@ -4,7 +4,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class MultipleTypeNode extends Nodes { //Applicabile al caso dei parametri di una funzione che possonno avere diversi tipi
+public abstract class MultipleTypeNode extends Node { //Applicabile al caso dei parametri di una funzione che possonno avere diversi tipi
 
     private List<Integer> typeList; //Avrò più tipi
 

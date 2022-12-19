@@ -2,16 +2,16 @@ package parser.newLangTree;
 
 import java_cup.runtime.ComplexSymbolFactory.Location;
 
-public abstract class Nodes {
+public abstract class Node {
 
     private Location left, right;
 
-    public Nodes(Location left, Location right){
+    public Node(Location left, Location right){
         this.left = left;
         this.right = right;
     }
 
-    public Nodes(){
+    public Node(){
         this.left = null;
         this.right = null;
     }
