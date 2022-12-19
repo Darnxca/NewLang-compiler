@@ -15,6 +15,15 @@
 </IdentifierExpression>
 <Body>
 <VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
 <Type>FLOAT</Type>
 <IdInitNode>
 <IdentifierExpression>

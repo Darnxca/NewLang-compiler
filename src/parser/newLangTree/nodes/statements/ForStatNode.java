@@ -1,5 +1,6 @@
 package parser.newLangTree.nodes.statements;
 
+import parser.Symbols;
 import parser.newLangTree.nodes.BodyNode;
 import semantic.SymbolTable;
 import visitor.Visitor;
@@ -16,6 +17,7 @@ public class ForStatNode extends StatementNode {
     public ForStatNode(IdentifierExprNode id, Constant constantFrom, Constant constantTo, BodyNode body) {
         super();
         this.id = id;
+        this.id.setType(Symbols.INTEGER);
         this.constantFrom = constantFrom;
         this.constantTo = constantTo;
         this.body = body;

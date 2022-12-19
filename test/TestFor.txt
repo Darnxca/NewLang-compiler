@@ -2,6 +2,7 @@
 start: def main (): integer {
 
     for i << 1 to 100 loop {
+        integer p << 2;
         float x << 2;
         for j << 2 to 101 loop {
             float x << 2;

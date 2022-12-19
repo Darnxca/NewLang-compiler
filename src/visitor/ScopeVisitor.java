@@ -208,6 +208,8 @@ public class ScopeVisitor implements Visitor{
         //Cambio scope, aggiorno scope corrente
         stack.enterScope(item.getSymbolTableFor());
 
+        item.getIdentifier().accept(this);
+
         item.getBody().accept(this);
 
         //Ripristino scope del padre
