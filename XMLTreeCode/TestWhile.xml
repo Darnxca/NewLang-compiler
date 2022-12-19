@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<IntegerConstant> 5</IntegerConstant>
+<Operation> LT</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<IntegerConstant> 9</IntegerConstant>
+</BinaryExpression>
+<Operation> GT</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> OR</Operation>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<IntegerConstant> 3</IntegerConstant>
+<Operation> LT</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+</UnaryExpression>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> z</value>
+</IdentifierExpression>
+<IntegerConstant> 3</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> vero</value>
+</IdentifierExpression>
+<BooleanConstant> false</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> GT</Operation>
+<IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> AND</Operation>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<IdentifierExpression>
+<value> vero</value>
+</IdentifierExpression>
+</UnaryExpression>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> vero</value>
+</IdentifierExpression>
+<BinaryExpression>
+<BooleanConstant> true</BooleanConstant>
+<Operation> AND</Operation>
+<BooleanConstant> false</BooleanConstant>
+</BinaryExpression>
+</AssignStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> vero</value>
+</IdentifierExpression>
+<Operation> OR</Operation>
+<BooleanConstant> true</BooleanConstant>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> helloWorld</value>
+</IdentifierExpression>
+<StringConstant> Hello world!</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> nome</value>
+</IdentifierExpression>
+<StringConstant> Lionel Messi!</StringConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<Writeln>
+<BinaryExpression>
+<IdentifierExpression>
+<value> helloWorld</value>
+</IdentifierExpression>
+<Operation> STR_CONCAT</Operation>
+<IdentifierExpression>
+<value> nome</value>
+</IdentifierExpression>
+</BinaryExpression>
+</Writeln>
+</Body>
+</IfStat>
+</Body>
+</WhileStat>
+</Body>
+</WhileStat>
+</Body>
+</WhileStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

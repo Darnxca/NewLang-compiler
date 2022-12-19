@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<StringConstant> CIAO</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>CHAR</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>CHAR</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+<CharConstant> 2</CharConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> k</value>
+</IdentifierExpression>
+<StringConstant> </StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> cond1</value>
+</IdentifierExpression>
+<BooleanConstant> true</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> cond2</value>
+</IdentifierExpression>
+<BooleanConstant> false</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> xd</value>
+</IdentifierExpression>
+<IntegerConstant> 1</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> adsa</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> pi</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> asp</value>
+</IdentifierExpression>
+<RealConstant> 2.3</RealConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> nasa</value>
+</IdentifierExpression>
+<IntegerConstant> 3</IntegerConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> intero</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> floatello</value>
+</IdentifierExpression>
+<RealConstant> 2.0</RealConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> stringhello</value>
+</IdentifierExpression>
+<StringConstant> ciao</StringConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> charactello</value>
+</IdentifierExpression>
+<CharConstant> P</CharConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> booleanello</value>
+</IdentifierExpression>
+<BooleanConstant> true</BooleanConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> booleanello2</value>
+</IdentifierExpression>
+<BooleanConstant> false</BooleanConstant>
+</IdInitObbNode>
+</VarDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

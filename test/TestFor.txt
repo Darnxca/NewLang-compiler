@@ -1,0 +1,17 @@
+
+start: def main (): integer {
+
+    for i << 1 to 100 loop {
+        float x << 2;
+        for j << 2 to 101 loop {
+            float x << 2;
+            for z << 3 to 102 loop {
+                float x << 2;
+                while p < 2 loop {
+                    p << p + 1;
+                }
+            }
+        }
+    }
+
+}

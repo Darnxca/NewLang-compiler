@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<ForStat fromValue='1' toValue='100'>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<ForStat fromValue='2' toValue='101'>
+<IdentifierExpression>
+<value> j</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<ForStat fromValue='3' toValue='102'>
+<IdentifierExpression>
+<value> z</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</WhileStat>
+</Body>
+</ForStat>
+</Body>
+</ForStat>
+</Body>
+</ForStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

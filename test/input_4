@@ -1,7 +1,0 @@
-int main(){
-    int a <-- 00100;
-    float a <-- 12.7E+53;
-    int b <-- 5;
-
-    printf("Stampo %d, %f"a);
-}

@@ -19,8 +19,13 @@ parser code {:
 
     public void report_fatal_error(String message, Object info){
         report_error(message,info);
-        System.exit(2);
+        System.exit(1);
     }
+
+    public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+            this.report_fatal_error("at", cur_token.left);
+            System.exit(1);
+     }
 
     private  boolean error = false;
 
