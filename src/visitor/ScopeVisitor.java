@@ -202,16 +202,6 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(AssignStatNode item) {
-
-        for( IdentifierExprNode i : item.getIdentifierList())
-            i.accept(this);
-        for( ExpressionNode e : item.getExpressionList())
-            e.accept(this);
-
-
-
-
-
         return null;
     }
 

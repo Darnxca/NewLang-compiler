@@ -80,6 +80,8 @@ public class SemanticVisitorTest implements Visitor{
         if(item.getExpression() != null){
             item.getExpression().accept(this);
 
+            System.out.println(item.getExpression().getType());
+
             int type = TypeChecker.checkBinaryExpr(Symbols.ASSIGN, item.getIdentifier().getType(), item.getExpression().getType());
             if(type == -1) {
 
@@ -87,6 +89,7 @@ public class SemanticVisitorTest implements Visitor{
                         " tipi incompatibili (riga: "+item.getExpression().getLeft().getLine() +
                         ", colonna: "+ item.getExpression().getRight().getColumn()+")");
             }
+
 
         }
 
@@ -288,13 +291,10 @@ public class SemanticVisitorTest implements Visitor{
 
         int type = TypeChecker.checkUnaryExpr(item.getOperation(), item.getRightExpression().getType());
 
-        if(type != -1){
-            item.setType(type);
-        }
-        else {
+        if(type == -1){
             new RuntimeException("Tipo non compatibile!");
         }
-
+        item.setType(type);
         return null;
     }
 
@@ -306,12 +306,11 @@ public class SemanticVisitorTest implements Visitor{
 
         int type = TypeChecker.checkBinaryExpr(item.getOperation(), item.getLeftExpression().getType(), item.getRightExpression().getType());
 
-        if(type != -1){
-            item.setType(type);
-        }
-        else {
+        if(type == -1){
             new RuntimeException("Tipo non compatibile!");
         }
+
+        item.setType(type);
 
 
         return null;

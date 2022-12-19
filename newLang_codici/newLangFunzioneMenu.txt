@@ -13,6 +13,7 @@ start: def main(): integer {
     float result, num1 <<0;
     var num2 << 0;
     var ciao << "CISIDIIDI";
+    integer casa << 2 + (2 + 2.2 * (2 / -1));
 
 	stampaMenu();
 	sceltaOp <-- "Scegli l'operazione da effettuare";

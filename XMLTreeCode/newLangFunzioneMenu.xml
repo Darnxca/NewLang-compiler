@@ -257,6 +257,34 @@
 <StringConstant> CISIDIIDI</StringConstant>
 </IdInitObbNode>
 </VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> casa</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<RealConstant> 2.2</RealConstant>
+<Operation> TIMES</Operation>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> DIV</Operation>
+<UnaryExpression>
+<Operation> MINUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</UnaryExpression>
+</BinaryExpression>
+</BinaryExpression>
+</BinaryExpression>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
 <FunCallStat>
 <IdentifierExpression>
 <value> stampaMenu</value>
