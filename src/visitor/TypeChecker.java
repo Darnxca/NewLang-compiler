@@ -40,16 +40,19 @@ public class TypeChecker {
             else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
                 return Symbols.FLOAT;
             }
+
         }
         else if( operation == Symbols.STR_CONCAT){
             if(typeLeft == Symbols.STRING && typeRight == Symbols.STRING){
                 return Symbols.STRING;
             }
+
         }
         else if(isLogicalOp(operation)){
             if(typeLeft == Symbols.BOOL && typeRight == Symbols.BOOL){
                 return Symbols.BOOL;
             }
+
         }
         else if (isRelationshipOp(operation)) {
             if(typeLeft == Symbols.INTEGER && typeRight == Symbols.INTEGER){
@@ -91,7 +94,6 @@ public class TypeChecker {
             else if( typeLeft == Symbols.BOOL && typeRight == Symbols.BOOL){
                 return  Symbols.BOOL;
             }
-
         }
 
 

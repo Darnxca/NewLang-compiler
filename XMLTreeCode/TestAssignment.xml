@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IntegerConstant> 1</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+<IntegerConstant> 1</IntegerConstant>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> z</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> d</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> e</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> f</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> g</value>
+</IdentifierExpression>
+<StringConstant> Ciao</StringConstant>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> h</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> ix</value>
+</IdentifierExpression>
+<BooleanConstant> false</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> str</value>
+</IdentifierExpression>
+<CharConstant> c</CharConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> somma</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IntegerConstant> 5</IntegerConstant>
+<Operation> DIV</Operation>
+<RealConstant> 2.0</RealConstant>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> xss</value>
+</IdentifierExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> DIV</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> DIV</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> DIV</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> DIV</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> TIMES</Operation>
+<IntegerConstant> 212918</IntegerConstant>
+</BinaryExpression>
+<Operation> TIMES</Operation>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>CHAR</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> yee</value>
+</IdentifierExpression>
+<BinaryExpression>
+<BinaryExpression>
+<IntegerConstant> 1</IntegerConstant>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<RealConstant> 2.0</RealConstant>
+<Operation> DIV</Operation>
+<IntegerConstant> 30</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<IntegerConstant> 112</IntegerConstant>
+<Operation> STR_CONCAT</Operation>
+<CharConstant> l</CharConstant>
+</BinaryExpression>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

@@ -71,7 +71,7 @@ digits = {digit}+
 
 
 Identifier = ({letter_$})+({letter_$}{digit})*
-FloatNumber = (({digit1}+{digit}* | {zero}))(.{digits})?
+FloatNumber = (({digit1}+{digit}* | {zero}))(\.{digits})?
 IntegerNumber = (({digit1}+{digit}* | {zero}))
 
 %state STRING_STATE
@@ -142,11 +142,11 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
 
 
     /* identifiers */
-    {Identifier}        {return symbol("ID", ID,  yytext()); }
+    {Identifier}        { return symbol("ID", ID,  yytext()); }
 
     /*numeri*/
-    {IntegerNumber}      {return symbol("INTEGER_CONST", INTEGER_CONST, Integer.parseInt(yytext())); }
-    {FloatNumber}        {return symbol("REAL_CONST", REAL_CONST, Float.parseFloat(yytext())); }
+    {IntegerNumber}      {return symbol("INTEGER_CONST", INTEGER_CONST, Integer.parseInt(yytext()));}
+    {FloatNumber}        {System.out.println(yytext()); return symbol("REAL_CONST", REAL_CONST, Float.parseFloat(yytext())); }
 
     /* Stringhe letterali */
     \"                  { string.setLength(0); yybegin(STRING_STATE); }

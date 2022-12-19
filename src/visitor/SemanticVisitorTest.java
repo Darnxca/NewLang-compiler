@@ -15,6 +15,8 @@ import semantic.symbols.IdSymbol;
 import java.util.LinkedList;
 import java.util.List;
 
+import static parser.Symbols.terminalNames;
+
 public class SemanticVisitorTest implements Visitor{
 
     private SymbolTableStack stack;
@@ -76,7 +78,7 @@ public class SemanticVisitorTest implements Visitor{
     public Object visit(IdInitNode item) {
 
         item.getIdentifier().accept(this);
-        System.out.println(item.getIdentifier().getValue());
+        //System.out.println(item.getIdentifier().getValue());
         if(item.getExpression() != null){
             item.getExpression().accept(this);
 
@@ -85,9 +87,9 @@ public class SemanticVisitorTest implements Visitor{
             int type = TypeChecker.checkBinaryExpr(Symbols.ASSIGN, item.getIdentifier().getType(), item.getExpression().getType());
             if(type == -1) {
 
-                throw new RuntimeException("Assegnazione tra "+ item.getIdentifier().getType()+ "e "+item.getExpression().getType()+
-                        " tipi incompatibili (riga: "+item.getExpression().getLeft().getLine() +
-                        ", colonna: "+ item.getExpression().getRight().getColumn()+")");
+                throw new RuntimeException("Assegnazione tra tipi incompatibili (riga: "+item.getExpression().getLeft().getLine() +
+                        ", colonna: "+ item.getExpression().getRight().getColumn()+") -> "+
+                        terminalNames[item.getIdentifier().getType()].toLowerCase()+ " e "+ terminalNames[item.getExpression().getType()].toLowerCase() );
             }
 
 
@@ -307,7 +309,9 @@ public class SemanticVisitorTest implements Visitor{
         int type = TypeChecker.checkBinaryExpr(item.getOperation(), item.getLeftExpression().getType(), item.getRightExpression().getType());
 
         if(type == -1){
-            new RuntimeException("Tipo non compatibile!");
+           throw new RuntimeException("Operazione tra tipi incompatibili (riga: "+item.getLeft().getLine() +
+                    ", colonna: "+ item.getRight().getColumn()+") -> "+
+                   terminalNames[item.getLeftExpression().getType()].toLowerCase()+ " e "+terminalNames[item.getRightExpression().getType()].toLowerCase());
         }
 
         item.setType(type);
