@@ -88,8 +88,11 @@ public class SemanticVisitorTest implements Visitor{
                         terminalNames[item.getIdentifier().getType()].toLowerCase()+ " e "+ terminalNames[item.getExpression().getType()].toLowerCase() );
             }
 
+            item.setType(type);
 
         }
+
+        item.setType(item.getIdentifier().getType());
 
         return null;
     }
@@ -177,7 +180,6 @@ public class SemanticVisitorTest implements Visitor{
             item.getBodyElse().accept(this);
             stack.exitScope(); //Ripristino lo scope
 
-
         }
 
         return null;
@@ -185,6 +187,45 @@ public class SemanticVisitorTest implements Visitor{
 
     @Override
     public Object visit(AssignStatNode item) {
+        int numIden = item.getIdentifierList().size();
+        int numExpr = item.getExpressionList().size();
+
+        if(numIden > numExpr){
+            throw new RuntimeException("Errore assegnazione: assegnazione tra "+ numIden+  " identificatori e "+ numExpr+" espressioni " +
+                    " (riga :" +item.getIdentifierList().get(0).getLeft().getLine()+" colonna :"+item.getExpressionList().get(numExpr-1).getRight().getColumn()+")");
+        } else if(numIden < numExpr){
+            throw new RuntimeException("Errore assegnazione: assegnazione tra "+ numIden+  " identificatori e "+ numExpr+" espressioni " +
+                    " (riga :" +item.getIdentifierList().get(0).getLeft().getLine()+" colonna :"+item.getIdentifierList().get(numIden-1).getRight().getColumn()+")");
+        }
+
+        LinkedList<Integer> tipiIden = new LinkedList<>(); // lista che contiene i tipi degli identificatori
+        LinkedList<Integer> tipiExpr = new LinkedList<>(); // lista che contiene i tipi delle espressioni
+        LinkedList<IdentifierExprNode> errorIden = new LinkedList<>(); // lista usata per salvarsi temporaneamente gli identificatori
+        LinkedList<ExpressionNode> errorExpr = new LinkedList<>(); // lista usata per salvarsi temporaneamente le espressioni
+
+        // ottenimento tipo degli identificatori
+        for (IdentifierExprNode iden: item.getIdentifierList()){
+            iden.accept(this);
+            tipiIden.add(iden.getType());
+            errorIden.add(iden);
+        }
+
+        // ottenimento tipo delle espressioni
+        for (ExpressionNode expr : item.getExpressionList()){
+            expr.accept(this);
+            tipiExpr.add(expr.getType());
+            errorExpr.add(expr);
+        }
+
+        // controllo corrispondenza tra tipi
+        for(int i = 0; i < tipiIden.size(); i ++){
+            if (TypeChecker.checkBinaryExpr(Symbols.ASSIGN,tipiIden.get(i), tipiExpr.get(i)) == -1){
+                throw  new RuntimeException("Tipo non corrispondente in (riga :"+errorIden.get(i).getLeft().getLine()+", colonna: "+
+                        errorIden.get(i).getLeft().getColumn() + ") e (riga:"+ errorExpr.get(i).getLeft().getLine()+", colonna: "+
+                        errorExpr.get(i).getLeft().getColumn() + ") -> "+ terminalNames[tipiIden.get(i)] + " e " + terminalNames[tipiExpr.get(i)]);
+            }
+        }
+
         return null;
     }
 
@@ -207,11 +248,22 @@ public class SemanticVisitorTest implements Visitor{
 
     @Override
     public Object visit(ReadStatNode item) {
+
+        for(IdentifierExprNode iden : item.getIdentifierList())
+            iden.accept(this);
+
         return null;
     }
 
     @Override
     public Object visit(ReturnStatNode item) {
+
+        if (item.getExpression() != null) {
+            item.getExpression().accept(this);
+            item.setType(item.getExpression().getType());
+        }else {
+            item.setType(Symbols.VOID);
+        }
         return null;
     }
 
@@ -240,6 +292,10 @@ public class SemanticVisitorTest implements Visitor{
 
     @Override
     public Object visit(WriteStatNode item) {
+
+        for (ExpressionNode e: item.getExpressionList())
+            e.accept(this);
+
         return null;
     }
 

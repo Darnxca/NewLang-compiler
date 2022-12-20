@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+</Declist>
+<Main>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 3</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> PLUS</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> y</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> PLUS</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

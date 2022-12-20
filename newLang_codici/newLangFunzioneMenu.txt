@@ -47,7 +47,7 @@ start: def main(): integer {
 
 		}
 
-		("Il risultato dell'operazione scelta tra " & num1 & num2 & "è" & result) -->;
+		("Il risultato dell'operazione scelta tra " , num1 , num2 ,"è" , result) -->;
 		continuaScelta <-- "Vuoi continuare? (0: NO, 1: SI)";
 		while (continuaScelta != 0) and (continuaScelta != 1) loop {
 

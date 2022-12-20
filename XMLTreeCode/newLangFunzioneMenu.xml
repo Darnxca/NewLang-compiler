@@ -285,11 +285,6 @@
 </BinaryExpression>
 </IdInitNode>
 </VarDeclNode>
-<FunCallStat>
-<IdentifierExpression>
-<value> stampaMenu</value>
-</IdentifierExpression>
-</FunCallStat>
 <ReadStat>
 <StringConstant> Scegli l'operazione da effettuare</StringConstant>
 <IdentifierExpression>
@@ -326,20 +321,6 @@
 <IntegerConstant> 2</IntegerConstant>
 </BinaryExpression>
 <Body>
-<FunCallStat>
-<IdentifierExpression>
-<value> somma</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num1</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num2</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</FunCallStat>
 </Body>
 </IfStat>
 <IfStat>
@@ -351,20 +332,6 @@
 <IntegerConstant> 3</IntegerConstant>
 </BinaryExpression>
 <Body>
-<FunCallStat>
-<IdentifierExpression>
-<value> sottrai</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num1</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num2</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</FunCallStat>
 </Body>
 </IfStat>
 <IfStat>
@@ -376,20 +343,6 @@
 <IntegerConstant> 4</IntegerConstant>
 </BinaryExpression>
 <Body>
-<FunCallStat>
-<IdentifierExpression>
-<value> moltiplica</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num1</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num2</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</FunCallStat>
 </Body>
 </IfStat>
 <IfStat>
@@ -401,56 +354,20 @@
 <IntegerConstant> 5</IntegerConstant>
 </BinaryExpression>
 <Body>
-<IfStat>
-<UnaryExpression>
-<Operation> NOT</Operation>
-<FunCallExpr>
-<IdentifierExpression>
-<value> dividi</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num1</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> num2</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> result</value>
-</IdentifierExpression>
-</FunCallExpr>
-</UnaryExpression>
-<Body>
-<Write>
-<StringConstant> Errore operazione di divisione non effettuabile!!!</StringConstant>
-</Write>
-</Body>
-</IfStat>
 </Body>
 </IfStat>
 <Write>
-<BinaryExpression>
-<BinaryExpression>
-<BinaryExpression>
-<BinaryExpression>
 <StringConstant> Il risultato dell'operazione scelta tra </StringConstant>
-<Operation> STR_CONCAT</Operation>
 <IdentifierExpression>
 <value> num1</value>
 </IdentifierExpression>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
 <IdentifierExpression>
 <value> num2</value>
 </IdentifierExpression>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
 <StringConstant> è</StringConstant>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
 <IdentifierExpression>
 <value> result</value>
 </IdentifierExpression>
-</BinaryExpression>
 </Write>
 <ReadStat>
 <StringConstant> Vuoi continuare? (0: NO, 1: SI)</StringConstant>
@@ -494,11 +411,6 @@
 <IntegerConstant> 1</IntegerConstant>
 </BinaryExpression>
 <Body>
-<FunCallStat>
-<IdentifierExpression>
-<value> stampaMenu</value>
-</IdentifierExpression>
-</FunCallStat>
 <ReadStat>
 <StringConstant> Scegli loperazione da effettuare</StringConstant>
 <IdentifierExpression>

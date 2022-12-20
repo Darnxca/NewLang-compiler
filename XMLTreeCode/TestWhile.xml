@@ -21,15 +21,15 @@
 <WhileStat>
 <BinaryExpression>
 <BinaryExpression>
+<BinaryExpression>
 <IdentifierExpression>
 <value> i</value>
 </IdentifierExpression>
 <Operation> PLUS</Operation>
-<BinaryExpression>
 <IntegerConstant> 5</IntegerConstant>
+</BinaryExpression>
 <Operation> LT</Operation>
 <IntegerConstant> 2</IntegerConstant>
-</BinaryExpression>
 </BinaryExpression>
 <Operation> AND</Operation>
 <BinaryExpression>
@@ -56,26 +56,20 @@
 </VarDeclNode>
 <WhileStat>
 <BinaryExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> x</value>
-</IdentifierExpression>
-<Operation> PLUS</Operation>
-<IntegerConstant> 2</IntegerConstant>
-</BinaryExpression>
+<BooleanConstant> true</BooleanConstant>
 <Operation> OR</Operation>
 <UnaryExpression>
 <Operation> NOT</Operation>
+<BinaryExpression>
 <BinaryExpression>
 <IdentifierExpression>
 <value> i</value>
 </IdentifierExpression>
 <Operation> PLUS</Operation>
-<BinaryExpression>
 <IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
 <Operation> LT</Operation>
 <IntegerConstant> 0</IntegerConstant>
-</BinaryExpression>
 </BinaryExpression>
 </UnaryExpression>
 </BinaryExpression>
@@ -101,15 +95,15 @@
 <WhileStat>
 <BinaryExpression>
 <BinaryExpression>
+<BinaryExpression>
 <IdentifierExpression>
 <value> x</value>
 </IdentifierExpression>
 <Operation> PLUS</Operation>
-<BinaryExpression>
 <IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
 <Operation> GT</Operation>
 <IntegerConstant> 3</IntegerConstant>
-</BinaryExpression>
 </BinaryExpression>
 <Operation> AND</Operation>
 <UnaryExpression>
