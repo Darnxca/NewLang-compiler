@@ -7,13 +7,9 @@ import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
 import semantic.SymbolTableStack;
 import semantic.SymbolTypes;
-import semantic.exception.MultipleIdentifierDeclaration;
-import semantic.exception.MultipleMainDeclaration;
-import semantic.symbols.FunSymbol;
 import semantic.symbols.IdSymbol;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import static parser.Symbols.terminalNames;
 
@@ -43,9 +39,9 @@ public class SemanticVisitorTest implements Visitor{
         for (VarDeclNode i : item.getVarDeclList())
             i.accept(this);
 
-        /*for (FunDeclNode i : item.getFunDeclList()){
+        for (FunDeclNode i : item.getFunDeclList()){
             i.accept(this);
-        }*/
+        }
 
 
         return null;
@@ -117,6 +113,13 @@ public class SemanticVisitorTest implements Visitor{
 
         item.getBody().accept(this);
 
+        // controlliamo se tutti i possibili return presenti nella funzione sono compatibili con il suo tipo di ritorno
+        for (StatementNode x : item.getBody().getStmtNodeList()){
+                if (!TypeChecker.checkAllTypeReturn(x, item.getTypeOrVoid())) {
+                    throw new RuntimeException("Tipo di ritorno e tipo della funzione non coincidono");
+                }
+        }
+
         stack.exitScope(); //Ripristino lo scope precedente
 
         return null;
@@ -126,9 +129,6 @@ public class SemanticVisitorTest implements Visitor{
     public Object visit(ParamDeclNode item) {
 
         for(IdentifierExprNode iden : item.getIdentifierList()){
-            if(stack.probe(iden.getValue())){
-                throw new MultipleIdentifierDeclaration("Errore in (riga:"+iden.getLeft().getLine()+", colonna: "+iden.getLeft().getColumn()+") -> Variabile "+iden.getValue()+" già dichiarata precedentemente!");
-            }
             iden.setType(item.getType());
             iden.accept(this);
         }
@@ -259,11 +259,14 @@ public class SemanticVisitorTest implements Visitor{
     public Object visit(ReturnStatNode item) {
 
         if (item.getExpression() != null) {
+            System.out.println();
             item.getExpression().accept(this);
             item.setType(item.getExpression().getType());
         }else {
             item.setType(Symbols.VOID);
         }
+
+
         return null;
     }
 

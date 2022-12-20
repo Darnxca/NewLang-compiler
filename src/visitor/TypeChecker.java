@@ -1,6 +1,7 @@
 package visitor;
 
 import parser.Symbols;
+import parser.newLangTree.nodes.statements.*;
 
 public class TypeChecker {
 
@@ -23,6 +24,37 @@ public class TypeChecker {
         }
 
         return -1; //Errore
+    }
+
+
+
+    public static boolean checkReturnType(Integer typeLeft, Integer typeRight){
+        if(typeLeft == typeRight ){
+            return true;
+        }
+        else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.FLOAT){
+            return true;
+        }
+        else if( typeLeft == Symbols.INTEGER && typeRight == Symbols.FLOAT){
+            return true;
+        }
+        else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
+            return true;
+        }
+        return false;
+    }
+    private static boolean isAritmeticOperation(int operation){
+        return operation == Symbols.PLUS || operation == Symbols.MINUS
+                || operation == Symbols.TIMES || operation == Symbols.DIV || operation == Symbols.POW;
+    }
+
+    private static boolean isRelationshipOp(int operation){
+        return operation == Symbols.GT || operation == Symbols.GE || operation == Symbols.LT
+                || operation == Symbols.LE || operation == Symbols.EQ || operation == Symbols.NE;
+    }
+
+    private static boolean isLogicalOp(int operation){
+        return operation == Symbols.AND || operation == Symbols.OR;
     }
 
     public static int checkBinaryExpr(Integer operation, Integer typeLeft, Integer typeRight){
@@ -99,20 +131,42 @@ public class TypeChecker {
 
         return -1;
     }
-
-    private static boolean isAritmeticOperation(int operation){
-        return operation == Symbols.PLUS || operation == Symbols.MINUS
-                || operation == Symbols.TIMES || operation == Symbols.DIV || operation == Symbols.POW;
+    public static boolean checkAllTypeReturn(StatementNode stmt, int funType){
+        // se è uno stat di ritorno controllo il suo eventuale tipo, altrimenti eseguo ricorsivamente un controllo sugli altri costrutti
+        if(stmt instanceof ReturnStatNode) {
+            if (TypeChecker.checkReturnType(stmt.getType(), funType)) {
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            if (stmt instanceof IfStatNode) {
+                IfStatNode ifstat = (IfStatNode) stmt;
+                for (StatementNode x : ifstat.getBodyThen().getStmtNodeList())
+                    if(!checkAllTypeReturn(x, funType)){
+                        return false;
+                    }
+                if (ifstat.getBodyElse() != null) {
+                    for (StatementNode x : ifstat.getBodyElse().getStmtNodeList())
+                        if(!checkAllTypeReturn(x, funType)){
+                            return false;
+                        }
+                }
+            } else if (stmt instanceof ForStatNode) {
+                ForStatNode forstat = (ForStatNode) stmt;
+                for (StatementNode x : forstat.getBody().getStmtNodeList())
+                    if(!checkAllTypeReturn(x, funType)){
+                        return false;
+                    }
+            } else if (stmt instanceof WhileStatNode) {
+                WhileStatNode whilestat = (WhileStatNode) stmt;
+                for (StatementNode x : whilestat.getBody().getStmtNodeList())
+                    if(!checkAllTypeReturn(x, funType)){
+                        return false;
+                    }
+            }
+            return true;
+        }
     }
-
-    private static boolean isRelationshipOp(int operation){
-        return operation == Symbols.GT || operation == Symbols.GE || operation == Symbols.LT
-                || operation == Symbols.LE || operation == Symbols.EQ || operation == Symbols.NE;
-    }
-
-    private static boolean isLogicalOp(int operation){
-        return operation == Symbols.AND || operation == Symbols.OR;
-    }
-
 
 }

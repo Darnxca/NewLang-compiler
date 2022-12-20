@@ -8,6 +8,7 @@ public class ReturnStatNode extends StatementNode {
     private ExpressionNode expression;
 
     public ReturnStatNode() {
+        this.expression = null;
     }
 
     public ReturnStatNode(ExpressionNode expression) {

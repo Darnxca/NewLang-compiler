@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> somma</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<IfStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<IfStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<ReturnStat>
+</ReturnStat>
+</Body>
+<Else>
+<Body>
+<ReturnStat>
+</ReturnStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</IfStat>
+<ReturnStat>
+</ReturnStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> differenza</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<IfStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<IfStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<ReturnStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</ReturnStat>
+</Body>
+</IfStat>
+<ForStat fromValue='1' toValue='2'>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Body>
+<ReturnStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</ReturnStat>
+<IfStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<WhileStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<ReturnStat>
+<StringConstant> ss</StringConstant>
+</ReturnStat>
+</Body>
+</WhileStat>
+</Body>
+</IfStat>
+</Body>
+</ForStat>
+</Body>
+</IfStat>
+<ReturnStat>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</ReturnStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='FLOAT'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<WhileStat>
+<BooleanConstant> true</BooleanConstant>
+<Body>
+<ReturnStat>
+<RealConstant> 2.2</RealConstant>
+</ReturnStat>
+</Body>
+</WhileStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

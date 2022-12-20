@@ -238,7 +238,8 @@ public class XMLTreeGenerator implements  Visitor{
 
         writer.println("<ReturnStat>");
 
-        item.getExpression().accept(this);
+        if(item.getExpression() != null)
+            item.getExpression().accept(this);
 
         writer.println("</ReturnStat>");
         return null;
