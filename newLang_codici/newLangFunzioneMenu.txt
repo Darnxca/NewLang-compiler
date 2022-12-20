@@ -39,7 +39,7 @@ start: def main(): integer {
 			|* Se true, tutto okay
 			   altrimenti, errore (divisione per zero)
             |
-			if(not dividi(num1, 2, result)) then {
+			if(not dividi(num1, num2, result)) then {
 				("Errore operazione di divisione non effettuabile!!!") -->;
 			}
 
