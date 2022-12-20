@@ -262,7 +262,6 @@ public class SemanticVisitor implements Visitor{
     public Object visit(ReturnStatNode item) {
 
         if (item.getExpression() != null) {
-            System.out.println();
             item.getExpression().accept(this);
             item.setType(item.getExpression().getType());
         }else {
@@ -359,9 +358,8 @@ public class SemanticVisitor implements Visitor{
         List<Integer> posizioneParametri = function.getParamType();
 
         for (int i =0; i < paramType.size(); i++){
-            if(paramType.get(i) != function.getParamList().get(i)){
-                System.out.println(paramType.get(i) +"  " + function.getParamList().get(i));
-                throw new RuntimeException("Tipo dei parametri della funzione" +item.getIdentifier().getValue() + " ( riga :"+item.getIdentifier().getLeft().getLine()+
+            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getParamList().get(i))){
+                throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
                         " colonna :" + item.getIdentifier().getRight().getColumn());
             }
             if ( (expressionType.get(i) instanceof Constant) && posizioneParametri.get(i) == VarTypes.OUT){
@@ -401,7 +399,7 @@ public class SemanticVisitor implements Visitor{
 
         for (int i =0; i < paramType.size(); i++){
             if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getParamList().get(i))){
-                throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " ( riga :"+item.getIdentifier().getLeft().getLine()+
+                throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
                         " colonna :" + item.getIdentifier().getRight().getColumn());
             }
             if ( (expressionType.get(i) instanceof Constant) && posizioneParametri.get(i) == VarTypes.OUT){

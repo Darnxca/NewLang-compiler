@@ -11,7 +11,7 @@ start: def main(): integer {
 
 	integer  sceltaOp, continuaScelta << 1;
     float result, num1 <<0;
-    var num2 << 0;
+    var num2 << 0.0;
     var ciao << "CISIDIIDI";
     integer casa << 2 + (2 + 2.2 * (2 / -1));
 
@@ -38,12 +38,10 @@ start: def main(): integer {
 
 			|* Se true, tutto okay
 			   altrimenti, errore (divisione per zero)
-
-
-			if(not dividi(num1, num2, result)) then {
-
+            |
+			if(not dividi(num1, 2, result)) then {
 				("Errore operazione di divisione non effettuabile!!!") -->;
-			}|
+			}
 
 		}
 

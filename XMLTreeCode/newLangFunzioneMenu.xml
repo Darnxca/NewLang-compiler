@@ -245,7 +245,7 @@
 <IdentifierExpression>
 <value> num2</value>
 </IdentifierExpression>
-<IntegerConstant> 0</IntegerConstant>
+<RealConstant> 0.0</RealConstant>
 </IdInitObbNode>
 </VarDeclNode>
 <VarDeclNode>
@@ -401,6 +401,28 @@
 <IntegerConstant> 5</IntegerConstant>
 </BinaryExpression>
 <Body>
+<IfStat>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<FunCallExpr>
+<IdentifierExpression>
+<value> dividi</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</FunCallExpr>
+</UnaryExpression>
+<Body>
+<Write>
+<StringConstant> Errore operazione di divisione non effettuabile!!!</StringConstant>
+</Write>
+</Body>
+</IfStat>
 </Body>
 </IfStat>
 <Write>

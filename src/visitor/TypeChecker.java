@@ -105,9 +105,8 @@ public class TypeChecker {
         } else if(typeLeft == Symbols.INTEGER && typeRight == Symbols.FLOAT){
             return true;
         } else if(typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
-
+            return true;
         }
-
         return false;
     }
     private static boolean isAritmeticOperation(int operation){
