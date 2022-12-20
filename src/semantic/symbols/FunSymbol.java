@@ -2,6 +2,7 @@ package semantic.symbols;
 
 import parser.Symbols;
 import semantic.SymbolTypes;
+import semantic.VarTypes;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,25 +11,21 @@ import java.util.List;
 public class FunSymbol extends Symbol {
 
     public static final int SEPARATOR = -1;
-    public List<Integer> typeForParams;
+    private List<Integer> paramList;
+    private List<Integer> paramType;
+    private Integer returnType;
 
     /* Simbolo che rappresenta una funzione
 		(int x, int y | out float somma) : void
 	    -> type = LIST of INTEGER -> { sym.INT, sym.INT, -1, sym.FLOAT, -1, sym.VOID } */
-    public FunSymbol(String id, List<Integer> INparamList, List<Integer> OUTparamList , Integer returnType) {
+    public FunSymbol(String id, List<Integer> paramList, List<Integer> paramType , Integer returnType) {
         super(id, SymbolTypes.FUNCTION);
-        typeForParams = new LinkedList<>();
-
-        if (INparamList != null)
-            typeForParams.addAll(INparamList);
-        typeForParams.add(SEPARATOR); // Separo param di in da param di out
-        if (OUTparamList != null)
-            typeForParams.addAll(OUTparamList);
-        typeForParams.add(SEPARATOR); // Separo param di out da return tipo
-        typeForParams.add(returnType);
+        this.paramList = paramList;
+        this.paramType = paramType;
+        this.returnType = returnType;
     }
 
-    public ArrayList<List<Integer>> getParamAndReturnTypes(){
+    /*public ArrayList<List<Integer>> getParamAndReturnTypes(){
         if (entryType != SymbolTypes.FUNCTION)
             return null;
 
@@ -41,6 +38,18 @@ public class FunSymbol extends Symbol {
         lists.add(typeForParams.subList(sepOut+1, typeForParams.size())); //Recupero valore ritorno
 
         return lists;
+    }*/
+
+    public List<Integer> getParamList() {
+        return paramList;
+    }
+
+    public List<Integer> getParamType() {
+        return paramType;
+    }
+
+    public Integer getReturnType() {
+        return returnType;
     }
 
     public static void main(String[] args) {
@@ -79,14 +88,13 @@ public class FunSymbol extends Symbol {
                 ", entryType=" + SymbolTypes.entryNames[entryType] +
                 ", type=";
 
-        for (int x: typeForParams){
-            if(x != -1){str+= Symbols.terminalNames[x]+" X ";}
+        for (int i = 0; i < paramList.size(); i++){
+            str+= "( "+ VarTypes.paramType[paramType.get(i)]+"," +Symbols.terminalNames[paramList.get(i)]+") X ";
         }
-        String str2="";
-        str2 = str.substring(0, str.lastIndexOf("X")-1);
-        str2 += "}\n";
 
-        return str2;
+        str+= "}\n";
+
+        return str;
     }
 
 

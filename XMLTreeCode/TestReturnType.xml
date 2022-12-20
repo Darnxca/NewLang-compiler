@@ -80,7 +80,7 @@
 <BooleanConstant> true</BooleanConstant>
 <Body>
 <ReturnStat>
-<StringConstant> ss</StringConstant>
+<RealConstant> 2.2</RealConstant>
 </ReturnStat>
 </Body>
 </WhileStat>

@@ -10,14 +10,10 @@ public class TypeChecker {
         if(operation == Symbols.MINUS){
             if(type == Symbols.INTEGER ){
                 return Symbols.INTEGER;
-            }
-            if(type == Symbols.FLOAT){
+            }else if(type == Symbols.FLOAT){
                 return Symbols.FLOAT;
             }
-
-        }
-
-        if(operation == Symbols.NOT){
+        }else if(operation == Symbols.NOT){
             if(type == Symbols.BOOL){
                 return Symbols.BOOL;
             }
@@ -27,35 +23,6 @@ public class TypeChecker {
     }
 
 
-
-    public static boolean checkReturnType(Integer typeLeft, Integer typeRight){
-        if(typeLeft == typeRight ){
-            return true;
-        }
-        else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.FLOAT){
-            return true;
-        }
-        else if( typeLeft == Symbols.INTEGER && typeRight == Symbols.FLOAT){
-            return true;
-        }
-        else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
-            return true;
-        }
-        return false;
-    }
-    private static boolean isAritmeticOperation(int operation){
-        return operation == Symbols.PLUS || operation == Symbols.MINUS
-                || operation == Symbols.TIMES || operation == Symbols.DIV || operation == Symbols.POW;
-    }
-
-    private static boolean isRelationshipOp(int operation){
-        return operation == Symbols.GT || operation == Symbols.GE || operation == Symbols.LT
-                || operation == Symbols.LE || operation == Symbols.EQ || operation == Symbols.NE;
-    }
-
-    private static boolean isLogicalOp(int operation){
-        return operation == Symbols.AND || operation == Symbols.OR;
-    }
 
     public static int checkBinaryExpr(Integer operation, Integer typeLeft, Integer typeRight){
 
@@ -130,6 +97,47 @@ public class TypeChecker {
 
 
         return -1;
+    }
+
+    public static boolean checkCallParamTypes(int typeLeft, int typeRight){
+        if(typeLeft == typeRight ){
+            return true;
+        } else if(typeLeft == Symbols.INTEGER && typeRight == Symbols.FLOAT){
+            return true;
+        } else if(typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
+
+        }
+
+        return false;
+    }
+    private static boolean isAritmeticOperation(int operation){
+        return operation == Symbols.PLUS || operation == Symbols.MINUS
+                || operation == Symbols.TIMES || operation == Symbols.DIV || operation == Symbols.POW;
+    }
+
+    private static boolean isRelationshipOp(int operation){
+        return operation == Symbols.GT || operation == Symbols.GE || operation == Symbols.LT
+                || operation == Symbols.LE || operation == Symbols.EQ || operation == Symbols.NE;
+    }
+
+    private static boolean isLogicalOp(int operation){
+        return operation == Symbols.AND || operation == Symbols.OR;
+    }
+
+    public static boolean checkReturnType(Integer typeLeft, Integer typeRight){
+        if(typeLeft == typeRight ){
+            return true;
+        }
+        else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.FLOAT){
+            return true;
+        }
+        else if( typeLeft == Symbols.INTEGER && typeRight == Symbols.FLOAT){
+            return true;
+        }
+        else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
+            return true;
+        }
+        return false;
     }
     public static boolean checkAllTypeReturn(StatementNode stmt, int funType){
         // se è uno stat di ritorno controllo il suo eventuale tipo, altrimenti eseguo ricorsivamente un controllo sugli altri costrutti

@@ -38,12 +38,12 @@ start: def main(): integer {
 
 			|* Se true, tutto okay
 			   altrimenti, errore (divisione per zero)
-			|
+
 
 			if(not dividi(num1, num2, result)) then {
 
 				("Errore operazione di divisione non effettuabile!!!") -->;
-			}
+			}|
 
 		}
 
@@ -75,7 +75,7 @@ def sottrai(float a,b | out float result) : void {
 }
 
 
-def molitplica(float a,b | out float result) : void {
+def moltiplica(float a,b | out float result) : void {
 	result << a * b;
 }
 

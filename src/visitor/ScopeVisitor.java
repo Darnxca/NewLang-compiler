@@ -112,23 +112,27 @@ public class ScopeVisitor implements Visitor{
             throw new RuntimeException("Errore in (riga:"+item.getIdentifier().getLeft().getLine()+", colonna: "+item.getIdentifier().getLeft().getColumn()+") -> Funzione "+funName+" già dichiarata precedentemente!");
         }
 
-        List<Integer> paramTypeListIN = new LinkedList<>(); // Lista parametri per valore
-        List<Integer> paramTypeListOUT = new LinkedList<>(); // Lista parametri per riferimento
+        List<Integer> paramTypeList = new LinkedList<>(); // Lista parametri per valore
+        List<Integer> paramType = new LinkedList<>(); // Lista parametri per riferimento
 
         for (ParamDeclNode p : item.getParamDecl()){
             if(!(p.isOut())){
-                for (IdentifierExprNode x : p.getIdentifierList()) // aggiungiamo tanti tipi quanti gli identificatori
-                    paramTypeListIN.add(p.getType());
+                for (IdentifierExprNode x : p.getIdentifierList()) { // aggiungiamo tanti tipi quanti gli identificatori
+                    paramTypeList.add(p.getType());
+                    paramType.add(VarTypes.IN);
+                }
             } else{
-                for (IdentifierExprNode x : p.getIdentifierList())
-                    paramTypeListOUT.add(p.getType());
+                for (IdentifierExprNode x : p.getIdentifierList()) {
+                    paramTypeList.add(p.getType());
+                    paramType.add(VarTypes.OUT);
+                }
             }
         }
 
         // creo il simbolo della funzione
 
         // aggiungo la firma della funzione a programm;
-        stack.addId(new FunSymbol(funName, paramTypeListIN, paramTypeListOUT, item.getTypeOrVoid()));
+        stack.addId(new FunSymbol(funName, paramTypeList, paramType, item.getTypeOrVoid()));
 
         //Cambio scope
         stack.enterScope(item.getSymbolTableFunScope());

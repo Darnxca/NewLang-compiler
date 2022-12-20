@@ -1,135 +1,307 @@
 package visitor;
 
-
 import parser.Symbols;
 import parser.newLangTree.nodes.*;
-import parser.newLangTree.nodes.expression.BinaryExpressionNode;
-import parser.newLangTree.nodes.expression.FunCallExprNode;
-import parser.newLangTree.nodes.expression.IdentifierExprNode;
-import parser.newLangTree.nodes.expression.UnaryExpressionNode;
+import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
-import semantic.symbols.IdSymbol;
-import semantic.symbols.Symbol;
 import semantic.SymbolTableStack;
 import semantic.SymbolTypes;
+import semantic.VarTypes;
+import semantic.symbols.FunSymbol;
+import semantic.symbols.IdSymbol;
 
-public class SemanticVisitor implements Visitor {
+import java.util.LinkedList;
+import java.util.List;
 
-    public SymbolTableStack stack;
+import static parser.Symbols.terminalNames;
+
+public class SemanticVisitor implements Visitor{
+
+    private SymbolTableStack stack;
 
     public SemanticVisitor() {
         stack = new SymbolTableStack();
     }
 
-    public SymbolTableStack getStack() {
-        return stack;
-    }
-
     @Override
     public Object visit(ProgramNode item) {
-        stack.enterScope();
-        /*for (DeclNode vd : item.getDeclList())
-            vd.accept(this);*/
 
-        /*for (MainFuncDeclNode p : item.getMainFuncDecl())
-                p.accept(this);
-                */
+        stack.enterScope(item.getSymbolTableProgramScope()); //Aggiorno lo stack
+
+        item.getDecl().accept(this);
+
+        item.getMainFuncDecl().accept(this);
+
         return null;
     }
 
     @Override
     public Object visit(DeclNode item) {
 
-        for (VarDeclNode vd : item.getVarDeclList())
-                vd.accept(this);
+        for (VarDeclNode i : item.getVarDeclList())
+            i.accept(this);
+
+        for (FunDeclNode i : item.getFunDeclList()){
+            i.accept(this);
+        }
+
 
         return null;
     }
 
     @Override
     public Object visit(MainFuncDeclNode item) {
+
+        item.getFunDeclNode().accept(this);
+
         return null;
     }
 
     @Override
     public Object visit(VarDeclNode item) {
 
-        for (int i = 0; i < item.getIdIList().size(); i++) {
-            IdInitNode id = item.getIdIList().get(i);
-            id.setType(item.getType());
-            id.accept(this);
+        for (IdInitNode i : item.getIdIList()) {
+            i.accept(this);
         }
+
+        for (IdInitObbNode i : item.getIdIObList())
+            i.accept(this);
+
         return null;
     }
 
     @Override
     public Object visit(IdInitNode item) {
 
-        if (stack.probe(item.getIdentifier().getValue()) || stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION) != null)
-            throw new RuntimeException("Simbolo non dichiarato");
+        item.getIdentifier().accept(this);
 
-        if (item.getExpression() != null) {
+        if(item.getExpression() != null){
             item.getExpression().accept(this);
+
+            int type = TypeChecker.checkBinaryExpr(Symbols.ASSIGN, item.getIdentifier().getType(), item.getExpression().getType());
+            if(type == -1) {
+
+                throw new RuntimeException("Assegnazione tra tipi incompatibili (riga: "+item.getExpression().getLeft().getLine() +
+                        ", colonna: "+ item.getExpression().getRight().getColumn()+") -> "+
+                        terminalNames[item.getIdentifier().getType()].toLowerCase()+ " e "+ terminalNames[item.getExpression().getType()].toLowerCase() );
+            }
+
+            item.setType(type);
+
         }
 
-        stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
+        item.setType(item.getIdentifier().getType());
 
         return null;
     }
 
     @Override
     public Object visit(IdInitObbNode item) {
+
+        item.setType(item.getIdentifier().getType());
+
         return null;
     }
 
+
     @Override
     public Object visit(FunDeclNode item) {
+
+        //Cambio scope
+        stack.enterScope(item.getSymbolTableFunScope());
+
+        for (ParamDeclNode param : item.getParamDecl())
+            param.accept(this);
+
+        item.getBody().accept(this);
+
+        // controlliamo se tutti i possibili return presenti nella funzione sono compatibili con il suo tipo di ritorno
+        for (StatementNode x : item.getBody().getStmtNodeList()){
+                if (!TypeChecker.checkAllTypeReturn(x, item.getTypeOrVoid())) {
+                    throw new RuntimeException("Tipo di ritorno e tipo della funzione non coincidono");
+                }
+        }
+
+        stack.exitScope(); //Ripristino lo scope precedente
+
         return null;
     }
 
     @Override
     public Object visit(ParamDeclNode item) {
+
+        for(IdentifierExprNode iden : item.getIdentifierList()){
+            iden.setType(item.getType());
+            iden.accept(this);
+        }
+
         return null;
     }
 
     @Override
     public Object visit(BodyNode item) {
+
+        for(VarDeclNode vd : item.getVarDeclList()){
+            vd.accept(this);
+        }
+
+        //TODO: StatList
+        for(StatementNode st : item.getStmtNodeList()){
+            st.accept(this);
+        }
+
         return null;
     }
 
     @Override
     public Object visit(IfStatNode item) {
+
+        //Lo scope attuale sarà quello dell'if
+        stack.enterScope(item.getSymbolTableIfScope());
+
+        item.getExpression().accept(this);
+
+        if(item.getExpression().getType() != Symbols.BOOL){
+            throw new RuntimeException("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) -> Espressione inserita di tipo " +
+                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", l'if si aspetta un tipo boolean!" +
+                    "!");
+        }
+
+        item.getBodyThen().accept(this);
+
+
+        //Ripristino lo scope padre
+        stack.exitScope();
+
+        if(item.getBodyElse() != null) {
+
+            //Cambio scope di nuovo, devo conservarlo e aggiorno lo scope
+            stack.enterScope(item.getSymbolTableElseScope());
+
+            item.getBodyElse().accept(this);
+            stack.exitScope(); //Ripristino lo scope
+
+        }
+
         return null;
     }
 
     @Override
     public Object visit(AssignStatNode item) {
+        int numIden = item.getIdentifierList().size();
+        int numExpr = item.getExpressionList().size();
+
+        if(numIden > numExpr){
+            throw new RuntimeException("Errore assegnazione: assegnazione tra "+ numIden+  " identificatori e "+ numExpr+" espressioni " +
+                    " (riga :" +item.getIdentifierList().get(0).getLeft().getLine()+" colonna :"+item.getExpressionList().get(numExpr-1).getRight().getColumn()+")");
+        } else if(numIden < numExpr){
+            throw new RuntimeException("Errore assegnazione: assegnazione tra "+ numIden+  " identificatori e "+ numExpr+" espressioni " +
+                    " (riga :" +item.getIdentifierList().get(0).getLeft().getLine()+" colonna :"+item.getIdentifierList().get(numIden-1).getRight().getColumn()+")");
+        }
+
+        LinkedList<Integer> tipiIden = new LinkedList<>(); // lista che contiene i tipi degli identificatori
+        LinkedList<Integer> tipiExpr = new LinkedList<>(); // lista che contiene i tipi delle espressioni
+        LinkedList<IdentifierExprNode> errorIden = new LinkedList<>(); // lista usata per salvarsi temporaneamente gli identificatori
+        LinkedList<ExpressionNode> errorExpr = new LinkedList<>(); // lista usata per salvarsi temporaneamente le espressioni
+
+        // ottenimento tipo degli identificatori
+        for (IdentifierExprNode iden: item.getIdentifierList()){
+            iden.accept(this);
+            tipiIden.add(iden.getType());
+            errorIden.add(iden);
+        }
+
+        // ottenimento tipo delle espressioni
+        for (ExpressionNode expr : item.getExpressionList()){
+            expr.accept(this);
+            tipiExpr.add(expr.getType());
+            errorExpr.add(expr);
+        }
+
+        // controllo corrispondenza tra tipi
+        for(int i = 0; i < tipiIden.size(); i ++){
+            if (TypeChecker.checkBinaryExpr(Symbols.ASSIGN,tipiIden.get(i), tipiExpr.get(i)) == -1){
+                throw  new RuntimeException("Tipo non corrispondente in (riga :"+errorIden.get(i).getLeft().getLine()+", colonna: "+
+                        errorIden.get(i).getLeft().getColumn() + ") e (riga:"+ errorExpr.get(i).getLeft().getLine()+", colonna: "+
+                        errorExpr.get(i).getLeft().getColumn() + ") -> "+ terminalNames[tipiIden.get(i)] + " e " + terminalNames[tipiExpr.get(i)]);
+            }
+        }
+
         return null;
     }
 
     @Override
     public Object visit(ForStatNode item) {
+
+        //Cambio scope, aggiorno scope corrente
+        stack.enterScope(item.getSymbolTableFor());
+
+        item.getIdentifier().accept(this);
+
+        item.getBody().accept(this);
+
+        //Ripristino scope del padre
+        stack.exitScope();
+
+
         return null;
     }
 
     @Override
     public Object visit(ReadStatNode item) {
+
+        for(IdentifierExprNode iden : item.getIdentifierList())
+            iden.accept(this);
+
         return null;
     }
 
     @Override
     public Object visit(ReturnStatNode item) {
+
+        if (item.getExpression() != null) {
+            System.out.println();
+            item.getExpression().accept(this);
+            item.setType(item.getExpression().getType());
+        }else {
+            item.setType(Symbols.VOID);
+        }
+
+
         return null;
     }
 
     @Override
     public Object visit(WhileStatNode item) {
+
+        //Cambio scope, quindi aggiorno quello corrente
+        stack.enterScope(item.getSymbolTableWhile());
+
+        item.getExpression().accept(this);
+
+        if(item.getExpression().getType() != Symbols.BOOL){
+            throw new RuntimeException("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) -> Espressione inserita di tipo " +
+                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", il while si aspetta un tipo boolean!" +
+                    "!");
+        }
+
+        item.getBody().accept(this);
+
+        //Ristabilire lo stack del padre
+        stack.exitScope(); //Ripristino lo scope padre
+
         return null;
     }
 
     @Override
     public Object visit(WriteStatNode item) {
+
+        for (ExpressionNode e: item.getExpressionList())
+            e.accept(this);
+
         return null;
     }
 
@@ -141,53 +313,154 @@ public class SemanticVisitor implements Visitor {
 
     @Override
     public Object visit(BooleanConstantNode item) {
+        item.setType(Symbols.BOOL);
         return null;
     }
 
     @Override
     public Object visit(RealConstantNode item) {
+        item.setType(Symbols.FLOAT);
         return null;
     }
 
     @Override
     public Object visit(StringConstantNode item) {
+        item.setType(Symbols.STRING);
         return null;
     }
 
     @Override
     public Object visit(CharConstantNode item) {
+        item.setType(Symbols.CHAR);
         return null;
     }
 
     @Override
     public Object visit(FunCallExprNode item) {
+
+        FunSymbol function;
+        if((function = (FunSymbol) stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION)) == null)
+            throw new RuntimeException("Funzione "+ item.getIdentifier().getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
+                    + item.getRight().getColumn() + " non dichiarata");
+
+        LinkedList<Integer> paramType = new LinkedList<>();
+        LinkedList<ExpressionNode> expressionType = new LinkedList<>();
+        for (ExpressionNode x : item.getListOfExpr()){
+            x.accept(this);
+            paramType.add(x.getType());
+            expressionType.add(x);
+        }
+
+        if(paramType.size() != function.getParamList().size()){
+            throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
+                    " colonna :" + item.getIdentifier().getRight().getColumn());
+        }
+
+        List<Integer> posizioneParametri = function.getParamType();
+
+        for (int i =0; i < paramType.size(); i++){
+            if(paramType.get(i) != function.getParamList().get(i)){
+                System.out.println(paramType.get(i) +"  " + function.getParamList().get(i));
+                throw new RuntimeException("Tipo dei parametri della funzione" +item.getIdentifier().getValue() + " ( riga :"+item.getIdentifier().getLeft().getLine()+
+                        " colonna :" + item.getIdentifier().getRight().getColumn());
+            }
+            if ( (expressionType.get(i) instanceof Constant) && posizioneParametri.get(i) == VarTypes.OUT){
+                throw new RuntimeException("Non si può assegnare una costante ad un variabile di tipo out ( riga :"+ expressionType.get(i).getLeft().getLine()+
+                        " colonna :" + expressionType.get(i).getRight().getColumn());
+            }
+        }
+
+        item.setType(function.getReturnType());
+
+
         return null;
     }
 
     @Override
     public Object visit(FunCallStatNode item) {
+
+        FunSymbol function;
+        if((function = (FunSymbol) stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION)) == null)
+            throw new RuntimeException("Funzione "+ item.getIdentifier().getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
+                    + item.getRight().getColumn() + " non dichiarata");
+
+        LinkedList<Integer> paramType = new LinkedList<>();
+        LinkedList<ExpressionNode> expressionType = new LinkedList<>();
+        for (ExpressionNode x : item.getListOfExpr()){
+            x.accept(this);
+            paramType.add(x.getType());
+            expressionType.add(x);
+        }
+
+        if(paramType.size() != function.getParamList().size()){
+            throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
+                    " colonna :" + item.getIdentifier().getRight().getColumn());
+        }
+
+        List<Integer> posizioneParametri = function.getParamType();
+
+        for (int i =0; i < paramType.size(); i++){
+            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getParamList().get(i))){
+                throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " ( riga :"+item.getIdentifier().getLeft().getLine()+
+                        " colonna :" + item.getIdentifier().getRight().getColumn());
+            }
+            if ( (expressionType.get(i) instanceof Constant) && posizioneParametri.get(i) == VarTypes.OUT){
+                throw new RuntimeException("Non si può assegnare una costante ad un variabile di tipo out ( riga :"+ expressionType.get(i).getLeft().getLine()+
+                        " colonna :" + expressionType.get(i).getRight().getColumn());
+            }
+        }
+
+        item.setType(function.getReturnType());
+
         return null;
     }
 
     @Override
     public Object visit(IdentifierExprNode item) {
-        Symbol s;
-        if ((s = stack.lookup(item.getValue(),SymbolTypes.VAR)) == null )
-            throw new RuntimeException("Simbolo non trovato "+ item.getValue());
 
-        //item.setType(s.getType());
+        IdSymbol idSym;
+        if((idSym = (IdSymbol) stack.lookup(item.getValue(), SymbolTypes.VAR) ) == null)
+            throw new RuntimeException("Variabile "+ item.getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
+                    + item.getRight().getColumn() + " non dichiarata precedentemente");
+
+        item.setType(idSym.getType());
+
 
         return null;
-
     }
 
     @Override
     public Object visit(UnaryExpressionNode item) {
+
+        item.getRightExpression().accept(this);
+
+        int type = TypeChecker.checkUnaryExpr(item.getOperation(), item.getRightExpression().getType());
+
+        if(type == -1){
+            throw new RuntimeException("Tipo non compatibile!");
+        }
+        item.setType(type);
         return null;
     }
 
     @Override
     public Object visit(BinaryExpressionNode item) {
+
+        item.getLeftExpression().accept(this);
+        item.getRightExpression().accept(this);
+
+        int type = TypeChecker.checkBinaryExpr(item.getOperation(), item.getLeftExpression().getType(), item.getRightExpression().getType());
+
+        if(type == -1){
+           throw new RuntimeException("Operazione tra tipi incompatibili (riga: "+item.getLeft().getLine() +
+                    ", colonna: "+ item.getRight().getColumn()+") -> "+
+                   terminalNames[item.getLeftExpression().getType()].toLowerCase()+ " e "+terminalNames[item.getRightExpression().getType()].toLowerCase());
+        }
+
+        item.setType(type);
+
+
         return null;
     }
+
 }

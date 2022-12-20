@@ -9,11 +9,8 @@ import java.io.FileReader;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.nodes.ProgramNode;
-import parser.newLangTree.nodes.statements.IfStatNode;
-import semantic.SymbolTable;
 import visitor.ScopeVisitor;
 import visitor.SemanticVisitor;
-import visitor.SemanticVisitorTest;
 import visitor.XMLTreeGenerator;
 import parser.*;
 import lexer.*;
@@ -42,7 +39,7 @@ public class Tester {
                 ScopeVisitor sv = new ScopeVisitor();
                 program.accept(sv);
 
-                SemanticVisitorTest sm = new SemanticVisitorTest();
+                SemanticVisitor sm = new SemanticVisitor();
                 program.accept(sm);
 
 
