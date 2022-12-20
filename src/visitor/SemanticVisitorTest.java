@@ -34,8 +34,6 @@ public class SemanticVisitorTest implements Visitor{
 
         item.getMainFuncDecl().accept(this);
 
-        System.out.println("PROGRAM: \n"+item.getSymbolTableProgramScope().toString());
-
         return null;
     }
 
@@ -78,11 +76,9 @@ public class SemanticVisitorTest implements Visitor{
     public Object visit(IdInitNode item) {
 
         item.getIdentifier().accept(this);
-        //System.out.println(item.getIdentifier().getValue());
+
         if(item.getExpression() != null){
             item.getExpression().accept(this);
-
-            System.out.println(item.getExpression().getType());
 
             int type = TypeChecker.checkBinaryExpr(Symbols.ASSIGN, item.getIdentifier().getType(), item.getExpression().getType());
             if(type == -1) {
@@ -158,8 +154,17 @@ public class SemanticVisitorTest implements Visitor{
         //Lo scope attuale sarà quello dell'if
         stack.enterScope(item.getSymbolTableIfScope());
 
+        item.getExpression().accept(this);
+
+        if(item.getExpression().getType() != Symbols.BOOL){
+            throw new RuntimeException("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) -> Espressione inserita di tipo " +
+                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", l'if si aspetta un tipo boolean!" +
+                    "!");
+        }
+
         item.getBodyThen().accept(this);
-        System.out.println("IF-THEN\n"+item.getSymbolTableIfScope().toString());
+
 
         //Ripristino lo scope padre
         stack.exitScope();
@@ -172,7 +177,7 @@ public class SemanticVisitorTest implements Visitor{
             item.getBodyElse().accept(this);
             stack.exitScope(); //Ripristino lo scope
 
-            System.out.println("IF-ELSE\n"+item.getSymbolTableElseScope().toString());
+
         }
 
         return null;
@@ -196,7 +201,6 @@ public class SemanticVisitorTest implements Visitor{
         //Ripristino scope del padre
         stack.exitScope();
 
-        System.out.println("FOR\n"+item.getSymbolTableFor().toString());
 
         return null;
     }
@@ -217,12 +221,19 @@ public class SemanticVisitorTest implements Visitor{
         //Cambio scope, quindi aggiorno quello corrente
         stack.enterScope(item.getSymbolTableWhile());
 
+        item.getExpression().accept(this);
+
+        if(item.getExpression().getType() != Symbols.BOOL){
+            throw new RuntimeException("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) -> Espressione inserita di tipo " +
+                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", il while si aspetta un tipo boolean!" +
+                    "!");
+        }
+
         item.getBody().accept(this);
 
         //Ristabilire lo stack del padre
         stack.exitScope(); //Ripristino lo scope padre
-
-        System.out.println("WHILE\n"+item.getSymbolTableWhile().toString());
 
         return null;
     }

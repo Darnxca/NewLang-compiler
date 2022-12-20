@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> sa</value>
+</IdentifierExpression>
+<StringConstant> CIAO</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> GT</Operation>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x3</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<ReturnStat>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+</ReturnStat>
+</Body>
+</IfStat>
+<WhileStat>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> DIV</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+<Operation> LT</Operation>
+<RealConstant> 2.2</RealConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<BinaryExpression>
+<IntegerConstant> 1</IntegerConstant>
+<Operation> DIV</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 31</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> OR</Operation>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> DIV</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> GT</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> AND</Operation>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<Operation> MINUS</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Operation> DIV</Operation>
+<IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</UnaryExpression>
+</BinaryExpression>
+</UnaryExpression>
+<Body>
+</Body>
+</WhileStat>
+<ForStat fromValue='1' toValue='4'>
+<IdentifierExpression>
+<value> sa</value>
+</IdentifierExpression>
+<Body>
+</Body>
+</ForStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

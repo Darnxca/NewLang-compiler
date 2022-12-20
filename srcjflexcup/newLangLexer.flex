@@ -70,7 +70,7 @@ digit1 = [1-9]
 digits = {digit}+
 
 
-Identifier = ({letter_$})+({letter_$}{digit})*
+Identifier = ({letter_$}|({letter_$}+{digit}*))
 FloatNumber = (({digit1}+{digit}* | {zero}))(\.{digits})?
 IntegerNumber = (({digit1}+{digit}* | {zero}))
 
@@ -146,7 +146,7 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
 
     /*numeri*/
     {IntegerNumber}      {return symbol("INTEGER_CONST", INTEGER_CONST, Integer.parseInt(yytext()));}
-    {FloatNumber}        {System.out.println(yytext()); return symbol("REAL_CONST", REAL_CONST, Float.parseFloat(yytext())); }
+    {FloatNumber}        {return symbol("REAL_CONST", REAL_CONST, Float.parseFloat(yytext())); }
 
     /* Stringhe letterali */
     \"                  { string.setLength(0); yybegin(STRING_STATE); }

@@ -24,7 +24,6 @@ start: def main(): integer {
 		num2 <-- "Inserisci il secondo numero";
 
 		if ( sceltaOp = 2 ) then {
-
 			somma(num1, num2, result);
 		}
 		if ( sceltaOp = 3 ) then {

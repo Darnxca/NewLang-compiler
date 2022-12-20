@@ -1,3 +1,4 @@
+C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\Node.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\visitor\XMLTreeGenerator.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\constants\IntegerConstantNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\IfStatNode.java
@@ -15,7 +16,6 @@ C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\semantic\exception\Multi
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\SingleTypeNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\semantic\SymbolTableStack.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\visitor\Visitor.java
-C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\Nodes.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\ReturnStatNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\ReadStatNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\semantic\symbols\IdSymbol.java
@@ -29,9 +29,11 @@ C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\MainFuncDeclNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\IdentifierExprNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\constants\Constant.java
+C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\visitor\SemanticVisitorTest.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\IdInitNode.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\semantic\symbols\Symbol.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\UnaryExpressionNode.java
+C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\visitor\TypeChecker.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\visitor\Visitable.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\visitor\ScopeVisitor.java
 C:\Users\della\IdeaProjects\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\FunCallStatNode.java

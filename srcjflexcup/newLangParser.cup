@@ -43,7 +43,7 @@ terminal SEMI, COMMA, LPAR, RPAR, COLON, LBRAC, RBRAC, PIPE, OUT; //Separatori
 terminal Integer  CHAR, STRING, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
 
 terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN; //Statements
-terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT; //Operatori aritmetici, stringhe
+terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT, UMINUS; //Operatori aritmetici, stringhe
 
 terminal String    STRING_CONST, ID;
 terminal Integer   INTEGER_CONST;
@@ -84,14 +84,15 @@ non terminal ExpressionNode             Expr;
 
 
 /* Precedenze */
-precedence left AND;
-precedence left OR;
-precedence left PLUS;
-precedence nonassoc LT, GT, LE, GE, EQ, NE; //Non c'è associatività, non posso utilizzare in sequenza
+
+precedence right NOT;
 precedence right ASSIGN;
-precedence right MINUS; //Per valori negativi, la precendeza è a destra (Esempio: -2 + 3 = 1 e non -5)
-precedence left TIMES, DIV, POW;
+precedence left OR, AND;
+precedence nonassoc LT, GT, LE, GE, EQ, NE; //Non c'è associatività, non posso utilizzare in sequenza
 precedence left  STR_CONCAT; //TEMPORANEO
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV, POW;
+precedence left MINUS; //Per valori negativi, la precendeza è a destra (Esempio: -2 + 3 = 1 e non -5)
 
 
 

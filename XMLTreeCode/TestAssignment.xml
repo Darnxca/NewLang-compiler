@@ -163,31 +163,6 @@
 </BinaryExpression>
 </IdInitNode>
 </VarDeclNode>
-<VarDeclNode>
-<Type>CHAR</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> yee</value>
-</IdentifierExpression>
-<BinaryExpression>
-<BinaryExpression>
-<IntegerConstant> 1</IntegerConstant>
-<Operation> PLUS</Operation>
-<BinaryExpression>
-<RealConstant> 2.0</RealConstant>
-<Operation> DIV</Operation>
-<IntegerConstant> 30</IntegerConstant>
-</BinaryExpression>
-</BinaryExpression>
-<Operation> PLUS</Operation>
-<BinaryExpression>
-<IntegerConstant> 112</IntegerConstant>
-<Operation> STR_CONCAT</Operation>
-<CharConstant> l</CharConstant>
-</BinaryExpression>
-</BinaryExpression>
-</IdInitNode>
-</VarDeclNode>
 </Body>
 </FuncDeclNode>
 </Main>
