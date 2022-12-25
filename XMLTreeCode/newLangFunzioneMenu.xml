@@ -411,7 +411,9 @@
 <IdentifierExpression>
 <value> num1</value>
 </IdentifierExpression>
-<IntegerConstant> 2</IntegerConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
 <IdentifierExpression>
 <value> result</value>
 </IdentifierExpression>
