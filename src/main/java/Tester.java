@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.nodes.ProgramNode;
+import visitor.CGenVisitor;
 import visitor.ScopeVisitor;
 import visitor.SemanticVisitor;
 import visitor.XMLTreeGenerator;
@@ -42,6 +43,9 @@ public class Tester {
                 SemanticVisitor sm = new SemanticVisitor();
                 program.accept(sm);
 
+                CGenVisitor cg = new CGenVisitor(filename[1]);
+                program.accept(cg);
+                cg.flush();
 
                 System.out.println("Linguaggio riconosciuto");
 
