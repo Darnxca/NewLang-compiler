@@ -19,22 +19,37 @@ parser code {:
 
     public void report_fatal_error(String message, Object info){
         report_error(message,info);
-        System.exit(1);
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
             this.report_fatal_error("at", cur_token.left);
-            System.exit(1);
      }
 
-    private  boolean error = false;
-
     public void report_error(String message, Object info) {
-        if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
-          ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
-          System.err.println("Errore (riga: " + cs.getLeft().getLine() + ", colonna: " + cs.getRight().getColumn()+"): "+ message);
-          error = true;
+            if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
+              ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
+              throw new RuntimeException("Errore di sintassi presente alla riga: " + cs.getLeft().getLine() +
+                      ", colonna: " + cs.getRight().getColumn()+".\n"
+                      + expected_tokenList());
+            }
         }
+
+    public String expected_tokenList() {
+          List<Integer> ids = this.expected_token_ids();
+          LinkedList<String> list = new LinkedList();
+          Iterator var3 = ids.iterator();
+          String str="";
+
+          while(var3.hasNext()) {
+            Integer expected = (Integer)var3.next();
+            list.add(this.symbl_name_from_id(expected));
+            str+="["+this.symbl_name_from_id(expected)+"],";
+          }
+
+          if (!str.equals(""))
+            str = "Possibili token aspettati: " + str.substring(0,str.length()-1);
+
+          return str;
     }
 :};
 
@@ -127,7 +142,6 @@ DeclList ::=   /* empty */                                  {:
 MainFunDecl ::= MAIN FunDecl:f                              {:
                                                                RESULT = new MainFuncDeclNode(f);
                                                             :}
-                | MAIN error  {: if(error){System.err.println(" Errore nella definizione della funzione main"); throw new RuntimeException("");} :}
 ;
 VarDecl ::= Type:t IdInitList:il SEMI                       {:
                                                                VarDeclNode vd = new VarDeclNode(t);
@@ -195,13 +209,6 @@ FunDecl ::= DEF ID:i LPAR ParamDeclList:pl RPAR COLON TypeOrVoid:t Body:b       
                                                                                     FunDeclNode fd = new FunDeclNode(id, t, b);
                                                                                     RESULT = fd;
                                                                                 :}
-            | DEF error  {: if(error){System.err.println(" Errore nella definizione della funzione: manca il nome "); throw new RuntimeException("");} :}
-            | DEF ID error  {: if(error){System.err.println(" Errore nella definizione della funzione: manca '(' "); throw new RuntimeException("");} :}
-            | DEF ID LPAR error  {: if(error){System.err.println(" Errore nella definizione della funzione: manca ')' "); throw new RuntimeException("");} :}
-            | DEF ID LPAR RPAR error  {: if(error){System.err.println(" Errore nella definizione della funzione: manca ':' "); throw new RuntimeException("");} :}
-            | DEF ID LPAR RPAR COLON error  {: if(error){System.err.println(" Errore nella definizione della funzione: manca il tipo ");throw new RuntimeException("");} :}
-            | DEF ID LPAR RPAR COLON TypeOrVoid:t error  {: if(error){System.err.println(" Errore nella definizione della funzione");} :}
-
 ;
 Body ::= LBRAC VarDeclList:vdl StatList:sl RBRAC                    {:
                                                                        BodyNode bd = new BodyNode(vdl, sl);
@@ -243,7 +250,6 @@ ParDecl ::= Type:t IdList:il                                        {:
 ;
 TypeOrVoid ::=   Type:t                                             {: RESULT = t; :}
                | VOID                                               {: RESULT = Symbols.VOID; :}
-               | error {: if(error){System.err.println(" Errore  manca il tipo "); throw new RuntimeException("");} :}
 ;
 VarDeclList ::= VarDecl:vd VarDeclList:vdl                          {:
                                                                        vdl.add(0, vd);
