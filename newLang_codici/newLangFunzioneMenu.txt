@@ -62,6 +62,10 @@ start: def main(): integer {
 }
 
 def somma(float a,b | out float result) : void {
+    integer plal << 2;
+    float l, ldl, wdw;
+    float ez;
+
 	result << a + b;
 }
 
@@ -89,7 +93,5 @@ def dividi(float a,b | out float result) : boolean{
 	}
 }
 
-integer c,b;
-integer x << c+b;
-boolean testing << true;
-string a << "S" & "&" & "&" & "casa" & "&2222" & "&fefwfw";
+integer al,bl,cl;
+||string a << "S" & "&" & "&" & "casa" & "&2222" & "&fefwfw";

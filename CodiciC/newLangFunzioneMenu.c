@@ -4,21 +4,44 @@
 #include <math.h>
 
 // prototipi delle funzioni
-void moltiplica(float a903,float a842,float *a791);
-void sottrai(float a407,float a928,float *a421);
+void moltiplica(float a,float b,float *result);
+void sottrai(float a,float b,float *result);
 void stampaMenu();
-void somma(float a643,float a980,float *a871);
+void somma(float a,float b,float *result);
 int main();
-int dividi(float a960,float a589,float *a327);
+int dividi(float a,float b,float *result);
 
 // dichiarazione variabili globali
-int testing;
-char*  a;
-int x;
-int b;
-int c;
+int cl;
+int al;
+int bl;
 
 // inizializzazione delle variabili
-testing = 1;
-x = c + b;
-a = strcat(strcat(strcat(strcat(strcat(strcpy(malloc(1*sizeof(char)),"S"),strcpy(malloc(1*sizeof(char)),"&")),strcpy(malloc(1*sizeof(char)),"&")),strcpy(malloc(4*sizeof(char)),"casa")),strcpy(malloc(5*sizeof(char)),"&2222")),strcpy(malloc(7*sizeof(char)),"&fefwfw"));
+
+//-----------Implementazione funzioni-----------
+void stampaMenu ( ){
+
+// Dichiarazione variabili
+}
+void somma (float a, float b, float * result ){
+
+// Dichiarazione variabili
+int plal;
+float ez;
+float l;
+float wdw;
+float ldl;
+plal = 2;
+}
+void sottrai (float a, float b, float * result ){
+
+// Dichiarazione variabili
+}
+void moltiplica (float a, float b, float * result ){
+
+// Dichiarazione variabili
+}
+int dividi (float a, float b, float * result ){
+
+// Dichiarazione variabili
+}

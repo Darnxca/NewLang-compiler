@@ -1,12 +1,12 @@
 package visitor;
 
-import codeGenerator.VariableGenerator;
 import parser.Symbols;
 import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
-import semantic.VarTypes;
+import semantic.SymbolTableStack;
+import semantic.SymbolTypes;
 import semantic.symbols.FunSymbol;
 import semantic.symbols.IdSymbol;
 
@@ -15,10 +15,12 @@ import java.io.PrintWriter;
 
 public class CGenVisitor implements Visitor{
 
+    private SymbolTableStack stack;
     private static PrintWriter writer;
 
     public CGenVisitor(String filename){
         try {
+            stack = new SymbolTableStack();
             writer = new PrintWriter( "CodiciC/"+filename+".c");
             generaLibrerie();
 
@@ -36,6 +38,8 @@ public class CGenVisitor implements Visitor{
 
     @Override
     public Object visit(ProgramNode item) {
+
+        stack.enterScope(item.getSymbolTableProgramScope());
 
         writer.println("// prototipi delle funzioni");
         item.getSymbolTableProgramScope().forEach((key, sym) ->{
@@ -78,17 +82,23 @@ public class CGenVisitor implements Visitor{
         // creazione del codice c per le inizializzazioni di variabili con espressioni
         for (VarDeclNode var : item.getVarDeclList()){
             for (IdInitNode id : var.getIdIList()){
-                if (!(id.getExpression() instanceof Constant) && id.getExpression() !=null) {
+                if (!(id.getExpression() instanceof Constant) && id.getExpression() != null) {
                     var.accept(this);
                 }
             }
         }
+
+        writer.println("\n//-----------Implementazione funzioni-----------");
+
+        for (FunDeclNode fd : item.getFunDeclList()){
+            fd.accept(this);
+        }
+
         return null;
     }
 
     @Override
-    public Object visit(MainFuncDeclNode item) {
-        return null;
+    public Object visit(MainFuncDeclNode item) {return null;
     }
 
     @Override
@@ -133,16 +143,121 @@ public class CGenVisitor implements Visitor{
 
     @Override
     public Object visit(FunDeclNode item) {
+
+
+        stack.enterScope(item.getSymbolTableFunScope());
+
+        writer.print(getTypeFromToken(item.getTypeOrVoid())+ " ");
+
+        item.getIdentifier().accept(this);
+
+        writer.print(" (");
+
+        for (int i= 0; i< item.getParamDecl().size(); i++){
+            ParamDeclNode pd = item.getParamDecl().get(i);
+
+            if(i != item.getParamDecl().size()-1){
+                pd.accept(this);
+                writer.print(", ");
+            }
+            else {
+                pd.accept(this);
+            }
+
+        }
+
+        writer.print(" )");
+        writer.println("{");
+        item.getBody().accept(this);
+
+        writer.println("}");
+
+        stack.exitScope();
         return null;
     }
 
+    private static String getTypeFromToken(int token){
+        String type = "";
+        switch (token){
+            case Symbols.INTEGER :
+                type += "int";
+                break;
+            case Symbols.FLOAT:
+                type += "float";
+                break;
+            case Symbols.CHAR:
+                type += "char";
+                break;
+            case Symbols.BOOL:
+                type += "int";
+                break;
+            case Symbols.STRING:
+                type += "char* ";
+                break;
+            case Symbols.VOID:
+                type += "void";
+                break;
+        }
+
+        return type;
+    }
     @Override
     public Object visit(ParamDeclNode item) {
+
+        for(int i= 0; i< item.getIdentifierList().size(); i++){
+
+            IdentifierExprNode id = item.getIdentifierList().get(i);
+            writer.print(getTypeFromToken(id.getType())+" ");
+            id.accept(this);
+
+            if(i != item.getIdentifierList().size()-1){
+                writer.print(", ");
+            }
+
+
+        }
+
+
         return null;
     }
 
     @Override
     public Object visit(BodyNode item) {
+
+        writer.println("\n// Dichiarazione variabili");
+        stack.getCurrentScope().forEach((key, sym) ->{
+            if(sym instanceof IdSymbol){
+                IdSymbol idS = (IdSymbol) sym;
+                if(!idS.isParameter()){
+                    generaDichiarazioneVariabile(idS);
+                }
+
+            }
+        });
+
+        // creazione del codice c per le inizializzazioni di variabili con una costante
+        for (VarDeclNode var : item.getVarDeclList()){
+            for (IdInitNode id : var.getIdIList()){
+                if (id.getExpression() instanceof Constant && id.getExpression() !=null) {
+                    var.accept(this);
+                }
+            }
+            for (IdInitObbNode id : var.getIdIObList()){
+                var.accept(this);
+            }
+        }
+
+        // creazione del codice c per le inizializzazioni di variabili con espressioni
+        for (VarDeclNode var : item.getVarDeclList()){
+            for (IdInitNode id : var.getIdIList()){
+                if (!(id.getExpression() instanceof Constant) && id.getExpression() != null) {
+                    var.accept(this);
+                }
+            }
+        }
+
+
+
         return null;
     }
 
@@ -235,7 +350,20 @@ public class CGenVisitor implements Visitor{
 
     @Override
     public Object visit(IdentifierExprNode item) {
-        writer.print(item.getValue());
+
+        IdSymbol idSym = null;
+        if((idSym = (IdSymbol) stack.lookup(item.getValue(), SymbolTypes.VAR)) == null){
+            writer.print(item.getValue());
+        }
+        else if(idSym.isPointer() ){
+            writer.print("* "+ item.getValue());
+        }
+        else{
+            writer.print(item.getValue());
+        }
+
+
+
         return null;
     }
 
@@ -279,23 +407,23 @@ public class CGenVisitor implements Visitor{
     private static void generaPrototipoFunzione(FunSymbol fs){
         writer.print(fs.getTypeFromToken(fs.getReturnType()) +
                 " "+ fs.getIdentifier()+"(");
-        for(int i = 0; i< fs.getTypeOfParam().size(); i++){
-            if(fs.getInOrOut().get(i) == VarTypes.OUT){
-                if(i != fs.getTypeOfParam().size()-1){
-                    writer.print(fs.getTypeFromToken(fs.getTypeOfParam().get(i))+" *"+ VariableGenerator.generaNomeVariabile()+", ");
+        for(int i = 0; i< fs.getListOfParams().size(); i++){
+            if(fs.getListOfParams().get(i).isOut()){
+                if(i != fs.getListOfParams().size()-1){
+                    writer.print(fs.getTypeFromToken(fs.getListOfParams().get(i).getPrimitiveTypeOfParam())+" *"+ fs.getListOfParams().get(i).getIdentifier()+", ");
                 }
                 else {
-                    writer.print(fs.getTypeFromToken(fs.getTypeOfParam().get(i))+" *"+ VariableGenerator.generaNomeVariabile());
+                    writer.print(fs.getTypeFromToken(fs.getListOfParams().get(i).getPrimitiveTypeOfParam())+" *"+ fs.getListOfParams().get(i).getIdentifier());
 
                 }
 
             }
             else {
-                if(i != fs.getTypeOfParam().size()-1){
-                    writer.print(fs.getTypeFromToken(fs.getTypeOfParam().get(i))+" "+ VariableGenerator.generaNomeVariabile()+ ",");
+                if(i != fs.getListOfParams().size()-1){
+                    writer.print(fs.getTypeFromToken(fs.getListOfParams().get(i).getPrimitiveTypeOfParam())+" "+ fs.getListOfParams().get(i).getIdentifier()+ ",");
                 }
                 else {
-                    writer.print(fs.getTypeFromToken(fs.getTypeOfParam().get(i))+" "+ VariableGenerator.generaNomeVariabile());
+                    writer.print(fs.getTypeFromToken(fs.getListOfParams().get(i).getPrimitiveTypeOfParam())+" "+ fs.getListOfParams().get(i).getIdentifier());
                 }
 
             }
@@ -303,6 +431,8 @@ public class CGenVisitor implements Visitor{
         writer.println(");");
 
     }
+
+
     private static void generaDichiarazioneVariabile(IdSymbol is){
         writer.println(is.getTypeFromToken(is.getType()) +
                 " "+ is.getIdentifier()+";");

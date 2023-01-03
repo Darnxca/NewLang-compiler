@@ -350,19 +350,18 @@ public class SemanticVisitor implements Visitor{
             expressionType.add(x);
         }
 
-        if(paramType.size() != function.getTypeOfParam().size()){
+        if(paramType.size() != function.getListOfParams().size()){
             throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
                     " colonna :" + item.getIdentifier().getRight().getColumn());
         }
 
-        List<Integer> posizioneParametri = function.getInOrOut();
 
         for (int i =0; i < paramType.size(); i++){
-            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getTypeOfParam().get(i))){
+            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getListOfParams().get(i).getPrimitiveTypeOfParam())){
                 throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
                         " colonna :" + item.getIdentifier().getRight().getColumn());
             }
-            if ( (expressionType.get(i) instanceof Constant) && posizioneParametri.get(i) == VarTypes.OUT){
+            if ( (expressionType.get(i) instanceof Constant) && function.getListOfParams().get(i).isOut()){
                 throw new RuntimeException("Non si può assegnare una costante ad un variabile di tipo out ( riga :"+ expressionType.get(i).getLeft().getLine()+
                         " colonna :" + expressionType.get(i).getRight().getColumn());
             }
@@ -390,19 +389,17 @@ public class SemanticVisitor implements Visitor{
             expressionType.add(x);
         }
 
-        if(paramType.size() != function.getTypeOfParam().size()){
+        if(paramType.size() != function.getListOfParams().size()){
             throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
                     " colonna :" + item.getIdentifier().getRight().getColumn());
         }
 
-        List<Integer> posizioneParametri = function.getInOrOut();
-
         for (int i =0; i < paramType.size(); i++){
-            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getTypeOfParam().get(i))){
+            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getListOfParams().get(i).getPrimitiveTypeOfParam())){
                 throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
                         " colonna :" + item.getIdentifier().getRight().getColumn());
             }
-            if ( (expressionType.get(i) instanceof Constant) && posizioneParametri.get(i) == VarTypes.OUT){
+            if ( (expressionType.get(i) instanceof Constant) && function.getListOfParams().get(i).isOut()){
                 throw new RuntimeException("Non si può assegnare una costante ad un variabile di tipo out ( riga :"+ expressionType.get(i).getLeft().getLine()+
                         " colonna :" + expressionType.get(i).getRight().getColumn());
             }

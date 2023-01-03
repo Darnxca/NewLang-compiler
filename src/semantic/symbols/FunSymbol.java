@@ -2,33 +2,26 @@ package semantic.symbols;
 
 import parser.Symbols;
 import semantic.SymbolTypes;
-import semantic.VarTypes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FunSymbol extends Symbol {
 
     public static final int SEPARATOR = -1;
-    private List<Integer> typeOfParam; //per specificare il tipo primitivo del parametro es. Int, float, bool, ecc
-    private List<Integer> inOrOut; //per specificare che il parametro della funzione è di in o out
+    private List<ParamFunSymbol> listOfParams; //per specificare il tipo primitivo del parametro es. Int, float, bool, ecc
     private Integer returnType;
 
 
-    public FunSymbol(String id, List<Integer> typeOfParam, List<Integer> inOrOut, Integer returnType) {
+    public FunSymbol(String id, List<ParamFunSymbol> listOfParams, Integer returnType) {
         super(id, SymbolTypes.FUNCTION);
-        this.typeOfParam = typeOfParam;
-        this.inOrOut = inOrOut;
+        this.listOfParams = listOfParams;
         this.returnType = returnType;
     }
 
-    public List<Integer> getTypeOfParam() {
-        return typeOfParam;
+    public List<ParamFunSymbol> getListOfParams() {
+        return listOfParams;
     }
 
-    public List<Integer> getInOrOut() {
-        return inOrOut;
-    }
 
     public Integer getReturnType() {
         return returnType;
@@ -42,9 +35,9 @@ public class FunSymbol extends Symbol {
                 ", type= (";
 
         String str2="";
-        if (typeOfParam.size() > 0) {
-            for (int i= 0; i < typeOfParam.size(); i ++) {
-                str += Symbols.terminalNames[typeOfParam.get(i)] + " X ";
+        if (listOfParams.size() > 0) {
+            for (int i = 0; i < listOfParams.size(); i ++) {
+                str += Symbols.terminalNames[listOfParams.get(i).getPrimitiveTypeOfParam()] + " X ";
             }
             str2 = str.substring(0, str.lastIndexOf("X"));
             str2 += ")";

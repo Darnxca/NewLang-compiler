@@ -66,6 +66,10 @@ public class SymbolTableStack {
 		return true;
 	}
 
+	public SymbolTable getCurrentScope(){
+		return stack.peek();
+	}
+
 
 	public SymbolTable exitScope() {return stack.pop();}
 

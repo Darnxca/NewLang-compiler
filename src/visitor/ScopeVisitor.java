@@ -10,6 +10,7 @@ import semantic.exception.MultipleIdentifierDeclaration;
 import semantic.exception.MultipleMainDeclaration;
 import semantic.symbols.FunSymbol;
 import semantic.symbols.IdSymbol;
+import semantic.symbols.ParamFunSymbol;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -112,19 +113,14 @@ public class ScopeVisitor implements Visitor{
             throw new RuntimeException("Errore in (riga:"+item.getIdentifier().getLeft().getLine()+", colonna: "+item.getIdentifier().getLeft().getColumn()+") -> Funzione "+funName+" già dichiarata precedentemente!");
         }
 
-        List<Integer> paramTypeList = new LinkedList<>(); // Lista parametri per valore
-        List<Integer> paramType = new LinkedList<>(); // Lista parametri per riferimento
+        List<ParamFunSymbol> paramList = new LinkedList<>(); // Lista parametri per valore
 
         for (ParamDeclNode p : item.getParamDecl()){
-            if(!(p.isOut())){
-                for (IdentifierExprNode x : p.getIdentifierList()) { // aggiungiamo tanti tipi quanti gli identificatori
-                    paramTypeList.add(p.getType());
-                    paramType.add(VarTypes.IN);
-                }
-            } else{
-                for (IdentifierExprNode x : p.getIdentifierList()) {
-                    paramTypeList.add(p.getType());
-                    paramType.add(VarTypes.OUT);
+            for (IdentifierExprNode x : p.getIdentifierList()) { // aggiungiamo tanti tipi quanti gli identificatori
+                if(!(p.isOut())){
+                    paramList.add(new ParamFunSymbol(x.getValue(), SymbolTypes.VAR, p.getType(), VarTypes.IN));
+                } else{
+                    paramList.add(new ParamFunSymbol(x.getValue(), SymbolTypes.VAR, p.getType(), VarTypes.OUT));
                 }
             }
         }
@@ -132,7 +128,7 @@ public class ScopeVisitor implements Visitor{
         // creo il simbolo della funzione
 
         // aggiungo la firma della funzione a programm;
-        stack.addId(new FunSymbol(funName, paramTypeList, paramType, item.getTypeOrVoid()));
+        stack.addId(new FunSymbol(funName, paramList, item.getTypeOrVoid()));
 
         //Cambio scope
         stack.enterScope(item.getSymbolTableFunScope());
@@ -156,6 +152,8 @@ public class ScopeVisitor implements Visitor{
             if(stack.probe(iden.getValue())){
                 throw new MultipleIdentifierDeclaration("Errore in (riga:"+iden.getLeft().getLine()+", colonna: "+iden.getLeft().getColumn()+") -> Variabile "+iden.getValue()+" già dichiarata precedentemente!");
             }
+            iden.setPointer(item.isOut()); //Valuto se l'identificatore del parametro è un puntatore
+            iden.setParameter(true); //l'identificatore viene sfruttato come parametro della funzione
             iden.setType(item.getType());
             iden.accept(this);
         }
@@ -302,7 +300,7 @@ public class ScopeVisitor implements Visitor{
     public Object visit(IdentifierExprNode item) {
 
         //Salvataggio e aggiornamento scope corrente
-        stack.addId(new IdSymbol(item.getValue(), item.getType()));
+        stack.addId(new IdSymbol(item.getValue(), item.getType(), item.isPointer(), item.isParameter()));
         return null;
     }
 

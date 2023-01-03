@@ -6,68 +6,18 @@
 <Type>INTEGER</Type>
 <IdInitNode>
 <IdentifierExpression>
-<value> c</value>
+<value> al</value>
 </IdentifierExpression>
 </IdInitNode>
 <IdInitNode>
 <IdentifierExpression>
-<value> b</value>
+<value> bl</value>
 </IdentifierExpression>
 </IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>INTEGER</Type>
 <IdInitNode>
 <IdentifierExpression>
-<value> x</value>
+<value> cl</value>
 </IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> c</value>
-</IdentifierExpression>
-<Operation> PLUS</Operation>
-<IdentifierExpression>
-<value> b</value>
-</IdentifierExpression>
-</BinaryExpression>
-</IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>BOOL</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> testing</value>
-</IdentifierExpression>
-<BooleanConstant> true</BooleanConstant>
-</IdInitNode>
-</VarDeclNode>
-<VarDeclNode>
-<Type>STRING</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> a</value>
-</IdentifierExpression>
-<BinaryExpression>
-<BinaryExpression>
-<BinaryExpression>
-<BinaryExpression>
-<BinaryExpression>
-<StringConstant> S</StringConstant>
-<Operation> STR_CONCAT</Operation>
-<StringConstant> &</StringConstant>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
-<StringConstant> &</StringConstant>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
-<StringConstant> casa</StringConstant>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
-<StringConstant> &2222</StringConstant>
-</BinaryExpression>
-<Operation> STR_CONCAT</Operation>
-<StringConstant> &fefwfw</StringConstant>
-</BinaryExpression>
 </IdInitNode>
 </VarDeclNode>
 <FuncDeclNode Type='VOID'>
@@ -112,6 +62,41 @@
 </IdentifierExpression>
 </ParamDecl>
 <Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> plal</value>
+</IdentifierExpression>
+<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> l</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> ldl</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> wdw</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> ez</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
 <AssignStat>
 <IdentifierExpression>
 <value> result</value>
