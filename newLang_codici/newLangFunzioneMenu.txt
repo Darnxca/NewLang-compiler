@@ -89,4 +89,7 @@ def dividi(float a,b | out float result) : boolean{
 	}
 }
 
-float pippo << 10;
+integer c,b;
+integer x << c+b;
+boolean testing << true;
+string a << "S" & "&" & "&" & "casa" & "&2222" & "&fefwfw";

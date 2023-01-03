@@ -25,4 +25,30 @@ public abstract class Symbol {
 	public String getIdentifier() {
 		return identifier;
 	}
+
+	public String getTypeFromToken(int token){
+		String type = "";
+		switch (token){
+			case Symbols.INTEGER :
+				type += "int";
+				break;
+			case Symbols.FLOAT:
+				type += "float";
+				break;
+			case Symbols.CHAR:
+				type += "char";
+				break;
+			case Symbols.BOOL:
+				type += "int";
+				break;
+			case Symbols.STRING:
+				type += "char* ";
+				break;
+			case Symbols.VOID:
+				type += "void";
+				break;
+		}
+
+		return type;
+	}
 }

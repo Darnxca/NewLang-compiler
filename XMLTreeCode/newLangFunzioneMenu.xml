@@ -3,12 +3,71 @@
 <ProgramNode>
 <Declist>
 <VarDeclNode>
-<Type>FLOAT</Type>
+<Type>INTEGER</Type>
 <IdInitNode>
 <IdentifierExpression>
-<value> pippo</value>
+<value> c</value>
 </IdentifierExpression>
-<IntegerConstant> 10</IntegerConstant>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> testing</value>
+</IdentifierExpression>
+<BooleanConstant> true</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<StringConstant> S</StringConstant>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> &</StringConstant>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> &</StringConstant>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> casa</StringConstant>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> &2222</StringConstant>
+</BinaryExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> &fefwfw</StringConstant>
+</BinaryExpression>
 </IdInitNode>
 </VarDeclNode>
 <FuncDeclNode Type='VOID'>

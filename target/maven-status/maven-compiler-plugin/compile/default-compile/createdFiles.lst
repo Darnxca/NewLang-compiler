@@ -1,3 +1,6 @@
+main\java\Tester.class
 semantic\SymbolTypes.class
+parser\Parser.class
 semantic\SymbolTableStack.class
 semantic\SymbolTable.class
+parser\Parser$CUP$Parser$actions.class

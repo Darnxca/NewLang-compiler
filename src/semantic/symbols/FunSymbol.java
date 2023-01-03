@@ -34,31 +34,32 @@ public class FunSymbol extends Symbol {
         return returnType;
     }
 
-    public String getTypeFromToken(int token){
-        String type = "";
-        switch (token){
-            case Symbols.INTEGER :
-                type += "int";
-                break;
-            case Symbols.FLOAT:
-                type += "float";
-                break;
-            case Symbols.CHAR:
-                type += "char";
-                break;
-            case Symbols.BOOL:
-                type += "int";
-                break;
-            case Symbols.STRING:
-                type += "char* ";
-                break;
-            case Symbols.VOID:
-                type += "void";
-                break;
+    @Override
+    public String toString() {
+        String str= "Symbol{" +
+                "identifier='" + identifier + '\'' +
+                ", entryType=" + SymbolTypes.entryNames[entryType] +
+                ", type= (";
+
+        String str2="";
+        if (typeOfParam.size() > 0) {
+            for (int i= 0; i < typeOfParam.size(); i ++) {
+                str += Symbols.terminalNames[typeOfParam.get(i)] + " X ";
+            }
+            str2 = str.substring(0, str.lastIndexOf("X"));
+            str2 += ")";
+        }else{
+            str += ")";
+            str2 = str;
         }
 
-        return type;
+        str2 += " --> "+ Symbols.terminalNames[returnType];
+
+        str2 += "}\n";
+
+        return str2;
     }
+
 
 
 
