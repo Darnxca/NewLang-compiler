@@ -1,5 +1,7 @@
 package visitor;
 
+import codeGenerator.CodeGenerator;
+import codeGenerator.VariableGenerator;
 import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.BinaryExpressionNode;
 import parser.newLangTree.nodes.expression.FunCallExprNode;
@@ -7,6 +9,9 @@ import parser.newLangTree.nodes.expression.IdentifierExprNode;
 import parser.newLangTree.nodes.expression.UnaryExpressionNode;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
+import semantic.VarTypes;
+import semantic.symbols.FunSymbol;
+import semantic.symbols.Symbol;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +23,9 @@ public class CGenVisitor implements Visitor{
     public CGenVisitor(String filename){
         try {
             writer = new PrintWriter( "CodiciC/"+filename+".c");
-            writer.println("#include <std.io>");
+            CodeGenerator.setWriter(writer);
+            CodeGenerator.generaLibrerie();
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -29,8 +36,18 @@ public class CGenVisitor implements Visitor{
         writer.close();
     }
 
+
+
     @Override
     public Object visit(ProgramNode item) {
+
+        item.getSymbolTableProgramScope().forEach((key, sym) ->{
+            if(sym instanceof FunSymbol){
+                FunSymbol fs = (FunSymbol) sym;
+                CodeGenerator.generaPrototipoFunzione(fs);
+            }
+        });
+
         return null;
     }
 

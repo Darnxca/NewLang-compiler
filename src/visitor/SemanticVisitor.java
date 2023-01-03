@@ -350,15 +350,15 @@ public class SemanticVisitor implements Visitor{
             expressionType.add(x);
         }
 
-        if(paramType.size() != function.getParamList().size()){
+        if(paramType.size() != function.getTypeOfParam().size()){
             throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
                     " colonna :" + item.getIdentifier().getRight().getColumn());
         }
 
-        List<Integer> posizioneParametri = function.getParamType();
+        List<Integer> posizioneParametri = function.getInOrOut();
 
         for (int i =0; i < paramType.size(); i++){
-            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getParamList().get(i))){
+            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getTypeOfParam().get(i))){
                 throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
                         " colonna :" + item.getIdentifier().getRight().getColumn());
             }
@@ -390,15 +390,15 @@ public class SemanticVisitor implements Visitor{
             expressionType.add(x);
         }
 
-        if(paramType.size() != function.getParamList().size()){
+        if(paramType.size() != function.getTypeOfParam().size()){
             throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
                     " colonna :" + item.getIdentifier().getRight().getColumn());
         }
 
-        List<Integer> posizioneParametri = function.getParamType();
+        List<Integer> posizioneParametri = function.getInOrOut();
 
         for (int i =0; i < paramType.size(); i++){
-            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getParamList().get(i))){
+            if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getTypeOfParam().get(i))){
                 throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
                         " colonna :" + item.getIdentifier().getRight().getColumn());
             }
