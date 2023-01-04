@@ -368,7 +368,7 @@ public class CGenVisitor implements Visitor{
         writer.print("scanf(\"");
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
-            printFormatSpecifiers(item.getIdentifierList().get(i).getType());
+            scanfFormatSpecifiers(item.getIdentifierList().get(i).getType());
             if (i != item.getIdentifierList().size()-1)
                 writer.print(" ");
         }
@@ -709,6 +709,26 @@ public class CGenVisitor implements Visitor{
                 break;
             case Symbols.STRING:
                 writer.print("%s");
+                break;
+        }
+    }
+
+    public void scanfFormatSpecifiers(int token){
+        switch (token){
+            case Symbols.INTEGER :
+                writer.print("%d");
+                break;
+            case Symbols.FLOAT:
+                writer.print("%f");
+                break;
+            case Symbols.CHAR:
+                writer.print("%c");
+                break;
+            case Symbols.BOOL:
+                writer.print("%d");
+                break;
+            case Symbols.STRING:
+                writer.print("%ms"); //%ms la scanf genera in automatico una chiamata aalla funzione malloc
                 break;
         }
     }

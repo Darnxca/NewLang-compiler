@@ -7,6 +7,14 @@
 <value> stampaMenu</value>
 </IdentifierExpression>
 <Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
 <Writeln>
 <StringConstant> Che operazione vuoi eseguire</StringConstant>
 </Writeln>
@@ -22,6 +30,12 @@
 <Writeln>
 <StringConstant> 5 - Divisione</StringConstant>
 </Writeln>
+<ReadStat>
+<StringConstant> Scegli loperazione da effettuare</StringConstant>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</ReadStat>
 </Body>
 </FuncDeclNode>
 <FuncDeclNode Type='FLOAT'>

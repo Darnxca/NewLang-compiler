@@ -19,11 +19,14 @@ int main();
 void stampaMenu ( ){
 
 // Dichiarazione variabili
+char*  p;
 printf("%s\n",strcpy(malloc(281*sizeof(char)),"Che operazione vuoi eseguire"));
 printf("%s\n",strcpy(malloc(91*sizeof(char)),"2 - Somma"));
 printf("%s\n",strcpy(malloc(151*sizeof(char)),"3 - Sottrazione"));
 printf("%s\n",strcpy(malloc(191*sizeof(char)),"4 - Moltiplicazione"));
 printf("%s\n",strcpy(malloc(131*sizeof(char)),"5 - Divisione"));
+printf("Scegli loperazione da effettuare\n");
+scanf("%ms", &p);
 }
 float somma (float a, float b, float * result ){
 

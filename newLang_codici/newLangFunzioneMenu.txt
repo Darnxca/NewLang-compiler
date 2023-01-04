@@ -1,11 +1,10 @@
 
 def stampaMenu() : void {
-	("Che operazione vuoi eseguire") -->!;
-	("2 - Somma") -->!;
-	("3 - Sottrazione") -->!;
-	("4 - Moltiplicazione") -->!;
-	("5 - Divisione") -->!;
-
+    	("Che operazione vuoi eseguire") -->!;
+    	("2 - Somma") -->!;
+    	("3 - Sottrazione") -->!;
+    	("4 - Moltiplicazione") -->!;
+    	("5 - Divisione") -->!;
 }
 
 start: def main(): integer {
