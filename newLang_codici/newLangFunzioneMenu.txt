@@ -5,6 +5,7 @@ def stampaMenu() : void {
 	("3 - Sottrazione") -->!;
 	("4 - Moltiplicazione") -->!;
 	("5 - Divisione") -->!;
+
 }
 
 start: def main(): integer {
@@ -18,7 +19,7 @@ start: def main(): integer {
 	stampaMenu();
 	sceltaOp <-- "Scegli l'operazione da effettuare";
 
-	while (continuaScelta != 0) loop {
+	while (continuaScelta != 0 and sceltaOp <= 5) loop {
 
 		num1 <-- "Inserisci il primo numero";
 		num2 <-- "Inserisci il secondo numero";
@@ -61,12 +62,14 @@ start: def main(): integer {
 	}
 }
 
-def somma(float a,b | out float result) : void {
-    integer plal << 2;
+def somma(float a,b | out float result) : float {
+    integer plal << 2, x << 3;
     float l, ldl, wdw;
     float ez;
 
 	result << a + b;
+
+	return 2.2;
 }
 
 
@@ -93,5 +96,4 @@ def dividi(float a,b | out float result) : boolean{
 	}
 }
 
-integer al,bl,cl;
 ||string a << "S" & "&" & "&" & "casa" & "&2222" & "&fefwfw";

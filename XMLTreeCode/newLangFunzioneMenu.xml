@@ -2,24 +2,6 @@
 <!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
 <ProgramNode>
 <Declist>
-<VarDeclNode>
-<Type>INTEGER</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> al</value>
-</IdentifierExpression>
-</IdInitNode>
-<IdInitNode>
-<IdentifierExpression>
-<value> bl</value>
-</IdentifierExpression>
-</IdInitNode>
-<IdInitNode>
-<IdentifierExpression>
-<value> cl</value>
-</IdentifierExpression>
-</IdInitNode>
-</VarDeclNode>
 <FuncDeclNode Type='VOID'>
 <IdentifierExpression>
 <value> stampaMenu</value>
@@ -42,7 +24,7 @@
 </Writeln>
 </Body>
 </FuncDeclNode>
-<FuncDeclNode Type='VOID'>
+<FuncDeclNode Type='FLOAT'>
 <IdentifierExpression>
 <value> somma</value>
 </IdentifierExpression>
@@ -69,6 +51,12 @@
 <value> plal</value>
 </IdentifierExpression>
 <IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IntegerConstant> 3</IntegerConstant>
 </IdInitNode>
 </VarDeclNode>
 <VarDeclNode>
@@ -111,6 +99,9 @@
 </IdentifierExpression>
 </BinaryExpression>
 </AssignStat>
+<ReturnStat>
+<RealConstant> 2.2</RealConstant>
+</ReturnStat>
 </Body>
 </FuncDeclNode>
 <FuncDeclNode Type='VOID'>
@@ -342,11 +333,21 @@
 </ReadStat>
 <WhileStat>
 <BinaryExpression>
+<BinaryExpression>
 <IdentifierExpression>
 <value> continuaScelta</value>
 </IdentifierExpression>
 <Operation> NE</Operation>
 <IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> LE</Operation>
+<IntegerConstant> 5</IntegerConstant>
+</BinaryExpression>
 </BinaryExpression>
 <Body>
 <ReadStat>

@@ -6,6 +6,7 @@ import parser.newLangTree.nodes.IdInitObbNode;
 import visitor.Visitable;
 import visitor.Visitor;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,12 +21,12 @@ public class VarDeclNode extends SingleTypeNode implements Visitable {
         this.setType(type);
         this.idIList = new LinkedList<>();
         this.idIObList = new LinkedList<>();
-
-
     }
 
     public VarDeclNode() {
         super();
+        this.idIList = Collections.emptyList();
+        this.idIObList = Collections.emptyList();
     }
     public void setIdInitNodeVarDeclNode(List<IdInitNode> idIList) {
         this.idIList = idIList;

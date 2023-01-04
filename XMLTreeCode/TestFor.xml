@@ -2,14 +2,12 @@
 <!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
 <ProgramNode>
 <Declist>
-</Declist>
-<Main>
 <FuncDeclNode Type='INTEGER'>
 <IdentifierExpression>
-<value> main</value>
+<value> test</value>
 </IdentifierExpression>
 <Body>
-<ForStat fromValue='1' toValue='100'>
+<ForStat fromValue='5' toValue='1'>
 <IdentifierExpression>
 <value> i</value>
 </IdentifierExpression>
@@ -89,6 +87,32 @@
 </ForStat>
 </Body>
 </ForStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> main2</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>FLOAT</Type-out>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> test</value>
+</IdentifierExpression>
+</FunCallStat>
 </Body>
 </FuncDeclNode>
 </Main>

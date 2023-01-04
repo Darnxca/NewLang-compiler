@@ -1,7 +1,7 @@
 
-start: def main (): integer {
+def  test(): integer {
 
-    for i << 1 to 100 loop {
+    for i << 5 to 1 loop {
         integer p << 2;
         float x << 2;
         for j << 2 to 101 loop {
@@ -15,4 +15,8 @@ start: def main (): integer {
         }
     }
 
+}
+
+start: def main2 (integer a | out float c): integer {
+    test();
 }
