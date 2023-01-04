@@ -46,6 +46,19 @@ public class TypeChecker {
                 return Symbols.STRING;
             }
 
+        } else if(isMathOperation(operation)){
+            if(typeLeft == Symbols.INTEGER && typeRight == Symbols.INTEGER){
+                return Symbols.FLOAT;
+            }
+            else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.FLOAT){
+                return Symbols.FLOAT;
+            }
+            else if( typeLeft == Symbols.INTEGER && typeRight == Symbols.FLOAT){
+                return Symbols.FLOAT;
+            }
+            else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
+                return Symbols.FLOAT;
+            }
         }
         else if(isLogicalOp(operation)){
             if(typeLeft == Symbols.BOOL && typeRight == Symbols.BOOL){
@@ -109,9 +122,13 @@ public class TypeChecker {
         }
         return false;
     }
+
+    public static boolean isMathOperation(int operation){
+        return operation == Symbols.POW;
+    }
     private static boolean isAritmeticOperation(int operation){
         return operation == Symbols.PLUS || operation == Symbols.MINUS
-                || operation == Symbols.TIMES || operation == Symbols.DIV || operation == Symbols.POW;
+                || operation == Symbols.TIMES || operation == Symbols.DIV;
     }
 
     private static boolean isRelationshipOp(int operation){

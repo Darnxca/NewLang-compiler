@@ -19,11 +19,11 @@ int main();
 void stampaMenu ( ){
 
 // Dichiarazione variabili
-printf("%s\n",strcpy(malloc(28*sizeof(char)),"Che operazione vuoi eseguire"));
-printf("%s\n",strcpy(malloc(9*sizeof(char)),"2 - Somma"));
-printf("%s\n",strcpy(malloc(15*sizeof(char)),"3 - Sottrazione"));
-printf("%s\n",strcpy(malloc(19*sizeof(char)),"4 - Moltiplicazione"));
-printf("%s\n",strcpy(malloc(13*sizeof(char)),"5 - Divisione"));
+printf("%s\n",strcpy(malloc(281*sizeof(char)),"Che operazione vuoi eseguire"));
+printf("%s\n",strcpy(malloc(91*sizeof(char)),"2 - Somma"));
+printf("%s\n",strcpy(malloc(151*sizeof(char)),"3 - Sottrazione"));
+printf("%s\n",strcpy(malloc(191*sizeof(char)),"4 - Moltiplicazione"));
+printf("%s\n",strcpy(malloc(131*sizeof(char)),"5 - Divisione"));
 }
 float somma (float a, float b, float * result ){
 
@@ -78,7 +78,7 @@ float result;
 continuaScelta = 1;
 num1 = 0;
 num2 = 0.0;
-ciao = strcpy(malloc(9*sizeof(char)),"CISIDIIDI");
+ciao = strcpy(malloc(91*sizeof(char)),"CISIDIIDI");
 casa = (2 + (2 + (2.2 * (2 /  -1))));
 stampaMenu();
 printf("Scegli l'operazione da effettuare\n");
@@ -111,10 +111,10 @@ if((sceltaOp == 5)){
 if( !dividi(num1, num2, &result)){
 
 // Dichiarazione variabili
-printf("%s", strcpy(malloc(50*sizeof(char)),"Errore operazione di divisione non effettuabile!!!"));
+printf("%s",strcpy(malloc(501*sizeof(char)),"Errore operazione di divisione non effettuabile!!!"));
 }
 }
-printf("%s, %f, %f, %s, %f", strcpy(malloc(40*sizeof(char)),"Il risultato dell'operazione scelta tra "), num1, num2, strcpy(malloc(1*sizeof(char)),"è"), result);
+printf("%s %f %f %s %f",strcpy(malloc(401*sizeof(char)),"Il risultato dell'operazione scelta tra "), num1, num2, strcpy(malloc(11*sizeof(char)),"è"), result);
 printf("Vuoi continuare? (0: NO, 1: SI)\n");
 scanf("%d", &continuaScelta);
 while(((continuaScelta != 0) && (continuaScelta != 1))){

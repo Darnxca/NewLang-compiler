@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<FuncDeclNode Type='STRING'>
+<IdentifierExpression>
+<value> funz1</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-out>STRING</Type-out>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> da</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> da</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<StringConstant> ciao</StringConstant>
+<IntegerConstant> 5</IntegerConstant>
+<StringConstant> carmine</StringConstant>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='STRING'>
+<IdentifierExpression>
+<value> funz3</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-out>STRING</Type-out>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> da</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> d</value>
+</IdentifierExpression>
+<StringConstant>  car</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<StringConstant> ciao</StringConstant>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<Operation> STR_CONCAT</Operation>
+<IdentifierExpression>
+<value> d</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='STRING'>
+<IdentifierExpression>
+<value> funz2</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-out>STRING</Type-out>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> da</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> d</value>
+</IdentifierExpression>
+<StringConstant>  car</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<StringConstant> ciao</StringConstant>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> d</value>
+</IdentifierExpression>
+</AssignStat>
+<ReturnStat>
+<IdentifierExpression>
+<value> d</value>
+</IdentifierExpression>
+</ReturnStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> test</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+<StringConstant> s</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<FunCallStat>
+<IdentifierExpression>
+<value> funz1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</FunCallStat>
+<Writeln>
+<StringConstant> Funz1 eseguita: la variabile 'p' vale: </StringConstant>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<StringConstant> Funz2 in esecuzione: la variabile 'c' vale: </StringConstant>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+</Writeln>
+<AssignStat>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+<FunCallExpr>
+<IdentifierExpression>
+<value> funz2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</FunCallExpr>
+</AssignStat>
+<Writeln>
+<StringConstant> Funz2 eseguita: la variabile 'p' vale: </StringConstant>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+<StringConstant> mentre la variabile 'c' vale: </StringConstant>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+</Writeln>
+<FunCallStat>
+<IdentifierExpression>
+<value> funz3</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</FunCallStat>
+<Writeln>
+<StringConstant> Funz3 eseguita: la variabile 'p' vale: </StringConstant>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<StringConstant> pow: </StringConstant>
+<BinaryExpression>
+<IntegerConstant> 2</IntegerConstant>
+<Operation> POW</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</Writeln>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

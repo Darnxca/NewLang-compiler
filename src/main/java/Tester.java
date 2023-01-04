@@ -23,6 +23,10 @@ public class Tester {
     public static void main(String[] args) throws ParserConfigurationException {
 
         try {
+
+
+
+            //String[] filename = args[0].split(Pattern.quote("."));
             String[] filename = args[0].split(Pattern.quote("."))[0].split(Pattern.quote("/"));
             //Usato per restituire eventuali errori lessicali
             lessicalError(args[0]);

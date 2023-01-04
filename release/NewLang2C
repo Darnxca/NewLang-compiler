@@ -1,0 +1,24 @@
+#!/bin/bash
+usage(){
+	echo "USAGE: ./NewLang2C FILENAME"
+	exit 1
+}
+
+if [[ $# -lt 1 ]]
+then
+	usage
+fi
+
+input=$1
+newlang_filename=$input.txt
+c_filename="CodiciC\\"$input.c
+outputfile=$input
+
+mkdir "XMLTreeCode"
+mkdir "CodiciC"
+
+java -jar NewLang.jar $newlang_filename
+gcc $c_filename -lm -o $outputfile 
+
+rm -rf "XMLTreeCode"
+rm -rf "CodiciC"

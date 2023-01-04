@@ -428,12 +428,12 @@ public class CGenVisitor implements Visitor{
         for (int i = 0; i < item.getExpressionList().size(); i++){
             printFormatSpecifiers(item.getExpressionList().get(i).getType());
             if (i != item.getExpressionList().size()-1)
-                writer.print(", ");
+                writer.print(" ");
         }
         if (item.isNewLine())
             writer.print("\\n\",");
         else
-            writer.print("\", ");
+            writer.print("\",");
 
         for (int i = 0; i < item.getExpressionList().size(); i++){
             item.getExpressionList().get(i).accept(this);
@@ -478,7 +478,7 @@ public class CGenVisitor implements Visitor{
         }else {
             str = item.getValue();
         }
-        writer.print("strcpy(malloc("+len+"*sizeof(char)),\""+str +"\")");
+        writer.print("strcpy(malloc("+len+1+"*sizeof(char)),\""+str +"\")");
         return null;
     }
 
