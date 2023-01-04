@@ -225,6 +225,18 @@
 <IntegerConstant> 2</IntegerConstant>
 </BinaryExpression>
 </Writeln>
+<ReadStat>
+<StringConstant> Inserisci una stringa in 'p'</StringConstant>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</ReadStat>
+<Writeln>
+<StringConstant> Hai inserito: </StringConstant>
+<IdentifierExpression>
+<value> p</value>
+</IdentifierExpression>
+</Writeln>
 </Body>
 </FuncDeclNode>
 </Main>

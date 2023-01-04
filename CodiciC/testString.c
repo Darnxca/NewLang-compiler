@@ -18,17 +18,17 @@ char*  funz1 (char*  * p ){
 
 // Dichiarazione variabili
 int da;
-* p = strcpy(malloc(41*sizeof(char)),"ciao");
+* p = strcpy(malloc(5*sizeof(char)),"ciao");
 da = 5;
-* p = strcpy(malloc(71*sizeof(char)),"carmine");
+* p = strcpy(malloc(8*sizeof(char)),"carmine");
 }
 char*  funz3 (char*  * p ){
 
 // Dichiarazione variabili
 char*  d;
 int da;
-d = strcpy(malloc(41*sizeof(char))," car");
-* p = strcpy(malloc(41*sizeof(char)),"ciao");
+d = strcpy(malloc(5*sizeof(char))," car");
+* p = strcpy(malloc(5*sizeof(char)),"ciao");
 * p = strcat(* p,d);
 }
 char*  funz2 (char*  * p ){
@@ -36,8 +36,8 @@ char*  funz2 (char*  * p ){
 // Dichiarazione variabili
 char*  d;
 int da;
-d = strcpy(malloc(41*sizeof(char))," car");
-* p = strcpy(malloc(41*sizeof(char)),"ciao");
+d = strcpy(malloc(5*sizeof(char))," car");
+* p = strcpy(malloc(5*sizeof(char)),"ciao");
 * p = d;
 return d;
 }
@@ -49,13 +49,24 @@ void test ( ){
 // Dichiarazione variabili
 char*  c;
 char*  p;
-c = strcpy(malloc(11*sizeof(char)),"s");
+c = strcpy(malloc(2*sizeof(char)),"s");
 funz1(&p);
-printf("%s %s\n",strcpy(malloc(391*sizeof(char)),"Funz1 eseguita: la variabile 'p' vale: "), p);
-printf("%s %s\n",strcpy(malloc(441*sizeof(char)),"Funz2 in esecuzione: la variabile 'c' vale: "), c);
+printf("%s %s\n",strcpy(malloc(40*sizeof(char)),"Funz1 eseguita: la variabile 'p' vale: "), p);
+fflush(stdout);
+printf("%s %s\n",strcpy(malloc(45*sizeof(char)),"Funz2 in esecuzione: la variabile 'c' vale: "), c);
+fflush(stdout);
 c = funz2(&p);
-printf("%s %s %s %s\n",strcpy(malloc(391*sizeof(char)),"Funz2 eseguita: la variabile 'p' vale: "), p, strcpy(malloc(301*sizeof(char)),"mentre la variabile 'c' vale: "), c);
+printf("%s %s %s %s\n",strcpy(malloc(40*sizeof(char)),"Funz2 eseguita: la variabile 'p' vale: "), p, strcpy(malloc(31*sizeof(char)),"mentre la variabile 'c' vale: "), c);
+fflush(stdout);
 funz3(&p);
-printf("%s %s\n",strcpy(malloc(391*sizeof(char)),"Funz3 eseguita: la variabile 'p' vale: "), p);
-printf("%s %f\n",strcpy(malloc(51*sizeof(char)),"pow: "), pow(2,2));
+printf("%s %s\n",strcpy(malloc(40*sizeof(char)),"Funz3 eseguita: la variabile 'p' vale: "), p);
+fflush(stdout);
+printf("%s %f\n",strcpy(malloc(6*sizeof(char)),"pow: "), pow(2,2));
+fflush(stdout);
+printf("Inserisci una stringa in 'p'\n");
+fflush(stdout);
+p = malloc(20*sizeof(char));
+scanf("%s", p);
+printf("%s %s\n",strcpy(malloc(15*sizeof(char)),"Hai inserito: "), p);
+fflush(stdout);
 }

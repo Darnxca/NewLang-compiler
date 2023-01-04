@@ -27,6 +27,9 @@ start: def test(): void{
 
     ("Funz3 eseguita: la variabile 'p' vale: ", p) -->!;
     ("pow: ", 2^2) -->!;
+
+    p <-- "Inserisci una stringa in 'p'";
+    ("Hai inserito: ", p) -->!;
 }
 
 def funz2(out string p) : string{

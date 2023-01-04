@@ -364,6 +364,15 @@ public class CGenVisitor implements Visitor{
         StringConstantNode stringConst;
         if ((stringConst = item.getStringCostant()) != null){
             writer.println("printf(\""+ stringConst.getValue()+"\\n\");");
+            writer.println("fflush(stdout);");
+        }
+
+        /* controllo se saranno lette delle stringhe */
+
+        for (int i = 0; i < item.getIdentifierList().size(); i++){
+            if (item.getIdentifierList().get(i).getType() == Symbols.STRING){
+                writer.println(item.getIdentifierList().get(i).getValue() + " = " + "malloc(20*sizeof(char));");
+            }
         }
         writer.print("scanf(\"");
 
@@ -376,7 +385,8 @@ public class CGenVisitor implements Visitor{
         writer.print("\", ");
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
-            writer.print("&");
+            if (item.getIdentifierList().get(i).getType() != Symbols.STRING)
+                writer.print("&");
             item.getIdentifierList().get(i).accept(this);
             if (i != item.getIdentifierList().size()-1)
                 writer.print(", ");
@@ -442,6 +452,7 @@ public class CGenVisitor implements Visitor{
         }
 
         writer.println(");");
+        writer.println("fflush(stdout);");
         return null;
     }
 
@@ -478,7 +489,7 @@ public class CGenVisitor implements Visitor{
         }else {
             str = item.getValue();
         }
-        writer.print("strcpy(malloc("+len+1+"*sizeof(char)),\""+str +"\")");
+        writer.print("strcpy(malloc("+(len+1)+"*sizeof(char)),\""+str +"\")");
         return null;
     }
 
@@ -728,7 +739,7 @@ public class CGenVisitor implements Visitor{
                 writer.print("%d");
                 break;
             case Symbols.STRING:
-                writer.print("%ms"); //%ms la scanf genera in automatico una chiamata aalla funzione malloc
+                writer.print("%s");
                 break;
         }
     }
