@@ -11,6 +11,7 @@ import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
+import exception.SyntaxError;
 import parser.newLangTree.*;
 import java.util.*;
 import java_cup.runtime.ComplexSymbolFactory.Location;
@@ -464,9 +465,10 @@ public class Parser extends java_cup.runtime.lr_parser {
     public void report_error(String message, Object info) {
             if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
               ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
-              throw new RuntimeException("Errore di sintassi presente alla riga: " + cs.getLeft().getLine() +
-                      ", colonna: " + cs.getRight().getColumn()+".\n"
-                      + expected_tokenList());
+              throw new SyntaxError("Errore sintattico (riga: " + cs.getLeft().getLine() +
+                    ", colonna: " + cs.getRight().getColumn()+")"+
+                    "\n-> \"Se non puoi fare qualcosa allora non farlo. Concentrati su ciò che puoi!\" \n"
+                    +expected_tokenList());
             }
         }
 
@@ -483,7 +485,7 @@ public class Parser extends java_cup.runtime.lr_parser {
           }
 
           if (!str.equals(""))
-            str = "Possibili token aspettati: " + str.substring(0,str.length()-1);
+            str = "\n-> Possibili token da inserire: " + str.substring(0,str.length()-1);
 
           return str;
     }
@@ -1243,7 +1245,7 @@ class CUP$Parser$actions {
 		Location exright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).xright;
 		ExpressionNode e = (ExpressionNode)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-                                                                       ReturnStatNode rs = new ReturnStatNode(e);
+                                                                       ReturnStatNode rs = new ReturnStatNode(e, exleft, exright);
                                                                        RESULT = rs;
 	                                                                
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Stat",14, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -1254,8 +1256,11 @@ class CUP$Parser$actions {
           case 49: // Stat ::= RETURN SEMI 
             {
               StatementNode RESULT =null;
+		Location rxleft = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).xleft;
+		Location rxright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).xright;
+		Object r = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-                                                                       ReturnStatNode rs = new ReturnStatNode();
+                                                                       ReturnStatNode rs = new ReturnStatNode(rxleft,rxright);
                                                                        RESULT = rs;
                                                                     
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("Stat",14, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

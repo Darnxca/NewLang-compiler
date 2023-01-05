@@ -1,4 +1,4 @@
-package semantic;
+package semantic.symbols;
 
 public interface VarTypes {
 

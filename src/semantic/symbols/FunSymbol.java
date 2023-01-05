@@ -1,7 +1,6 @@
 package semantic.symbols;
 
 import parser.Symbols;
-import semantic.SymbolTypes;
 
 import java.util.List;
 

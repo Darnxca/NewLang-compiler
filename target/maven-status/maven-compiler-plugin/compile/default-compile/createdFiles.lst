@@ -1,5 +1,6 @@
+exception\LexicalError.class
 main\java\Tester.class
-semantic\SymbolTypes.class
+lexer\Lexer.class
 parser\Parser.class
 semantic\SymbolTableStack.class
 semantic\SymbolTable.class

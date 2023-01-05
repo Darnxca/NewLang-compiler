@@ -6,11 +6,10 @@ import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
 import semantic.*;
-import semantic.exception.MultipleIdentifierDeclaration;
-import semantic.exception.MultipleMainDeclaration;
-import semantic.symbols.FunSymbol;
-import semantic.symbols.IdSymbol;
-import semantic.symbols.ParamFunSymbol;
+import exception.MultipleFunctionDeclaration;
+import exception.MultipleVariableDeclaration;
+import exception.MultipleMainDeclaration;
+import semantic.symbols.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class ScopeVisitor implements Visitor{
 
         for (FunDeclNode i : item.getFunDeclList()){
             if(i.getIdentifier().getValue().equalsIgnoreCase("main")) {
-                throw new MultipleMainDeclaration("Errore in (riga:"+i.getIdentifier().getLeft().getLine()+", colonna: "+i.getIdentifier().getLeft().getColumn()+") -> Non è possibile chiamare una funzione  'main'!");
+                throw new MultipleMainDeclaration("Errore (riga:"+i.getIdentifier().getLeft().getLine()+", colonna: "+i.getIdentifier().getLeft().getColumn()+") \n-> Non è possibile chiamare una funzione  'main'!");
             }
                 i.accept(this);
            }
@@ -75,10 +74,13 @@ public class ScopeVisitor implements Visitor{
         return null;
     }
 
+
     @Override
     public Object visit(IdInitNode item) {
         if(stack.probe(item.getIdentifier().getValue())){
-            throw new MultipleIdentifierDeclaration("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
+            throw new MultipleVariableDeclaration("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
+                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()+") \n->Variabile "+item.getIdentifier().getValue()+
+                     "già dichiarata precedentemente! :P");
         }
 
        //Prelevo lo scope precedente e lo aggiorno
@@ -90,7 +92,9 @@ public class ScopeVisitor implements Visitor{
     @Override
     public Object visit(IdInitObbNode item) {
         if(stack.probe(item.getIdentifier().getValue())){
-            throw new RuntimeException("Variabile "+item.getIdentifier().getValue()+ " (riga:"+item.getIdentifier().getLeft().getLine()+ ", colonna:"+ item.getIdentifier().getLeft().getColumn()+ ") già dichiarata precedentemente!");
+            throw new MultipleVariableDeclaration("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
+                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()
+                    +" \n-> Variabile "+item.getIdentifier().getValue()+ " già dichiarata precedentemente! :P");
         }
 
         //chiamo il visitor della costante per effettuare l'inferenza di tipo sulla varibile di tipo VAR
@@ -110,7 +114,8 @@ public class ScopeVisitor implements Visitor{
 
         String funName = item.getIdentifier().getValue();
         if(stack.probe(funName)){
-            throw new RuntimeException("Errore in (riga:"+item.getIdentifier().getLeft().getLine()+", colonna: "+item.getIdentifier().getLeft().getColumn()+") -> Funzione "+funName+" già dichiarata precedentemente!");
+            throw new MultipleFunctionDeclaration("Errore (riga:"+item.getIdentifier().getLeft().getLine()+
+                    ", colonna: "+item.getIdentifier().getLeft().getColumn()+") \n-> Funzione "+funName+" già dichiarata precedentemente! :P");
         }
 
         List<ParamFunSymbol> paramList = new LinkedList<>(); // Lista parametri per valore
@@ -150,7 +155,8 @@ public class ScopeVisitor implements Visitor{
 
         for(IdentifierExprNode iden : item.getIdentifierList()){
             if(stack.probe(iden.getValue())){
-                throw new MultipleIdentifierDeclaration("Errore in (riga:"+iden.getLeft().getLine()+", colonna: "+iden.getLeft().getColumn()+") -> Variabile "+iden.getValue()+" già dichiarata precedentemente!");
+                throw new MultipleVariableDeclaration("Errore (riga:"+iden.getLeft().getLine()
+                        +", colonna: "+iden.getLeft().getColumn()+") \n-> Variabile "+iden.getValue()+" già dichiarata precedentemente! :P");
             }
             iden.setPointer(item.isOut()); //Valuto se l'identificatore del parametro è un puntatore
             iden.setParameter(true); //l'identificatore viene sfruttato come parametro della funzione

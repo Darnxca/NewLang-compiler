@@ -5,6 +5,7 @@ import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
+import exception.SyntaxError;
 
 import parser.newLangTree.*;
 import java.util.*;
@@ -28,9 +29,10 @@ parser code {:
     public void report_error(String message, Object info) {
             if (info instanceof ComplexSymbolFactory.ComplexSymbol) {
               ComplexSymbolFactory.ComplexSymbol cs = (ComplexSymbolFactory.ComplexSymbol)info;
-              throw new RuntimeException("Errore di sintassi presente alla riga: " + cs.getLeft().getLine() +
-                      ", colonna: " + cs.getRight().getColumn()+".\n"
-                      + expected_tokenList());
+              throw new SyntaxError("Errore sintattico (riga: " + cs.getLeft().getLine() +
+                    ", colonna: " + cs.getRight().getColumn()+")"+
+                    "\n-> \"Se non puoi fare qualcosa allora non farlo. Concentrati su ciò che puoi!\" \n"
+                    +expected_tokenList());
             }
         }
 
@@ -47,7 +49,7 @@ parser code {:
           }
 
           if (!str.equals(""))
-            str = "Possibili token aspettati: " + str.substring(0,str.length()-1);
+            str = "\n-> Possibili token da inserire: " + str.substring(0,str.length()-1);
 
           return str;
     }
@@ -279,11 +281,11 @@ Stat ::= IfStat:ifs                                                 {: RESULT = 
          | WhileStat:ws                                             {: RESULT = ws; :}
 	     | FunCall:fc SEMI                                          {: RESULT = fc; :}
 	     | RETURN Expr:e SEMI                                       {:
-                                                                       ReturnStatNode rs = new ReturnStatNode(e);
+                                                                       ReturnStatNode rs = new ReturnStatNode(e, exleft, exright);
                                                                        RESULT = rs;
 	                                                                :}
-	     | RETURN SEMI                                              {:
-                                                                       ReturnStatNode rs = new ReturnStatNode();
+	     | RETURN:r SEMI                                              {:
+                                                                       ReturnStatNode rs = new ReturnStatNode(rxleft,rxright);
                                                                        RESULT = rs;
                                                                     :}
 ;

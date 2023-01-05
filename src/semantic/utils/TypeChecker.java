@@ -1,4 +1,4 @@
-package visitor;
+package semantic.utils;
 
 import parser.Symbols;
 import parser.newLangTree.nodes.statements.*;

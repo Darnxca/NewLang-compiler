@@ -1,7 +1,5 @@
 package semantic.symbols;
 
-import semantic.VarTypes;
-
 public class ParamFunSymbol extends Symbol {
 
     private String nameOfParam;

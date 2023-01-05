@@ -6,18 +6,15 @@ import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
 import semantic.SymbolTableStack;
-import semantic.SymbolTypes;
+import semantic.symbols.SymbolTypes;
 import semantic.symbols.FunSymbol;
 import semantic.symbols.IdSymbol;
 import semantic.symbols.ParamFunSymbol;
-import semantic.symbols.Symbol;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static parser.Symbols.terminalNames;
 
 public class CGenVisitor implements Visitor{
 
@@ -55,14 +52,6 @@ public class CGenVisitor implements Visitor{
             }
         });
 
-        writer.println("\n// dichiarazione variabili globali");
-        item.getSymbolTableProgramScope().forEach((key, sym) ->{
-            if(sym instanceof IdSymbol){
-                IdSymbol is = (IdSymbol) sym;
-                generaDichiarazioneVariabile(is);
-            }
-        });
-
         writer.println("");
         item.getDecl().accept(this);
 
@@ -76,8 +65,7 @@ public class CGenVisitor implements Visitor{
 
         writer.println("// inizializzazione delle variabili");
 
-        ArrayList<VarDeclNode> vd = OrderVarDecl(item.getVarDeclList());
-
+        ArrayList<VarDeclNode> vd = sortVarDecl(item.getVarDeclList());
         for (VarDeclNode var : vd){
             var.accept(this);
         }
@@ -140,6 +128,7 @@ public class CGenVisitor implements Visitor{
     public Object visit(VarDeclNode item) {
 
         for (IdInitNode id : item.getIdIList()){
+                writer.print(getTypeFromToken(id.getType())+ " ");
                 id.accept(this);
         }
 
@@ -256,18 +245,10 @@ public class CGenVisitor implements Visitor{
     public Object visit(BodyNode item) {
 
         writer.println("\n// Dichiarazione variabili");
-        stack.getCurrentScope().forEach((key, sym) ->{
-            if(sym instanceof IdSymbol){
-                IdSymbol idS = (IdSymbol) sym;
-                if(!idS.isParameter()){
-                    generaDichiarazioneVariabile(idS);
-                }
 
-            }
-        });
 
         // creazione del codice c per le inizializzazioni di variabili
-        ArrayList<VarDeclNode> vd = OrderVarDecl(item.getVarDeclList());
+        ArrayList<VarDeclNode> vd = sortVarDecl(item.getVarDeclList());
 
         for (VarDeclNode var : vd){
             var.accept(this);
@@ -664,11 +645,13 @@ public class CGenVisitor implements Visitor{
 
     }
 
-    private ArrayList<VarDeclNode> OrderVarDecl(List<VarDeclNode> vd){
+    private ArrayList<VarDeclNode> sortVarDecl(List<VarDeclNode> vd){
 
         ArrayList<IdInitNode> initConstant = new ArrayList<>();
         ArrayList<IdInitObbNode> initVarConstant = new ArrayList<>();
         ArrayList<IdInitNode> initExpr = new ArrayList<>();
+        ArrayList<IdInitNode> initId = new ArrayList<>();
+
         // creazione del codice c per le inizializzazioni di variabili con una costante
         for (VarDeclNode var : vd){
             for (IdInitNode id : var.getIdIList()){
@@ -690,7 +673,19 @@ public class CGenVisitor implements Visitor{
             }
         }
 
+        for (VarDeclNode var : vd){
+            for (IdInitNode id : var.getIdIList()){
+                if (id.getExpression() == null) {
+                    initId.add(id);
+                }
+            }
+        }
+
         ArrayList<VarDeclNode> varDeclNode = new ArrayList<>();
+
+        VarDeclNode vardDeclId = new VarDeclNode();
+        vardDeclId.setIdInitNodeVarDeclNode(initId);
+        varDeclNode.add(vardDeclId);
 
         VarDeclNode vardDeclConstant = new VarDeclNode();
         vardDeclConstant.setIdInitNodeVarDeclNode(initConstant);

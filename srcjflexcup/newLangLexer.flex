@@ -3,6 +3,7 @@ import java_cup.runtime.Symbol;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ComplexSymbolFactory.Location;
 import parser.*;
+import exception.LexicalError;
 %%
 
 %public
@@ -40,7 +41,7 @@ import parser.*;
       return symbolFactory.newSymbol(name, sym, left, right,val);
   }
   private void error(String message) {
-    throw new Error("Error at line "+(yyline+1)+", column "+(yycolumn+1)+" : "+message);
+    throw new LexicalError("Errore (riga: "+(yyline+1)+", colonna: "+(yycolumn+1)+") \n-> "+message);
   }
 %}
 
@@ -168,12 +169,12 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
     \\r             { string.append('\r'); }
     \\\"            { string.append('\"'); }
     \\              { string.append('\\'); }
-    <<EOF>>         {yybegin(YYINITIAL); error("Stringa non chiusa !!!!");}
+    <<EOF>>         {yybegin(YYINITIAL); error("La stringa non è stata correttamente chiusa!! ;)");}
 }
 
 
 
 /* error fallback */
-[^]             {  /* throw new Error("Illegal character <"+ yytext()+">");*/
-		    error("Illegal character <"+ yytext()+">");
+[^]             {
+		    error("Questo carattere ("+ yytext()+") potrebbe essere un futuro simbolo del linguaggio... ma non lo è oggi! :( ");
                   }

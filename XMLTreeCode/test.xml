@@ -8,7 +8,12 @@
 <IdentifierExpression>
 <value> pippo1</value>
 </IdentifierExpression>
-<IntegerConstant> 2</IntegerConstant>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> lsl</value>
+</IdentifierExpression>
+<IntegerConstant> 3</IntegerConstant>
 </IdInitNode>
 </VarDeclNode>
 <VarDeclNode>
@@ -26,6 +31,21 @@
 <value> pippo</value>
 </IdentifierExpression>
 <IntegerConstant> 10</IntegerConstant>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> c</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IntegerConstant> 3</IntegerConstant>
+<Operation> PLUS</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> kasa</value>
+</IdentifierExpression>
 </IdInitNode>
 </VarDeclNode>
 <FuncDeclNode Type='VOID'>
@@ -48,6 +68,15 @@
 <IntegerConstant> 1</IntegerConstant>
 </IdInitNode>
 </VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> okay</value>
+</IdentifierExpression>
+<BooleanConstant> true</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
 <WhileStat>
 <BinaryExpression>
 <BinaryExpression>
@@ -65,15 +94,12 @@
 </IdentifierExpression>
 </BinaryExpression>
 <Body>
-<VarDeclNode>
-<Type>BOOL</Type>
-<IdInitNode>
+<AssignStat>
 <IdentifierExpression>
 <value> okay</value>
 </IdentifierExpression>
 <BooleanConstant> false</BooleanConstant>
-</IdInitNode>
-</VarDeclNode>
+</AssignStat>
 <IfStat>
 <BinaryExpression>
 <IdentifierExpression>
@@ -122,6 +148,8 @@
 </IfStat>
 </Body>
 </WhileStat>
+<ReturnStat>
+</ReturnStat>
 </Body>
 </FuncDeclNode>
 <FuncDeclNode Type='VOID'>
@@ -153,14 +181,32 @@
 <value> x</value>
 </IdentifierExpression>
 <BinaryExpression>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
+<StringConstant> 1</StringConstant>
 <Operation> STR_CONCAT</Operation>
 <StringConstant> volta</StringConstant>
 </BinaryExpression>
 </IdInitNode>
 </VarDeclNode>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> fr</value>
+</IdentifierExpression>
+<BooleanConstant> true</BooleanConstant>
+</IdInitNode>
+</VarDeclNode>
+<AssignStat>
+<IdentifierExpression>
+<value> fr</value>
+</IdentifierExpression>
+<UnaryExpression>
+<Operation> NOT</Operation>
+<IdentifierExpression>
+<value> fr</value>
+</IdentifierExpression>
+</UnaryExpression>
+</AssignStat>
 <AssignStat>
 <IdentifierExpression>
 <value> volte</value>
@@ -221,7 +267,7 @@
 <value> x</value>
 </IdentifierExpression>
 <Operation> EQ</Operation>
-<IntegerConstant> 0</IntegerConstant>
+<IntegerConstant> 2</IntegerConstant>
 </BinaryExpression>
 <Operation> OR</Operation>
 <BinaryExpression>

@@ -7,6 +7,7 @@ import java_cup.runtime.Symbol;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ComplexSymbolFactory.Location;
 import parser.*;
+import exception.LexicalError;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -419,7 +420,7 @@ public class Lexer implements Symbols, java_cup.runtime.Scanner {
       return symbolFactory.newSymbol(name, sym, left, right,val);
   }
   private void error(String message) {
-    throw new Error("Error at line "+(yyline+1)+", column "+(yycolumn+1)+" : "+message);
+    throw new LexicalError("Errore (riga: "+(yyline+1)+", colonna: "+(yycolumn+1)+") \n-> "+message);
   }
 
 
@@ -828,7 +829,7 @@ public class Lexer implements Symbols, java_cup.runtime.Scanner {
             zzDoEOF();
             switch (zzLexicalState) {
             case STRING_STATE: {
-              yybegin(YYINITIAL); error("Stringa non chiusa !!!!");
+              yybegin(YYINITIAL); error("La stringa non è stata correttamente chiusa!! ;)");
             }  // fall though
             case 144: break;
             default:
@@ -839,8 +840,7 @@ public class Lexer implements Symbols, java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { /* throw new Error("Illegal character <"+ yytext()+">");*/
-		    error("Illegal character <"+ yytext()+">");
+            { error("Questo carattere ("+ yytext()+") potrebbe essere un futuro simbolo del linguaggio... ma non lo è oggi! :( ");
             }
             // fall through
           case 62: break;

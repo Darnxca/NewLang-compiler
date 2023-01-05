@@ -1,11 +1,13 @@
 
-float pippo1 << 2;
+float pippo1, lsl << 3;
 float pippo2;
 
 def stampaNNumeri(integer n) : void {
     integer i << 1;
+    boolean okay << true;
     while i <= n or okay loop {
-        boolean okay << false;
+        okay << false;
+
         if i != i / n then {
            (i) -->!;
            i << i+1;
@@ -15,7 +17,10 @@ def stampaNNumeri(integer n) : void {
            okay << true;
         }
     }
+
+    return;
 }
+
 
 start: def main() : void {
 
@@ -23,7 +28,7 @@ start: def main() : void {
     string p << "CIAOOO!";
     x <-- "Inserisci quanti numeri vuoi stampare";
 
-    if x = 0 or x < 0 then {
+    if x = 2 or x < 0 then {
         integer quanti << 1000000;
         integer p;
 
@@ -41,11 +46,13 @@ start: def main() : void {
 def stampaSciocchezze(integer n | out integer volte) : void {
 
     for i << 0 to 101010 loop {
-        string x << i&"volta";
+        string x << "1"&"volta";
+        boolean fr << true;
+        fr << not fr;
         volte << volte + i;
         (x) -->!;
     }
 }
 
 
-float pippo << 10;
+float pippo << 10, c << 3+2 , kasa;

@@ -19,14 +19,16 @@ int main();
 void stampaMenu ( ){
 
 // Dichiarazione variabili
-char*  p;
-printf("%s\n",strcpy(malloc(281*sizeof(char)),"Che operazione vuoi eseguire"));
-printf("%s\n",strcpy(malloc(91*sizeof(char)),"2 - Somma"));
-printf("%s\n",strcpy(malloc(151*sizeof(char)),"3 - Sottrazione"));
-printf("%s\n",strcpy(malloc(191*sizeof(char)),"4 - Moltiplicazione"));
-printf("%s\n",strcpy(malloc(131*sizeof(char)),"5 - Divisione"));
-printf("Scegli loperazione da effettuare\n");
-scanf("%ms", &p);
+printf("%s\n",strcpy(malloc(29*sizeof(char)),"Che operazione vuoi eseguire"));
+fflush(stdout);
+printf("%s\n",strcpy(malloc(10*sizeof(char)),"2 - Somma"));
+fflush(stdout);
+printf("%s\n",strcpy(malloc(16*sizeof(char)),"3 - Sottrazione"));
+fflush(stdout);
+printf("%s\n",strcpy(malloc(20*sizeof(char)),"4 - Moltiplicazione"));
+fflush(stdout);
+printf("%s\n",strcpy(malloc(14*sizeof(char)),"5 - Divisione"));
+fflush(stdout);
 }
 float somma (float a, float b, float * result ){
 
@@ -81,17 +83,20 @@ float result;
 continuaScelta = 1;
 num1 = 0;
 num2 = 0.0;
-ciao = strcpy(malloc(91*sizeof(char)),"CISIDIIDI");
+ciao = strcpy(malloc(10*sizeof(char)),"CISIDIIDI");
 casa = (2 + (2 + (2.2 * (2 /  -1))));
 stampaMenu();
 printf("Scegli l'operazione da effettuare\n");
+fflush(stdout);
 scanf("%d", &sceltaOp);
 while(((continuaScelta != 0) && (sceltaOp <= 5))){
 
 // Dichiarazione variabili
 printf("Inserisci il primo numero\n");
+fflush(stdout);
 scanf("%f", &num1);
 printf("Inserisci il secondo numero\n");
+fflush(stdout);
 scanf("%f", &num2);
 if((sceltaOp == 2)){
 
@@ -114,16 +119,20 @@ if((sceltaOp == 5)){
 if( !dividi(num1, num2, &result)){
 
 // Dichiarazione variabili
-printf("%s",strcpy(malloc(501*sizeof(char)),"Errore operazione di divisione non effettuabile!!!"));
+printf("%s",strcpy(malloc(51*sizeof(char)),"Errore operazione di divisione non effettuabile!!!"));
+fflush(stdout);
 }
 }
-printf("%s %f %f %s %f",strcpy(malloc(401*sizeof(char)),"Il risultato dell'operazione scelta tra "), num1, num2, strcpy(malloc(11*sizeof(char)),"è"), result);
+printf("%s %f %f %s %f",strcpy(malloc(41*sizeof(char)),"Il risultato dell'operazione scelta tra "), num1, num2, strcpy(malloc(2*sizeof(char)),"è"), result);
+fflush(stdout);
 printf("Vuoi continuare? (0: NO, 1: SI)\n");
+fflush(stdout);
 scanf("%d", &continuaScelta);
 while(((continuaScelta != 0) && (continuaScelta != 1))){
 
 // Dichiarazione variabili
 printf("Inserire 0 per terminare, 1 per continuare!\n");
+fflush(stdout);
 scanf("%d", &continuaScelta);
 }
 if((continuaScelta == 1)){
@@ -131,6 +140,7 @@ if((continuaScelta == 1)){
 // Dichiarazione variabili
 stampaMenu();
 printf("Scegli loperazione da effettuare\n");
+fflush(stdout);
 scanf("%d", &sceltaOp);
 }
 }

@@ -1,4 +1,4 @@
-package semantic.exception;
+package exception;
 
 public class MultipleMainDeclaration extends RuntimeException {
     public MultipleMainDeclaration(String message) {

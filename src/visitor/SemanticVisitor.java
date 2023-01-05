@@ -6,13 +6,14 @@ import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
 import semantic.SymbolTableStack;
-import semantic.SymbolTypes;
-import semantic.VarTypes;
+import semantic.symbols.SymbolTypes;
+import exception.*;
+import exception.TypeMismatch;
 import semantic.symbols.FunSymbol;
 import semantic.symbols.IdSymbol;
+import semantic.utils.TypeChecker;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import static parser.Symbols.terminalNames;
 
@@ -27,7 +28,7 @@ public class SemanticVisitor implements Visitor{
     @Override
     public Object visit(ProgramNode item) {
 
-        stack.enterScope(item.getSymbolTableProgramScope()); //Aggiorno lo stack
+        stack.enterScope(item.getSymbolTableProgramScope()); //Aggiorno lo stack con lo scope di program
 
         item.getDecl().accept(this);
 
@@ -79,12 +80,14 @@ public class SemanticVisitor implements Visitor{
         if(item.getExpression() != null){
             item.getExpression().accept(this);
 
+            //Check tipo dell'assegnazione
             int type = TypeChecker.checkBinaryExpr(Symbols.ASSIGN, item.getIdentifier().getType(), item.getExpression().getType());
             if(type == -1) {
 
-                throw new RuntimeException("Assegnazione tra tipi incompatibili (riga: "+item.getExpression().getLeft().getLine() +
-                        ", colonna: "+ item.getExpression().getRight().getColumn()+") -> "+
-                        terminalNames[item.getIdentifier().getType()].toLowerCase()+ " e "+ terminalNames[item.getExpression().getType()].toLowerCase() );
+                throw new TypeMismatch("Errore (riga: "+item.getExpression().getLeft().getLine() +
+                        " , colonna: "+ item.getExpression().getRight().getColumn()+")"+
+                        "\n-> Assegnazione tra tipi incompatibili  ("+ terminalNames[item.getIdentifier().getType()].toLowerCase()
+                        + " e "+ terminalNames[item.getExpression().getType()].toLowerCase() +")" );
             }
 
             item.setType(type);
@@ -116,10 +119,15 @@ public class SemanticVisitor implements Visitor{
 
         item.getBody().accept(this);
 
-        // controlliamo se tutti i possibili return presenti nella funzione sono compatibili con il suo tipo di ritorno
+        /* Controlliamo se tutti i possibili return presenti negli statement della funzione sono compatibili
+         * con il tipo di ritorno della funzione stessa.
+         * */
         for (StatementNode x : item.getBody().getStmtNodeList()){
                 if (!TypeChecker.checkAllTypeReturn(x, item.getTypeOrVoid())) {
-                    throw new RuntimeException("Tipo di ritorno e tipo della funzione non coincidono");
+                    throw new TypeMismatch("Preparatevi a passare dei guai, dei guai molto grossi.." +
+                            "(riga: "+ x.getLeft().getLine()
+                            + ", colonna: "+ x.getRight().getColumn()+ ")"+
+                            " \n-> Tipo di ritorno e tipo della funzione non coincidono ");
                 }
         }
 
@@ -157,32 +165,31 @@ public class SemanticVisitor implements Visitor{
     @Override
     public Object visit(IfStatNode item) {
 
-        //Lo scope attuale sarà quello dell'if
-        stack.enterScope(item.getSymbolTableIfScope());
-
+        //Qui valuto in automatico se le varibili dell'espressione sono dichiarate nello scope attuale
         item.getExpression().accept(this);
 
+        //Check tipo
         if(item.getExpression().getType() != Symbols.BOOL){
-            throw new RuntimeException("Errore (riga: "+item.getExpression().getLeft().getLine()+
-                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) -> Espressione inserita di tipo " +
-                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", l'if si aspetta un tipo boolean!" +
-                    "!");
+            throw new TypeMismatch("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                    ", colonna: "+item.getExpression().getRight().getColumn()+ ") " +
+                    "\n-> Espressione inserita di tipo " +
+                    terminalNames[item.getExpression().getType()].toLowerCase()+
+                    ", l'if si aspetta un tipo boolean!!");
         }
 
-        item.getBodyThen().accept(this);
+        //Lo scope attuale ora sarà quello dell'if
+        stack.enterScope(item.getSymbolTableIfScope());
 
+        item.getBodyThen().accept(this);
 
         //Ripristino lo scope padre
         stack.exitScope();
 
         if(item.getBodyElse() != null) {
-
-            //Cambio scope di nuovo, devo conservarlo e aggiorno lo scope
+            //Cambio scope di nuovo, devo conservarlo
             stack.enterScope(item.getSymbolTableElseScope());
-
             item.getBodyElse().accept(this);
-            stack.exitScope(); //Ripristino lo scope
-
+            stack.exitScope(); //Ripristino lo scope precedente
         }
 
         return null;
@@ -190,15 +197,21 @@ public class SemanticVisitor implements Visitor{
 
     @Override
     public Object visit(AssignStatNode item) {
-        int numIden = item.getIdentifierList().size();
-        int numExpr = item.getExpressionList().size();
 
+        int numIden = item.getIdentifierList().size(); //Recupero quante variabili ho a sinistra
+        int numExpr = item.getExpressionList().size(); //Recupero quante espressioni ho a destra
+
+        //Se ho più variabili a sinistra -> integer x, y << 3 [è un errore]
+        //Se ho più espressioni a destra -> integer x << 3,6 [è un errore]
         if(numIden > numExpr){
-            throw new RuntimeException("Errore assegnazione: assegnazione tra "+ numIden+  " identificatori e "+ numExpr+" espressioni " +
-                    " (riga :" +item.getIdentifierList().get(0).getLeft().getLine()+" colonna :"+item.getExpressionList().get(numExpr-1).getRight().getColumn()+")");
-        } else if(numIden < numExpr){
-            throw new RuntimeException("Errore assegnazione: assegnazione tra "+ numIden+  " identificatori e "+ numExpr+" espressioni " +
-                    " (riga :" +item.getIdentifierList().get(0).getLeft().getLine()+" colonna :"+item.getIdentifierList().get(numIden-1).getRight().getColumn()+")");
+            throw new MissingAssignArguments("Errore (riga :\" +item.getIdentifierList().get(0).getLeft().getLine()+" +
+                    ", colonna :"+item.getExpressionList().get(numExpr-1).getRight().getColumn()+") +" +
+                    "\n->Assegnazione tra "+ numIden+  " identificatore/i e "+ numExpr+" espressione/i ");
+        }
+        else if(numIden < numExpr){
+            throw new MissingAssignArguments("Errore (riga :\" +item.getIdentifierList().get(0).getLeft().getLine()" +
+                    ", colonna :"+item.getIdentifierList().get(numIden-1).getRight().getColumn()+") "+
+                    "\n-> Assegnazione tra "+ numIden+  " identificatore/i e "+ numExpr+" espressione/i ");
         }
 
         LinkedList<Integer> tipiIden = new LinkedList<>(); // lista che contiene i tipi degli identificatori
@@ -206,26 +219,27 @@ public class SemanticVisitor implements Visitor{
         LinkedList<IdentifierExprNode> errorIden = new LinkedList<>(); // lista usata per salvarsi temporaneamente gli identificatori
         LinkedList<ExpressionNode> errorExpr = new LinkedList<>(); // lista usata per salvarsi temporaneamente le espressioni
 
-        // ottenimento tipo degli identificatori
+        // Recupero tipo degli identificatori
         for (IdentifierExprNode iden: item.getIdentifierList()){
             iden.accept(this);
             tipiIden.add(iden.getType());
             errorIden.add(iden);
         }
 
-        // ottenimento tipo delle espressioni
+        // Recupero tipo delle espressioni
         for (ExpressionNode expr : item.getExpressionList()){
             expr.accept(this);
             tipiExpr.add(expr.getType());
             errorExpr.add(expr);
         }
 
-        // controllo corrispondenza tra tipi
+        // Controllo corrispondenza tra tipi secondo le regole
         for(int i = 0; i < tipiIden.size(); i ++){
             if (TypeChecker.checkBinaryExpr(Symbols.ASSIGN,tipiIden.get(i), tipiExpr.get(i)) == -1){
-                throw  new RuntimeException("Tipo non corrispondente in (riga :"+errorIden.get(i).getLeft().getLine()+", colonna: "+
-                        errorIden.get(i).getLeft().getColumn() + ") e (riga:"+ errorExpr.get(i).getLeft().getLine()+", colonna: "+
-                        errorExpr.get(i).getLeft().getColumn() + ") -> "+ terminalNames[tipiIden.get(i)] + " e " + terminalNames[tipiExpr.get(i)]);
+                throw  new TypeMismatch("Errore (riga :"+errorIden.get(i).getLeft().getLine()+
+                        ", colonna: \"+\n" + errorIden.get(i).getLeft().getColumn() + ")"+
+                        "\n ->Tipo non corrispondente "+ terminalNames[tipiIden.get(i)].toLowerCase() +
+                        " e " + terminalNames[tipiExpr.get(i)].toLowerCase());
             }
         }
 
@@ -275,22 +289,21 @@ public class SemanticVisitor implements Visitor{
     @Override
     public Object visit(WhileStatNode item) {
 
-        //Cambio scope, quindi aggiorno quello corrente
-        stack.enterScope(item.getSymbolTableWhile());
-
+        //Qui valuto in automatico se le varibili dell'espressione sono dichiarate nello scope attuale
         item.getExpression().accept(this);
-
-        if(item.getExpression().getType() != Symbols.BOOL){
-            throw new RuntimeException("Errore (riga: "+item.getExpression().getLeft().getLine()+
-                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) -> Espressione inserita di tipo " +
-                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", il while si aspetta un tipo boolean!" +
-                    "!");
+        if(item.getExpression().getType() != Symbols.BOOL){ //Check tipo
+            throw new TypeMismatch("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                    ", colonna: "+item.getExpression().getRight().getColumn()+ " ) " +
+                    "\n-> Espressione inserita di tipo " +
+                    terminalNames[item.getExpression().getType()].toLowerCase()+ ", il while si aspetta un tipo boolean!!");
         }
+
+        //Cambio di scope.. quello attuale sarà del while
+        stack.enterScope(item.getSymbolTableWhile());
 
         item.getBody().accept(this);
 
-        //Ristabilire lo stack del padre
-        stack.exitScope(); //Ripristino lo scope padre
+        stack.exitScope(); //Ripristino dello scope precedente
 
         return null;
     }
@@ -337,10 +350,12 @@ public class SemanticVisitor implements Visitor{
     @Override
     public Object visit(FunCallExprNode item) {
 
+        //Controllo nello scope precedente se la funzione da utilizzare è stata dichiarata
         FunSymbol function;
         if((function = (FunSymbol) stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION)) == null)
-            throw new RuntimeException("Funzione "+ item.getIdentifier().getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
-                    + item.getRight().getColumn() + " non dichiarata");
+            throw new FunctionNotDeclared("Errore (riga: "+ item.getLeft().getLine()+
+                    ", colonna: \n" + item.getRight().getColumn() + ")"+
+                    "\n-> Funzione "+ item.getIdentifier().getValue()+  "non dichiarata");
 
         LinkedList<Integer> paramType = new LinkedList<>();
         LinkedList<ExpressionNode> expressionType = new LinkedList<>();
@@ -350,20 +365,29 @@ public class SemanticVisitor implements Visitor{
             expressionType.add(x);
         }
 
+        //Controllo se nella funzione chiamata i parametri attuali inseriti sono uguali ai formali
         if(paramType.size() != function.getListOfParams().size()){
-            throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
-                    " colonna :" + item.getIdentifier().getRight().getColumn());
+            throw new MissingParametersFunction("Errore (riga :\" +item.getIdentifier().getLeft().getLine() +\n" +
+                    " colonna :\" + item.getIdentifier().getRight().getColumn()+ " +
+                    "\n-> Parametri della funzione mancanti ");
         }
 
 
         for (int i =0; i < paramType.size(); i++){
+            //Check tipo parametri
             if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getListOfParams().get(i).getPrimitiveTypeOfParam())){
-                throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
-                        " colonna :" + item.getIdentifier().getRight().getColumn());
+                throw new TypeMismatch("Errore ( riga :\"+item.getIdentifier().getLeft().getLine()+\n" +
+                        "                        \" colonna :\" + item.getIdentifier().getRight().getColumn()+ " +
+                        "\n-> Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde" );
             }
+            /*Controllo se ad una variabile di tipo out è stato assegnato un valore costante
+            * somma(integer a,b | float out result) ... somma(4, 5, 6) -> Non valido
+            * somma(integer a,b | float out result) ... somma(4, 5, v) -> Valido
+            */
             if ( (expressionType.get(i) instanceof Constant) && function.getListOfParams().get(i).isOut()){
-                throw new RuntimeException("Non si può assegnare una costante ad un variabile di tipo out ( riga :"+ expressionType.get(i).getLeft().getLine()+
-                        " colonna :" + expressionType.get(i).getRight().getColumn());
+                throw new TypeMismatch("Errore ( riga :"+ expressionType.get(i).getLeft().getLine()+
+                        ", colonna :" + expressionType.get(i).getRight().getColumn() + ")" +
+                        "\n-> Non si può assegnare una costante ad un variabile di tipo out!");
             }
         }
 
@@ -376,10 +400,12 @@ public class SemanticVisitor implements Visitor{
     @Override
     public Object visit(FunCallStatNode item) {
 
+        //Controllo nello scope precedente se la funzione da utilizzare è stata dichiarata
         FunSymbol function;
         if((function = (FunSymbol) stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION)) == null)
-            throw new RuntimeException("Funzione "+ item.getIdentifier().getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
-                    + item.getRight().getColumn() + " non dichiarata");
+            throw new FunctionNotDeclared("Errore (riga: \"+ item.getLeft().getLine()+ " +
+                    ", colonna: "+ item.getRight().getColumn()+
+                    "\n-> Funzione "+ item.getIdentifier().getValue()+ "non dichiarata");
 
         LinkedList<Integer> paramType = new LinkedList<>();
         LinkedList<ExpressionNode> expressionType = new LinkedList<>();
@@ -389,19 +415,28 @@ public class SemanticVisitor implements Visitor{
             expressionType.add(x);
         }
 
+        //Controllo se nella funzione chiamata i parametri attuali inseriti sono uguali ai formali
         if(paramType.size() != function.getListOfParams().size()){
-            throw new RuntimeException("Parametri della funzione mancanti (riga :" +item.getIdentifier().getLeft().getLine() +
-                    " colonna :" + item.getIdentifier().getRight().getColumn());
+            throw new MissingParametersFunction("Errore (riga :\" +item.getIdentifier().getLeft().getLine() +\n" +
+                    ", colonna :" + item.getIdentifier().getRight().getColumn()+")"
+                    + "\n->Parametri della funzione mancanti" );
         }
 
         for (int i =0; i < paramType.size(); i++){
+            //Check tipo parametri
             if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getListOfParams().get(i).getPrimitiveTypeOfParam())){
-                throw new RuntimeException("Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde ( riga :"+item.getIdentifier().getLeft().getLine()+
-                        " colonna :" + item.getIdentifier().getRight().getColumn());
+                throw new TypeMismatch("Errore ( riga :"+item.getIdentifier().getLeft().getLine()+
+                " colonna :" + item.getIdentifier().getRight().getColumn()+
+                "\n->Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde" );
             }
+            /*Controllo se ad una variabile di tipo out è stato assegnato un valore costante
+             * somma(integer a,b | float out result) ... somma(4, 5, 6) -> Non valido
+             * somma(integer a,b | float out result) ... somma(4, 5, v) -> Valido
+             */
             if ( (expressionType.get(i) instanceof Constant) && function.getListOfParams().get(i).isOut()){
-                throw new RuntimeException("Non si può assegnare una costante ad un variabile di tipo out ( riga :"+ expressionType.get(i).getLeft().getLine()+
-                        " colonna :" + expressionType.get(i).getRight().getColumn());
+                throw new TypeMismatch("Errore ( riga : "+ expressionType.get(i).getLeft().getLine() +
+                        ", colonna :" + expressionType.get(i).getRight().getColumn() +
+                                "\n-> Non si può assegnare una costante ad un variabile di tipo out ");
             }
         }
 
@@ -413,10 +448,12 @@ public class SemanticVisitor implements Visitor{
     @Override
     public Object visit(IdentifierExprNode item) {
 
+        //Controllo se l'identificatore è presente nello scope
         IdSymbol idSym;
         if((idSym = (IdSymbol) stack.lookup(item.getValue(), SymbolTypes.VAR) ) == null)
-            throw new RuntimeException("Variabile "+ item.getValue()+ " (riga: "+ item.getLeft().getLine()+ ", colonna: "
-                    + item.getRight().getColumn() + " non dichiarata precedentemente");
+            throw new VariableNotDeclared("Errore (riga: "+ item.getLeft().getLine()+
+                    ", colonna: "+ item.getRight().getColumn()+ ")"+
+                    "\n->Variabile "+ item.getValue()+ "non dichiarata precedentemente!");
 
         item.setType(idSym.getType());
 
@@ -429,10 +466,13 @@ public class SemanticVisitor implements Visitor{
 
         item.getRightExpression().accept(this);
 
+        // Check tipo despressione unaria
         int type = TypeChecker.checkUnaryExpr(item.getOperation(), item.getRightExpression().getType());
 
         if(type == -1){
-            throw new RuntimeException("Tipo non compatibile!");
+            throw new TypeMismatch("Errore (riga: "+ item.getLeft().getLine() +
+                    ", colonna: "+ item.getRight().getColumn()+ ")"
+                    +"\n->Attenzione! Tipo nell'espressione non compatibile!");
         }
         item.setType(type);
         return null;
@@ -444,12 +484,15 @@ public class SemanticVisitor implements Visitor{
         item.getLeftExpression().accept(this);
         item.getRightExpression().accept(this);
 
+        //Check tipo espressione binaria
         int type = TypeChecker.checkBinaryExpr(item.getOperation(), item.getLeftExpression().getType(), item.getRightExpression().getType());
 
         if(type == -1){
-           throw new RuntimeException("Operazione tra tipi incompatibili (riga: "+item.getLeft().getLine() +
-                    ", colonna: "+ item.getRight().getColumn()+") -> "+
-                   terminalNames[item.getLeftExpression().getType()].toLowerCase()+ " e "+terminalNames[item.getRightExpression().getType()].toLowerCase());
+           throw new TypeMismatch("Errore  (riga: "+item.getLeft().getLine()
+                   +", colonna: "+ item.getRight().getColumn()+")"+
+                   "\n->Operazione tra tipi incompatibili ("+
+                   terminalNames[item.getLeftExpression().getType()].toLowerCase()+
+                   " e "+terminalNames[item.getRightExpression().getType()].toLowerCase()+")");
         }
 
         item.setType(type);
