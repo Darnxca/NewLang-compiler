@@ -2,7 +2,7 @@
   <configuration default="false" name="Scegli operazione" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="main.java.Tester" />
     <module name="dangelo-della-rocca_es5" />
-    <option name="PROGRAM_PARAMETERS" value="newLang_codici/newLangFunzioneMenu.txt" />
+    <option name="PROGRAM_PARAMETERS" value="newLang_codici/newLangFunzioneMenu.nl" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

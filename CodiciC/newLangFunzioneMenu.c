@@ -11,8 +11,6 @@ void stampaMenu();
 void moltiplica(float a,float b,float *result);
 int main();
 
-// dichiarazione variabili globali
-
 // inizializzazione delle variabili
 
 //-----------Implementazione funzioni-----------
@@ -33,14 +31,12 @@ fflush(stdout);
 float somma (float a, float b, float * result ){
 
 // Dichiarazione variabili
+float l;
 float ldl;
 float wdw;
-int plal;
-int x;
 float ez;
-float l;
-plal = 2;
-x = 3;
+int plal = 2;
+int x = 3;
 * result = (a + b);
 return 2.2;
 }
@@ -73,18 +69,13 @@ return 1;
 int main ( ){
 
 // Dichiarazione variabili
-int continuaScelta;
-int casa;
-float num1;
-float num2;
 int sceltaOp;
-char*  ciao;
 float result;
-continuaScelta = 1;
-num1 = 0;
-num2 = 0.0;
-ciao = strcpy(malloc(10*sizeof(char)),"CISIDIIDI");
-casa = (2 + (2 + (2.2 * (2 /  -1))));
+int continuaScelta = 1;
+float num1 = 0;
+float num2 = 0.0;
+char*  ciao = strcpy(malloc(10*sizeof(char)),"CISIDIIDI");
+int casa = (2 + (2 + (2.2 * (2 /  -1))));
 stampaMenu();
 printf("Scegli l'operazione da effettuare\n");
 fflush(stdout);

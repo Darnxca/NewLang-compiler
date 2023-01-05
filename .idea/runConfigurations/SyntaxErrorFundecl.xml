@@ -2,7 +2,7 @@
   <configuration default="false" name="SyntaxErrorFundecl" type="Application" factoryName="Application" folderName="SyntaxError">
     <option name="MAIN_CLASS_NAME" value="main.java.Tester" />
     <module name="dangelo-della-rocca_es5" />
-    <option name="PROGRAM_PARAMETERS" value="test/TestSyntaxError/TestSyntaxFundecl.txt" />
+    <option name="PROGRAM_PARAMETERS" value="test/TestSyntaxError/TestSyntaxFundecl.nl" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

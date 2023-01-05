@@ -10,9 +10,9 @@ then
 fi
 
 input=$1
-newlang_filename=$input.txt
-c_filename="CodiciC\\"$input.c
-outputfile=$input
+newlang_filename=$input
+c_filename="CodiciC\\"${input%.nl}.c
+outputfile=${input%.nl}
 
 mkdir "XMLTreeCode"
 mkdir "CodiciC"

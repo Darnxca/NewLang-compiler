@@ -1,11 +1,13 @@
 package main.java;
 
+import exception.FileExtensionNotMatch;
 import java_cup.runtime.ComplexSymbolFactory;
 import java_cup.runtime.ScannerBuffer;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileReader;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.nodes.ProgramNode;
@@ -23,19 +25,16 @@ public class Tester {
 
     public static void main(String[] args) throws ParserConfigurationException {
 
+        String filename = isNewLangFile(new File(args[0]));
+
         try {
-
-            //String[] filename = args[0].split(Pattern.quote("."));
-            String[] filename = args[0].split(Pattern.quote("."))[0].split(Pattern.quote("/"));
-            //Usato per restituire eventuali errori lessicali
-
             ScannerBuffer lexer = new ScannerBuffer(new Lexer(new BufferedReader(new FileReader(args[0])), csf));
 
             // start parsing
             Parser p = new Parser(lexer, csf);
 
             ProgramNode program = (ProgramNode) p.parse().value;
-            XMLTreeGenerator tr = new XMLTreeGenerator(filename[1]);
+            XMLTreeGenerator tr = new XMLTreeGenerator(filename);
             program.accept(tr);
             tr.flush();
 
@@ -45,19 +44,30 @@ public class Tester {
             SemanticVisitor sm = new SemanticVisitor();
             program.accept(sm);
 
-            CGenVisitor cg = new CGenVisitor(filename[1]);
+            CGenVisitor cg = new CGenVisitor(filename);
             program.accept(cg);
             cg.flush();
 
             System.out.println("---> Linguaggio riconosciuto!!");
 
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             System.err.println(e);
         }
 
+    }
+
+
+
+    public static String isNewLangFile(File file){
+        String filename = file.getName();
+        String regex = "(?:^.+\\.(nl)$)";
+        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(filename);
+
+        if (matcher.find())
+            return filename.split("\\.nl")[0];
+        else
+            throw new FileExtensionNotMatch("Errore nella lettura del file \n -> Il file "+ filename + " non ha estensione newLang");
     }
 
 }

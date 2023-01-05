@@ -2,7 +2,7 @@
   <configuration default="false" name="Test1" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="main.java.Tester" />
     <module name="dangelo-della-rocca_es5" />
-    <option name="PROGRAM_PARAMETERS" value="newLang_codici/test.txt" />
+    <option name="PROGRAM_PARAMETERS" value="newLang_codici/test.nl" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

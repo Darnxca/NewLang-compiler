@@ -133,6 +133,7 @@ public class CGenVisitor implements Visitor{
         }
 
         for (IdInitObbNode id : item.getIdIObList()){
+            writer.print(getTypeFromToken(id.getType())+ " ");
             id.accept(this);
         }
 
