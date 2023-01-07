@@ -7,14 +7,14 @@ import java_cup.runtime.ScannerBuffer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import parser.newLangTree.nodes.ProgramNode;
-import visitor.CGenVisitor;
-import visitor.ScopeVisitor;
-import visitor.SemanticVisitor;
-import visitor.XMLTreeGenerator;
+import visitor.*;
 import parser.*;
 import lexer.*;
 
@@ -26,6 +26,15 @@ public class Tester {
     public static void main(String[] args) throws ParserConfigurationException {
 
         String filename = isNewLangFile(new File(args[0]));
+        String secondoparametro = "";
+
+        if (args.length == 1){
+            secondoparametro ="-nsp";
+        }else{
+            secondoparametro = args[1];
+        }
+
+        List<String> opzioniAggiuntive = Arrays.asList(secondoparametro.split("-"));
 
         try {
             ScannerBuffer lexer = new ScannerBuffer(new Lexer(new BufferedReader(new FileReader(args[0])), csf));
@@ -40,6 +49,11 @@ public class Tester {
 
             ScopeVisitor sv = new ScopeVisitor();
             program.accept(sv);
+
+            if (opzioniAggiuntive.contains("sp")){
+                PrintScopeVisitor psv = new PrintScopeVisitor();
+                program.accept(psv);
+            }
 
             SemanticVisitor sm = new SemanticVisitor();
             program.accept(sm);

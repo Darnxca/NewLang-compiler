@@ -10,6 +10,8 @@ then
 fi
 
 input=$1
+opzioni=$2
+echo $opzioni;
 newlang_filename=$input
 c_filename="CodiciC\\"${input%.nl}.c
 outputfile=${input%.nl}
@@ -17,7 +19,7 @@ outputfile=${input%.nl}
 mkdir "XMLTreeCode"
 mkdir "CodiciC"
 
-java -jar NewLang.jar $newlang_filename
+java -jar NewLang.jar $newlang_filename $opzioni
 gcc $c_filename -lm -o $outputfile 
 
 rm -rf "XMLTreeCode"

@@ -342,11 +342,21 @@
 </BinaryExpression>
 <Operation> AND</Operation>
 <BinaryExpression>
+<BinaryExpression>
 <IdentifierExpression>
 <value> sceltaOp</value>
 </IdentifierExpression>
-<Operation> LE</Operation>
-<IntegerConstant> 5</IntegerConstant>
+<Operation> GT</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 6</IntegerConstant>
+</BinaryExpression>
 </BinaryExpression>
 </BinaryExpression>
 <Body>

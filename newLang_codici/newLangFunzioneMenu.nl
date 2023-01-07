@@ -18,7 +18,7 @@ start: def main(): integer {
 	stampaMenu();
 	sceltaOp <-- "Scegli l'operazione da effettuare";
 
-	while (continuaScelta != 0 and sceltaOp <= 5) loop {
+	while (continuaScelta != 0 and (sceltaOp > 1  and sceltaOp < 6 )) loop {
 
 		num1 <-- "Inserisci il primo numero";
 		num2 <-- "Inserisci il secondo numero";

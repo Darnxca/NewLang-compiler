@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+</Declist>
+<Main>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> inserisci un intero e una stringa</StringConstant>
+<IdentifierExpression>
+<value> x</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ReadStat>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

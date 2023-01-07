@@ -1,25 +1,24 @@
 package visitor;
 
-import exception.UseOfKeyWord;
+import exception.MultipleFunctionDeclaration;
+import exception.MultipleMainDeclaration;
+import exception.MultipleVariableDeclaration;
 import parser.Symbols;
 import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
-import semantic.*;
-import exception.MultipleFunctionDeclaration;
-import exception.MultipleVariableDeclaration;
-import exception.MultipleMainDeclaration;
+import semantic.SymbolTableStack;
 import semantic.symbols.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScopeVisitor implements Visitor{
+public class PrintScopeVisitor implements Visitor{
 
     private SymbolTableStack stack;
 
-    public ScopeVisitor() {
+    public PrintScopeVisitor() {
         stack = new SymbolTableStack();
     }
 
@@ -31,6 +30,8 @@ public class ScopeVisitor implements Visitor{
 
         item.getMainFuncDecl().accept(this);
 
+        System.out.println("PROGRAM: \n"+item.getSymbolTableProgramScope().toString());
+
         return null;
     }
 
@@ -40,13 +41,8 @@ public class ScopeVisitor implements Visitor{
         for (VarDeclNode i : item.getVarDeclList())
             i.accept(this);
 
-        for (FunDeclNode i : item.getFunDeclList()){
-            if(i.getIdentifier().getValue().equalsIgnoreCase("main")) {
-                throw new MultipleMainDeclaration("Errore (riga:"+i.getIdentifier().getLeft().getLine()+", colonna: "+i.getIdentifier().getLeft().getColumn()+") \n-> Non è possibile chiamare una funzione  'main'!");
-            }
+        for (FunDeclNode i : item.getFunDeclList())
                 i.accept(this);
-           }
-
 
         return null;
     }
@@ -63,7 +59,6 @@ public class ScopeVisitor implements Visitor{
     public Object visit(VarDeclNode item) {
 
         for (IdInitNode i : item.getIdIList()) {
-            i.setType(item.getType());
             i.accept(this);
         }
 
@@ -76,40 +71,11 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IdInitNode item) {
-        if (item.getIdentifier().getValue().equalsIgnoreCase("correctInputCheck")){
-            throw new UseOfKeyWord("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
-                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()+") \n-> "+item.getIdentifier().getValue()+
-                    " è una parola chiave non può essere usata :P");
-        }
-        if(stack.probe(item.getIdentifier().getValue())){
-            throw new MultipleVariableDeclaration("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
-                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()+") \n->Variabile "+item.getIdentifier().getValue()+
-                     " già dichiarata precedentemente! :P");
-        }
-
-       //Prelevo lo scope precedente e lo aggiorno
-        stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
-
         return null;
     }
 
     @Override
     public Object visit(IdInitObbNode item) {
-        if(stack.probe(item.getIdentifier().getValue())){
-            throw new MultipleVariableDeclaration("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
-                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()
-                    +" \n-> Variabile "+item.getIdentifier().getValue()+ " già dichiarata precedentemente! :P");
-        }
-
-        //chiamo il visitor della costante per effettuare l'inferenza di tipo sulla varibile di tipo VAR
-        ExpressionNode constant = (ExpressionNode) item.getCostantValue();
-        constant.accept(this);
-
-        item.getIdentifier().setType(constant.getType());
-
-        //Aggiorno scope
-        stack.addId(new IdSymbol(item.getIdentifier().getValue(), constant.getType()));
-
         return null;
     }
 
@@ -117,27 +83,6 @@ public class ScopeVisitor implements Visitor{
     public Object visit(FunDeclNode item) {
 
         String funName = item.getIdentifier().getValue();
-        if(stack.probe(funName)){
-            throw new MultipleFunctionDeclaration("Errore (riga:"+item.getIdentifier().getLeft().getLine()+
-                    ", colonna: "+item.getIdentifier().getLeft().getColumn()+") \n-> Funzione "+funName+" già dichiarata precedentemente! :P");
-        }
-
-        List<ParamFunSymbol> paramList = new LinkedList<>(); // Lista parametri per valore
-
-        for (ParamDeclNode p : item.getParamDecl()){
-            for (IdentifierExprNode x : p.getIdentifierList()) { // aggiungiamo tanti tipi quanti gli identificatori
-                if(!(p.isOut())){
-                    paramList.add(new ParamFunSymbol(x.getValue(), SymbolTypes.VAR, p.getType(), VarTypes.IN));
-                } else{
-                    paramList.add(new ParamFunSymbol(x.getValue(), SymbolTypes.VAR, p.getType(), VarTypes.OUT));
-                }
-            }
-        }
-
-        // creo il simbolo della funzione
-
-        // aggiungo la firma della funzione a programm;
-        stack.addId(new FunSymbol(funName, paramList, item.getTypeOrVoid()));
 
         //Cambio scope
         stack.enterScope(item.getSymbolTableFunScope());
@@ -145,9 +90,9 @@ public class ScopeVisitor implements Visitor{
         for (ParamDeclNode param : item.getParamDecl())
             param.accept(this);
 
-        stack.addId(new IdSymbol("correctInputCheck", Symbols.INTEGER, false, false));
-
         item.getBody().accept(this);
+
+        System.out.println("Function "+funName+":\n"+item.getSymbolTableFunScope().toString());
 
         stack.exitScope(); //Ripristino lo scope precedente
 
@@ -156,18 +101,6 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(ParamDeclNode item) {
-
-        for(IdentifierExprNode iden : item.getIdentifierList()){
-            if(stack.probe(iden.getValue())){
-                throw new MultipleVariableDeclaration("Errore (riga:"+iden.getLeft().getLine()
-                        +", colonna: "+iden.getLeft().getColumn()+") \n-> Variabile "+iden.getValue()+" già dichiarata precedentemente! :P");
-            }
-            iden.setPointer(item.isOut()); //Valuto se l'identificatore del parametro è un puntatore
-            iden.setParameter(true); //l'identificatore viene sfruttato come parametro della funzione
-            iden.setType(item.getType());
-            iden.accept(this);
-        }
-
         return null;
     }
 
@@ -193,6 +126,7 @@ public class ScopeVisitor implements Visitor{
         stack.enterScope(item.getSymbolTableIfScope());
 
         item.getBodyThen().accept(this);
+        System.out.println("IF-THEN\n"+item.getSymbolTableIfScope().toString());
 
         //Ripristino lo scope padre
         stack.exitScope();
@@ -205,6 +139,7 @@ public class ScopeVisitor implements Visitor{
             item.getBodyElse().accept(this);
             stack.exitScope(); //Ripristino lo scope
 
+            System.out.println("IF-ELSE\n"+item.getSymbolTableElseScope().toString());
         }
 
         return null;
@@ -228,6 +163,7 @@ public class ScopeVisitor implements Visitor{
         //Ripristino scope del padre
         stack.exitScope();
 
+        System.out.println("FOR\n"+item.getSymbolTableFor().toString());
 
         return null;
     }
@@ -253,6 +189,8 @@ public class ScopeVisitor implements Visitor{
         //Ristabilire lo stack del padre
         stack.exitScope(); //Ripristino lo scope padre
 
+        System.out.println("WHILE\n"+item.getSymbolTableWhile().toString());
+
         return null;
     }
 
@@ -263,31 +201,26 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IntegerConstantNode item) {
-        item.setType(Symbols.INTEGER);
         return null;
     }
 
     @Override
     public Object visit(BooleanConstantNode item) {
-        item.setType(Symbols.BOOL);
         return null;
     }
 
     @Override
     public Object visit(RealConstantNode item) {
-        item.setType(Symbols.FLOAT);
         return null;
     }
 
     @Override
     public Object visit(StringConstantNode item) {
-        item.setType(Symbols.STRING);
         return null;
     }
 
     @Override
     public Object visit(CharConstantNode item) {
-        item.setType(Symbols.CHAR);
         return null;
     }
 
@@ -303,8 +236,6 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IdentifierExprNode item) {
-        //Salvataggio e aggiornamento scope corrente
-        stack.addId(new IdSymbol(item.getValue(), item.getType(), item.isPointer(), item.isParameter()));
         return null;
     }
 

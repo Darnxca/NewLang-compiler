@@ -25,10 +25,12 @@ C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\par
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\IdentifierExprNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\MissingParametersFunction.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\ForStatNode.java
+C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\visitor\PrintScopeVisitor.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\IfStatNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\MultipleFunctionDeclaration.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\semantic\symbols\SymbolTypes.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\TypeMismatch.java
+C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\UseOfKeyWord.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\ReturnStatNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\DeclNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\semantic\symbols\Symbol.java
@@ -48,6 +50,7 @@ C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\par
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\semantic\SymbolTableStack.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\IdInitObbNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\ParamDeclNode.java
+C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\FileExtensionNotMatch.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\MultipleMainDeclaration.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\SingleTypeNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\visitor\SemanticVisitor.java

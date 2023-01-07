@@ -65,7 +65,7 @@ public class CGenVisitor implements Visitor{
 
         writer.println("// inizializzazione delle variabili");
 
-        ArrayList<VarDeclNode> vd = sortVarDecl(item.getVarDeclList());
+        ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
         for (VarDeclNode var : vd){
             var.accept(this);
         }
@@ -98,9 +98,11 @@ public class CGenVisitor implements Visitor{
             for (int i =0; i < parametriFormali.size(); i++) {
                 ParamFunSymbol paramFunSymbol = parametriFormali.get(i);
                 IdSymbol idSymbol = new IdSymbol(paramFunSymbol.getIdentifier(),paramFunSymbol.getPrimitiveTypeOfParam());
+                writer.print("\t");
                 generaDichiarazioneVariabile(idSymbol);
             }
 
+            writer.print("\t");
             writer.print(function.getIdentifier()+"(");
 
             for (int i =0; i < parametriFormali.size(); i++) {
@@ -127,12 +129,15 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(VarDeclNode item) {
 
+
         for (IdInitNode id : item.getIdIList()){
+            inserisciTab();
                 writer.print(getTypeFromToken(id.getType())+ " ");
                 id.accept(this);
         }
 
         for (IdInitObbNode id : item.getIdIObList()){
+            inserisciTab();
             writer.print(getTypeFromToken(id.getType())+ " ");
             id.accept(this);
         }
@@ -201,31 +206,6 @@ public class CGenVisitor implements Visitor{
         return null;
     }
 
-    private static String getTypeFromToken(int token){
-        String type = "";
-        switch (token){
-            case Symbols.INTEGER :
-                type += "int";
-                break;
-            case Symbols.FLOAT:
-                type += "float";
-                break;
-            case Symbols.CHAR:
-                type += "char";
-                break;
-            case Symbols.BOOL:
-                type += "int";
-                break;
-            case Symbols.STRING:
-                type += "char* ";
-                break;
-            case Symbols.VOID:
-                type += "void";
-                break;
-        }
-
-        return type;
-    }
     @Override
     public Object visit(ParamDeclNode item) {
 
@@ -245,19 +225,21 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(BodyNode item) {
 
-        writer.println("\n// Dichiarazione variabili");
-
-
+        inserisciTab();
+        writer.print("// Dichiarazione variabili\n");
+        inserisciTab();
+        writer.println("int correctInputCheck = 0;");
         // creazione del codice c per le inizializzazioni di variabili
-        ArrayList<VarDeclNode> vd = sortVarDecl(item.getVarDeclList());
+        ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
 
         for (VarDeclNode var : vd){
             var.accept(this);
         }
 
-        for (StatementNode st : item.getStmtNodeList())
+        for (StatementNode st : item.getStmtNodeList()) {
+            inserisciTab();
             st.accept(this);
-
+        }
 
         return null;
     }
@@ -265,26 +247,28 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(IfStatNode item) {
         stack.enterScope(item.getSymbolTableIfScope());
-
         writer.print("if(");
         item.getExpression().accept(this);
 
         writer.println("){");
 
         item.getBodyThen().accept(this);
-
+        stack.exitScope();
+        inserisciTab();
         writer.println("}");
 
-        stack.exitScope();
+
 
         if(item.getBodyElse() != null) {
             //Cambio scope di nuovo, devo conservarlo e aggiorno lo scope
+            inserisciTab();
             stack.enterScope(item.getSymbolTableElseScope());
-
             writer.println("else{");
             item.getBodyElse().accept(this);
-            writer.println("}");
             stack.exitScope(); //Ripristino lo scope
+            inserisciTab();
+            writer.println("}");
+
         }
         return null;
     }
@@ -333,10 +317,10 @@ public class CGenVisitor implements Visitor{
         writer.println("){");
 
         item.getBody().accept(this);
-
-        writer.println("}");
         //Ripristino scope del padre
         stack.exitScope();
+        inserisciTab();
+        writer.println("}");
         return null;
     }
 
@@ -346,6 +330,7 @@ public class CGenVisitor implements Visitor{
         StringConstantNode stringConst;
         if ((stringConst = item.getStringCostant()) != null){
             writer.println("printf(\""+ stringConst.getValue()+"\\n\");");
+            inserisciTab();
             writer.println("fflush(stdout);");
         }
 
@@ -353,10 +338,12 @@ public class CGenVisitor implements Visitor{
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
             if (item.getIdentifierList().get(i).getType() == Symbols.STRING){
+                inserisciTab();
                 writer.println(item.getIdentifierList().get(i).getValue() + " = " + "malloc(20*sizeof(char));");
             }
         }
-        writer.print("scanf(\"");
+        inserisciTab();
+        writer.print("correctInputCheck = scanf(\"");
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
             scanfFormatSpecifiers(item.getIdentifierList().get(i).getType());
@@ -375,7 +362,9 @@ public class CGenVisitor implements Visitor{
         }
 
         writer.println(");");
+        inserisciTab();
 
+        gestioneErroreLetturaScanf(item.getIdentifierList().size());
 
         return null;
     }
@@ -405,10 +394,12 @@ public class CGenVisitor implements Visitor{
 
         writer.println("){");
         item.getBody().accept(this);
-
-        writer.println("}");
         //Ristabilire lo stack del padre
         stack.exitScope(); //Ripristino lo scope padre
+
+        inserisciTab();
+        writer.println("}");
+
 
         return null;
     }
@@ -418,7 +409,7 @@ public class CGenVisitor implements Visitor{
         writer.print("printf(\"");
 
         for (int i = 0; i < item.getExpressionList().size(); i++){
-            printFormatSpecifiers(item.getExpressionList().get(i).getType());
+            printfFormatSpecifiers(item.getExpressionList().get(i).getType());
             if (i != item.getExpressionList().size()-1)
                 writer.print(" ");
         }
@@ -434,6 +425,7 @@ public class CGenVisitor implements Visitor{
         }
 
         writer.println(");");
+        inserisciTab();
         writer.println("fflush(stdout);");
         return null;
     }
@@ -549,13 +541,16 @@ public class CGenVisitor implements Visitor{
 
     @Override
     public Object visit(UnaryExpressionNode item) {
+        writer.print("(");
         generaEspressioniUnarie(item.getOperation());
         item.getRightExpression().accept(this);
+        writer.print(")");
         return null;
     }
 
     @Override
     public Object visit(BinaryExpressionNode item) {
+
         if(item.getOperation() == Symbols.STR_CONCAT){
             writer.print("strcat(");
             item.getLeftExpression().accept(this);
@@ -646,7 +641,7 @@ public class CGenVisitor implements Visitor{
 
     }
 
-    private ArrayList<VarDeclNode> sortVarDecl(List<VarDeclNode> vd){
+    private ArrayList<VarDeclNode> ordinaVarDecl(List<VarDeclNode> vd){
 
         ArrayList<IdInitNode> initConstant = new ArrayList<>();
         ArrayList<IdInitObbNode> initVarConstant = new ArrayList<>();
@@ -700,7 +695,7 @@ public class CGenVisitor implements Visitor{
         return varDeclNode;
     }
 
-    public void printFormatSpecifiers(int token){
+    private void printfFormatSpecifiers(int token){
         switch (token){
             case Symbols.INTEGER :
                 writer.print("%d");
@@ -720,7 +715,7 @@ public class CGenVisitor implements Visitor{
         }
     }
 
-    public void scanfFormatSpecifiers(int token){
+    private void scanfFormatSpecifiers(int token){
         switch (token){
             case Symbols.INTEGER :
                 writer.print("%d");
@@ -738,5 +733,43 @@ public class CGenVisitor implements Visitor{
                 writer.print("%s");
                 break;
         }
+    }
+
+    private static String getTypeFromToken(int token){
+        String type = "";
+        switch (token){
+            case Symbols.INTEGER :
+                type += "int";
+                break;
+            case Symbols.FLOAT:
+                type += "float";
+                break;
+            case Symbols.CHAR:
+                type += "char";
+                break;
+            case Symbols.BOOL:
+                type += "int";
+                break;
+            case Symbols.STRING:
+                type += "char* ";
+                break;
+            case Symbols.VOID:
+                type += "void";
+                break;
+        }
+
+        return type;
+    }
+
+    private void inserisciTab(){
+        int livello_di_profondita = stack.getStack().size();
+        for (int i = 0; i < livello_di_profondita-1; i++)
+            writer.print("\t");
+    }
+
+    private void gestioneErroreLetturaScanf(int numElementi){
+
+        writer.println("if (correctInputCheck != " + numElementi + ") {printf(\"si è verificato un errore, riprovare\"); exit(1);}");
+
     }
 }
