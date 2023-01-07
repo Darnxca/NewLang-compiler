@@ -80,18 +80,45 @@ int main ( ){
 	printf("Scegli l'operazione da effettuare\n");
 	fflush(stdout);
 	correctInputCheck = scanf("%d", &sceltaOp);
-	if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
+	if (correctInputCheck != 1) {
+		do{
+			while (getchar() != '\n' ); // ripulisce lo standard input
+			printf("Scegli l'operazione da effettuare\n");
+			fflush(stdout);
+			correctInputCheck = scanf(" %d", &sceltaOp);
+			printf("\n");
+		}while ( correctInputCheck !=1);
+
+	}
 	while(((continuaScelta != 0) && ((sceltaOp > 1) && (sceltaOp < 6)))){
 		// Dichiarazione variabili
 		int correctInputCheck = 0;
 		printf("Inserisci il primo numero\n");
 		fflush(stdout);
 		correctInputCheck = scanf("%f", &num1);
-		if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
+		if (correctInputCheck != 1) {
+			do{
+				while (getchar() != '\n' ); // ripulisce lo standard input
+				printf("Inserisci il primo numero\n");
+				fflush(stdout);
+				correctInputCheck = scanf(" %f", &num1);
+				printf("\n");
+			}while ( correctInputCheck !=1);
+
+		}
 		printf("Inserisci il secondo numero\n");
 		fflush(stdout);
 		correctInputCheck = scanf("%f", &num2);
-		if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
+		if (correctInputCheck != 1) {
+			do{
+				while (getchar() != '\n' ); // ripulisce lo standard input
+				printf("Inserisci il secondo numero\n");
+				fflush(stdout);
+				correctInputCheck = scanf(" %f", &num2);
+				printf("\n");
+			}while ( correctInputCheck !=1);
+
+		}
 		if((sceltaOp == 2)){
 			// Dichiarazione variabili
 			int correctInputCheck = 0;
@@ -122,14 +149,32 @@ int main ( ){
 		printf("Vuoi continuare? (0: NO, 1: SI)\n");
 		fflush(stdout);
 		correctInputCheck = scanf("%d", &continuaScelta);
-		if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
+		if (correctInputCheck != 1) {
+			do{
+				while (getchar() != '\n' ); // ripulisce lo standard input
+				printf("Vuoi continuare? (0: NO, 1: SI)\n");
+				fflush(stdout);
+				correctInputCheck = scanf(" %d", &continuaScelta);
+				printf("\n");
+			}while ( correctInputCheck !=1);
+
+		}
 		while(((continuaScelta != 0) && (continuaScelta != 1))){
 			// Dichiarazione variabili
 			int correctInputCheck = 0;
 			printf("Inserire 0 per terminare, 1 per continuare!\n");
 			fflush(stdout);
 			correctInputCheck = scanf("%d", &continuaScelta);
-			if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
+			if (correctInputCheck != 1) {
+				do{
+					while (getchar() != '\n' ); // ripulisce lo standard input
+					printf("Inserire 0 per terminare, 1 per continuare!\n");
+					fflush(stdout);
+					correctInputCheck = scanf(" %d", &continuaScelta);
+					printf("\n");
+				}while ( correctInputCheck !=1);
+
+			}
 		}
 		if((continuaScelta == 1)){
 			// Dichiarazione variabili
@@ -138,7 +183,16 @@ int main ( ){
 			printf("Scegli loperazione da effettuare\n");
 			fflush(stdout);
 			correctInputCheck = scanf("%d", &sceltaOp);
-			if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
+			if (correctInputCheck != 1) {
+				do{
+					while (getchar() != '\n' ); // ripulisce lo standard input
+					printf("Scegli loperazione da effettuare\n");
+					fflush(stdout);
+					correctInputCheck = scanf(" %d", &sceltaOp);
+					printf("\n");
+				}while ( correctInputCheck !=1);
+
+			}
 		}
 	}
 }

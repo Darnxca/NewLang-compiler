@@ -18,5 +18,15 @@ void main ( ){
 	fflush(stdout);
 	b = malloc(20*sizeof(char));
 	correctInputCheck = scanf("%d %s", &x, b);
-	if (correctInputCheck != 2) {printf("si è verificato un errore, riprovare"); exit(1);}
+	if (correctInputCheck != 2) {
+		do{
+			while (getchar() != '\n' );
+			printf("inserisci un intero e una stringa\n");
+			fflush(stdout);
+			free(b);
+			b = malloc(20*sizeof(char));
+			correctInputCheck = scanf(" %d %s", &x, b);
+			printf("\n");
+		}while ( correctInputCheck !=2);
+	}
 }

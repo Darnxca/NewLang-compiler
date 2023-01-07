@@ -328,9 +328,12 @@ public class CGenVisitor implements Visitor{
     public Object visit(ReadStatNode item) {
 
         StringConstantNode stringConst;
+        String scanf = "";
         if ((stringConst = item.getStringCostant()) != null){
+            scanf += "\tprintf(\""+ stringConst.getValue()+"\\n\");\n";
             writer.println("printf(\""+ stringConst.getValue()+"\\n\");");
             inserisciTab();
+            scanf += getTab()+"\t\tfflush(stdout);\n";
             writer.println("fflush(stdout);");
         }
 
@@ -339,32 +342,46 @@ public class CGenVisitor implements Visitor{
         for (int i = 0; i < item.getIdentifierList().size(); i++){
             if (item.getIdentifierList().get(i).getType() == Symbols.STRING){
                 inserisciTab();
+                scanf += getTab()+"\t\tfree("+ item.getIdentifierList().get(i).getValue()+ ");\n";
+                scanf += getTab()+"\t\t"+item.getIdentifierList().get(i).getValue() + " = " + "malloc(20*sizeof(char));\n";
                 writer.println(item.getIdentifierList().get(i).getValue() + " = " + "malloc(20*sizeof(char));");
             }
         }
         inserisciTab();
+
+        scanf +=getTab()+"\t\tcorrectInputCheck = scanf(\"";
         writer.print("correctInputCheck = scanf(\"");
 
+        String formatSpecifiers ="";
         for (int i = 0; i < item.getIdentifierList().size(); i++){
-            scanfFormatSpecifiers(item.getIdentifierList().get(i).getType());
+            formatSpecifiers += scanfFormatSpecifiers(item.getIdentifierList().get(i).getType());
             if (i != item.getIdentifierList().size()-1)
                 writer.print(" ");
         }
 
+        scanf += formatSpecifiers;
+
+        scanf += "\", ";
         writer.print("\", ");
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
-            if (item.getIdentifierList().get(i).getType() != Symbols.STRING)
+            if (item.getIdentifierList().get(i).getType() != Symbols.STRING) {
+                scanf += "&";
                 writer.print("&");
+            }
+            scanf += item.getIdentifierList().get(i).getValue();
             item.getIdentifierList().get(i).accept(this);
-            if (i != item.getIdentifierList().size()-1)
+            if (i != item.getIdentifierList().size()-1) {
+                scanf += ", ";
                 writer.print(", ");
+            }
         }
 
+        scanf += ");";
         writer.println(");");
         inserisciTab();
 
-        gestioneErroreLetturaScanf(item.getIdentifierList().size());
+        gestioneErroreLetturaScanf(item.getIdentifierList().size(), scanf);
 
         return null;
     }
@@ -715,24 +732,31 @@ public class CGenVisitor implements Visitor{
         }
     }
 
-    private void scanfFormatSpecifiers(int token){
+    private String scanfFormatSpecifiers(int token){
+        String scanf = "";
         switch (token){
             case Symbols.INTEGER :
+                scanf+= " %d";
                 writer.print("%d");
                 break;
             case Symbols.FLOAT:
+                scanf+= " %f";
                 writer.print("%f");
                 break;
             case Symbols.CHAR:
+                scanf+= " %c";
                 writer.print("%c");
                 break;
             case Symbols.BOOL:
+                scanf+= " %d";
                 writer.print("%d");
                 break;
             case Symbols.STRING:
+                scanf+= " %s";
                 writer.print("%s");
                 break;
         }
+        return scanf;
     }
 
     private static String getTypeFromToken(int token){
@@ -767,9 +791,29 @@ public class CGenVisitor implements Visitor{
             writer.print("\t");
     }
 
-    private void gestioneErroreLetturaScanf(int numElementi){
+    private String getTab(){
+        int livello_di_profondita = stack.getStack().size();
+        String tab = "";
+        for (int i = 0; i < livello_di_profondita-1; i++)
+            tab +="\t";
 
-        writer.println("if (correctInputCheck != " + numElementi + ") {printf(\"si è verificato un errore, riprovare\"); exit(1);}");
+        return tab;
+    }
+    private void gestioneErroreLetturaScanf(int numElementi, String scanf){
 
+        writer.println("if (correctInputCheck != " + numElementi + ") {");
+        inserisciTab();
+        writer.println("\tdo{");
+        inserisciTab();
+        writer.println("\t\twhile (getchar() != '\\n' ); // ripulisce lo standard input"); // ripulisce lo standard input
+        inserisciTab();
+        writer.println("\t"+scanf);
+        inserisciTab();
+        writer.print("\t\tprintf(\"\\n\");\n");
+        inserisciTab();
+        writer.print("\t}");
+        writer.println("while ( correctInputCheck !="+ numElementi +");\n");
+        inserisciTab();
+        writer.println("}");
     }
 }
