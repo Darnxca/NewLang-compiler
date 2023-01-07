@@ -10,11 +10,17 @@ def funz3(out string p) : string{
      p << p & d;
 }
 
-start: def test(): void{
-    string  p;
-    string  c << "s";
+var dkdkd << "clclc";
+string stringa;
 
-    funz1(p);
+start: def test(): void{
+    string  p << "a";
+    string pa;
+    string  c << "a";
+    boolean isEq, isGt, isLt, isLe, isGe, isNe;
+    string concatenata;
+
+    |* funz1(p);
 
     ("Funz1 eseguita: la variabile 'p' vale: ", p) -->!;
 
@@ -30,6 +36,17 @@ start: def test(): void{
 
     p <-- "Inserisci una stringa in 'p'";
     ("Hai inserito: ", p) -->!;
+    *|
+    concatenata << compareString(c, p, isEq, isGt, isLt, isGe, isLe, isNe);
+    (isEq) -->!;
+    (isGt) -->!;
+    (isLt) -->!;
+    (isGe) -->!;
+    (isLe) -->!;
+    (isNe) -->!;
+    (concatenata) -->!;
+    (dkdkd&"ciaooooooo") -->!;
+
 }
 
 def funz2(out string p) : string{
@@ -38,4 +55,17 @@ def funz2(out string p) : string{
      p << "ciao";
      p << d;
      return d;
+}
+
+def compareString(string a, b | out boolean isEq, isGt, isLt, isGe, isLe, isNe) : string {
+
+    isEq << a = b;
+    isGt << a > b;
+    isLt << a < b;
+    isGe << a >= b;
+    isLe << a <= b;
+    isNe << a != b;
+
+    return a&b;
+
 }

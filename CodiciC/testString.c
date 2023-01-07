@@ -5,37 +5,53 @@
 
 // prototipi delle funzioni
 void test();
+char*  compareString(char*  a,char*  b,int *isEq, int *isGt, int *isLt, int *isGe, int *isLe, int *isNe);
 char*  funz1(char*  *p);
 char*  funz2(char*  *p);
 char*  funz3(char*  *p);
 
 // inizializzazione delle variabili
+char*  stringa;
+char*  dkdkd = "clclc";
 
 //-----------Implementazione funzioni-----------
 char*  funz1 (char*  * p ){
 	// Dichiarazione variabili
 	int correctInputCheck = 0;
 	int da;
-	* p = strcpy(malloc(5*sizeof(char)),"ciao");
+	* p = "ciao";
 da = 5;
-* p = strcpy(malloc(8*sizeof(char)),"carmine");
+* p = "carmine";
 }
 char*  funz3 (char*  * p ){
 	// Dichiarazione variabili
 	int correctInputCheck = 0;
 	int da;
-	char*  d = strcpy(malloc(5*sizeof(char))," car");
-	* p = strcpy(malloc(5*sizeof(char)),"ciao");
-	* p = strcat(* p,d);
+	char*  d = " car";
+	* p = "ciao";
+	* p = strcat(* p=strdup(* p) , d=strdup(d));
+	free(d);
 }
 char*  funz2 (char*  * p ){
 	// Dichiarazione variabili
 	int correctInputCheck = 0;
 	int da;
-	char*  d = strcpy(malloc(5*sizeof(char))," car");
-	* p = strcpy(malloc(5*sizeof(char)),"ciao");
+	char*  d = " car";
+	* p = "ciao";
 	* p = d;
+	free(d);
 	return d;
+}
+char*  compareString (char*  a, char*  b, int * isEq, int * isGt, int * isLt, int * isGe, int * isLe, int * isNe ){
+	// Dichiarazione variabili
+	int correctInputCheck = 0;
+	* isEq =  strcmp(a, b) == 0;
+	* isGt =  strcmp(a, b) > 0;
+	* isLt =  strcmp(a, b) < 0;
+	* isGe =  strcmp(a, b) >= 0;
+	* isLe =  strcmp(a, b) <= 0;
+	* isNe =  strcmp(a, b) != 0;
+	return strcat(a=strdup(a) , b=strdup(b));
 }
 int main(int argc, char *argv[]){
 	test();
@@ -43,26 +59,35 @@ int main(int argc, char *argv[]){
 void test ( ){
 	// Dichiarazione variabili
 	int correctInputCheck = 0;
-	char*  p;
-	char*  c = strcpy(malloc(2*sizeof(char)),"s");
-	funz1(&p);
-	printf("%s %s\n",strcpy(malloc(40*sizeof(char)),"Funz1 eseguita: la variabile 'p' vale: "), p);
+	char*  pa;
+	int isEq;
+	int isGt;
+	int isLt;
+	int isLe;
+	int isGe;
+	int isNe;
+	char*  concatenata;
+	char*  p = "a";
+	char*  c = "a";
+	concatenata = compareString(c, p, &isEq, &isGt, &isLt, &isGe, &isLe, &isNe);
+	printf("%d\n",isEq);
 	fflush(stdout);
-	printf("%s %s\n",strcpy(malloc(45*sizeof(char)),"Funz2 in esecuzione: la variabile 'c' vale: "), c);
+	printf("%d\n",isGt);
 	fflush(stdout);
-	c = funz2(&p);
-	printf("%s %s %s %s\n",strcpy(malloc(40*sizeof(char)),"Funz2 eseguita: la variabile 'p' vale: "), p, strcpy(malloc(31*sizeof(char)),"mentre la variabile 'c' vale: "), c);
+	printf("%d\n",isLt);
 	fflush(stdout);
-	funz3(&p);
-	printf("%s %s\n",strcpy(malloc(40*sizeof(char)),"Funz3 eseguita: la variabile 'p' vale: "), p);
+	printf("%d\n",isGe);
 	fflush(stdout);
-	printf("%s %f\n",strcpy(malloc(6*sizeof(char)),"pow: "), pow(2,2));
+	printf("%d\n",isLe);
 	fflush(stdout);
-	printf("Inserisci una stringa in 'p'\n");
+	printf("%d\n",isNe);
 	fflush(stdout);
-	p = malloc(20*sizeof(char));
-	correctInputCheck = scanf("%s", p);
-	if (correctInputCheck != 1) {printf("si è verificato un errore, riprovare"); exit(1);}
-	printf("%s %s\n",strcpy(malloc(15*sizeof(char)),"Hai inserito: "), p);
+	printf("%s\n",concatenata);
 	fflush(stdout);
+	printf("%s\n",strcat(dkdkd=strdup(dkdkd) , "ciaooooooo"));
+	fflush(stdout);
+	free(pa);
+	free(concatenata);
+	free(p);
+	free(c);
 }

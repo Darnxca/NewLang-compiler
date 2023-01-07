@@ -88,6 +88,10 @@ public class ScopeVisitor implements Visitor{
         }
 
        //Prelevo lo scope precedente e lo aggiorno
+        if(item.getType() == Symbols.STRING) //Controllo se l'identificatore è di tipo Stringa
+            item.getIdentifier().setPointer(true); //In C la stringa è un puntatore, l'identificatore sarà un pointer
+
+        //Aggiornamento scope
         stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
 
         return null;
@@ -95,10 +99,10 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IdInitObbNode item) {
-        if(stack.probe(item.getIdentifier().getValue())){
-            throw new MultipleVariableDeclaration("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
-                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()
-                    +" \n-> Variabile "+item.getIdentifier().getValue()+ " già dichiarata precedentemente! :P");
+        if (stack.probe(item.getIdentifier().getValue())) {
+            throw new MultipleVariableDeclaration("Errore (riga: " + item.getIdentifier().getLeft().getLine() +
+                    ", colonna: " + item.getIdentifier().getLeft().getColumn()
+                    + " \n-> Variabile " + item.getIdentifier().getValue() + " già dichiarata precedentemente! :P");
         }
 
         //chiamo il visitor della costante per effettuare l'inferenza di tipo sulla varibile di tipo VAR
@@ -107,7 +111,7 @@ public class ScopeVisitor implements Visitor{
 
         item.getIdentifier().setType(constant.getType());
 
-        //Aggiorno scope
+        //Aggiorno lo scope
         stack.addId(new IdSymbol(item.getIdentifier().getValue(), constant.getType()));
 
         return null;

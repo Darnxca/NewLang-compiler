@@ -453,7 +453,7 @@ public class SemanticVisitor implements Visitor{
         if((idSym = (IdSymbol) stack.lookup(item.getValue(), SymbolTypes.VAR) ) == null)
             throw new VariableNotDeclared("Errore (riga: "+ item.getLeft().getLine()+
                     ", colonna: "+ item.getRight().getColumn()+ ")"+
-                    "\n->Variabile "+ item.getValue()+ "non dichiarata precedentemente!");
+                    "\n->Variabile "+ item.getValue()+ " non dichiarata precedentemente!");
 
         item.setType(idSym.getType());
 

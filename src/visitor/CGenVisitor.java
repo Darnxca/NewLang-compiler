@@ -11,6 +11,7 @@ import semantic.symbols.FunSymbol;
 import semantic.symbols.IdSymbol;
 import semantic.symbols.ParamFunSymbol;
 
+import javax.swing.text.html.StyleSheet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -153,9 +154,9 @@ public class CGenVisitor implements Visitor{
             writer.print(" = ");
             item.getExpression().accept(this);
             writer.println(";");
-        }else
+        }else {
             writer.println(";");
-
+        }
         return null;
     }
 
@@ -237,9 +238,33 @@ public class CGenVisitor implements Visitor{
         }
 
         for (StatementNode st : item.getStmtNodeList()) {
-            inserisciTab();
-            st.accept(this);
+            //Salto i return per poter generare prima i free
+            if(!(st instanceof ReturnStatNode)) {
+                inserisciTab();
+                st.accept(this);
+            }
         }
+
+        //Generazione delle free in base a se un identificatore è un puntatore o meno
+        for(VarDeclNode var : vd){
+            for(IdInitNode idIN: var.getIdIList()){
+                if (idIN.getIdentifier().isPointer()){
+                    inserisciTab();
+                    writer.println("free("+idIN.getIdentifier().getValue()+");");
+                }
+            }
+        }
+
+        // Genero i return se ci sono
+        for (StatementNode st : item.getStmtNodeList()) {
+            if(st instanceof ReturnStatNode) {
+                inserisciTab();
+                st.accept(this);
+            }
+        }
+
+
+
 
         return null;
     }
@@ -394,14 +419,13 @@ public class CGenVisitor implements Visitor{
             item.getExpression().accept(this);
             writer.println(";");
         }else{
-            writer.print("return;");
+            writer.println("return;");
         }
         return null;
     }
 
     @Override
     public Object visit(WhileStatNode item) {
-
 
         stack.enterScope(item.getSymbolTableWhile());
 
@@ -480,7 +504,7 @@ public class CGenVisitor implements Visitor{
         }else {
             str = item.getValue();
         }
-        writer.print("strcpy(malloc("+(len+1)+"*sizeof(char)),\""+str +"\")");
+        writer.print("\""+str+"\"");
         return null;
     }
 
@@ -568,13 +592,10 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(BinaryExpressionNode item) {
 
-        if(item.getOperation() == Symbols.STR_CONCAT){
-            writer.print("strcat(");
-            item.getLeftExpression().accept(this);
-            writer.print(",");
-            item.getRightExpression().accept(this);
-            writer.print(")");
-        }else if (item.getOperation() == Symbols.POW){
+        if(item.getLeftExpression().getType() == Symbols.STRING && item.getRightExpression().getType() == Symbols.STRING){
+            generaEspressioniBinarieStringhe(item.getLeftExpression(), item.getOperation(), item.getRightExpression());
+        }
+        else if (item.getOperation() == Symbols.POW){
             writer.print("pow(");
             item.getLeftExpression().accept(this);
             writer.print(",");
@@ -646,6 +667,80 @@ public class CGenVisitor implements Visitor{
             case Symbols.LE: writer.print(" <= "); break;
             case Symbols.EQ: writer.print(" == "); break;
             case Symbols.NE: writer.print(" != "); break;
+        }
+
+    }
+
+    private void generaEspressioniBinarieStringhe(ExpressionNode leftExpr, int operazione, ExpressionNode rightExpr){
+        switch (operazione){
+            case Symbols.STR_CONCAT:
+                if(!(leftExpr instanceof StringConstantNode)) {
+                    writer.print("strcat(");
+                    leftExpr.accept(this);
+                    writer.print("=");
+                    writer.print("strdup(");
+                    leftExpr.accept(this);
+                    writer.print(") , ");
+                }
+                else {
+                    leftExpr.accept(this);
+                }
+                if(!(rightExpr instanceof StringConstantNode)) {
+                    rightExpr.accept(this);
+                    writer.print("=");
+                    writer.print("strdup(");
+                    rightExpr.accept(this);
+                    writer.print(")");
+                }
+                else {
+                    rightExpr.accept(this);
+                }
+                writer.print(")");
+
+                break;
+            case Symbols.EQ :
+                writer.print(" strcmp(");
+                leftExpr.accept(this);
+                writer.print(", ");
+                rightExpr.accept(this);
+                writer.print(") == 0");
+                break;
+            case Symbols.GT:
+                writer.print(" strcmp(");
+                leftExpr.accept(this);
+                writer.print(", ");
+                rightExpr.accept(this);
+                writer.print(") > 0");
+                break;
+            case Symbols.LT:
+                writer.print(" strcmp(");
+                leftExpr.accept(this);
+                writer.print(", ");
+                rightExpr.accept(this);
+                writer.print(") < 0");
+                break;
+            case Symbols.GE:
+                writer.print(" strcmp(");
+                leftExpr.accept(this);
+                writer.print(", ");
+                rightExpr.accept(this);
+                writer.print(") >= 0");
+                break;
+            case Symbols.LE:
+                writer.print(" strcmp(");
+                leftExpr.accept(this);
+                writer.print(", ");
+                rightExpr.accept(this);
+                writer.print(") <= 0");
+                break;
+            case Symbols.NE:
+                writer.print(" strcmp(");
+                leftExpr.accept(this);
+                writer.print(", ");
+                rightExpr.accept(this);
+                writer.print(") != 0");
+                break;
+
         }
 
     }

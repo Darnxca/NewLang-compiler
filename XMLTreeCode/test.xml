@@ -48,7 +48,7 @@
 </IdentifierExpression>
 </IdInitNode>
 </VarDeclNode>
-<FuncDeclNode Type='VOID'>
+<FuncDeclNode Type='STRING'>
 <IdentifierExpression>
 <value> stampaNNumeri</value>
 </IdentifierExpression>
@@ -59,6 +59,24 @@
 </IdentifierExpression>
 </ParamDecl>
 <Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> ciao</value>
+</IdentifierExpression>
+<StringConstant> CIAO</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> ccciao</value>
+</IdentifierExpression>
+<StringConstant> CIAO</StringConstant>
+</IdInitNode>
+</VarDeclNode>
 <VarDeclNode>
 <Type>INTEGER</Type>
 <IdInitNode>
@@ -117,6 +135,15 @@
 </BinaryExpression>
 </BinaryExpression>
 <Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> ciao</value>
+</IdentifierExpression>
+<StringConstant> CIAO</StringConstant>
+</IdInitNode>
+</VarDeclNode>
 <Writeln>
 <IdentifierExpression>
 <value> i</value>
@@ -137,6 +164,15 @@
 </Body>
 <Else>
 <Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> ciao</value>
+</IdentifierExpression>
+<StringConstant> CIAO</StringConstant>
+</IdInitNode>
+</VarDeclNode>
 <AssignStat>
 <IdentifierExpression>
 <value> okay</value>
@@ -149,6 +185,9 @@
 </Body>
 </WhileStat>
 <ReturnStat>
+<IdentifierExpression>
+<value> ciao</value>
+</IdentifierExpression>
 </ReturnStat>
 </Body>
 </FuncDeclNode>
@@ -228,6 +267,75 @@
 </Writeln>
 </Body>
 </ForStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> stampaParole</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> quante</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> paroleACaso</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IdentifierExpression>
+<value> quante</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> parola</value>
+</IdentifierExpression>
+<StringConstant> parola</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<Writeln>
+<IdentifierExpression>
+<value> parola</value>
+</IdentifierExpression>
+</Writeln>
+<AssignStat>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</WhileStat>
 </Body>
 </FuncDeclNode>
 </Declist>
@@ -312,6 +420,14 @@
 <value> x</value>
 </IdentifierExpression>
 </FunCallStat>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaParole</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> quanti</value>
+</IdentifierExpression>
+</FunCallStat>
 </Body>
 <Else>
 <Body>
@@ -329,6 +445,14 @@
 <FunCallStat>
 <IdentifierExpression>
 <value> stampaNNumeri</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> quanti</value>
+</IdentifierExpression>
+</FunCallStat>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaParole</value>
 </IdentifierExpression>
 <IdentifierExpression>
 <value> quanti</value>

@@ -2,6 +2,23 @@
 <!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
 <ProgramNode>
 <Declist>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> dkdkd</value>
+</IdentifierExpression>
+<StringConstant> clclc</StringConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> stringa</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
 <FuncDeclNode Type='STRING'>
 <IdentifierExpression>
 <value> funz1</value>
@@ -136,6 +153,138 @@
 </ReturnStat>
 </Body>
 </FuncDeclNode>
+<FuncDeclNode Type='STRING'>
+<IdentifierExpression>
+<value> compareString</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>STRING</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>BOOL</Type-out>
+<IdentifierExpression>
+<value> isEq</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isGt</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isLt</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isGe</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isLe</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isNe</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> isEq</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> isGt</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> GT</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> isLt</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> isGe</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> GE</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> isLe</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> LE</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> isNe</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<ReturnStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> STR_CONCAT</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</ReturnStat>
+</Body>
+</FuncDeclNode>
 </Declist>
 <Main>
 <FuncDeclNode Type='VOID'>
@@ -149,6 +298,15 @@
 <IdentifierExpression>
 <value> p</value>
 </IdentifierExpression>
+<StringConstant> a</StringConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> pa</value>
+</IdentifierExpression>
 </IdInitNode>
 </VarDeclNode>
 <VarDeclNode>
@@ -157,85 +315,127 @@
 <IdentifierExpression>
 <value> c</value>
 </IdentifierExpression>
-<StringConstant> s</StringConstant>
+<StringConstant> a</StringConstant>
 </IdInitNode>
 </VarDeclNode>
-<FunCallStat>
+<VarDeclNode>
+<Type>BOOL</Type>
+<IdInitNode>
 <IdentifierExpression>
-<value> funz1</value>
+<value> isEq</value>
 </IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
 <IdentifierExpression>
-<value> p</value>
+<value> isGt</value>
 </IdentifierExpression>
-</FunCallStat>
-<Writeln>
-<StringConstant> Funz1 eseguita: la variabile 'p' vale: </StringConstant>
+</IdInitNode>
+<IdInitNode>
 <IdentifierExpression>
-<value> p</value>
+<value> isLt</value>
 </IdentifierExpression>
-</Writeln>
-<Writeln>
-<StringConstant> Funz2 in esecuzione: la variabile 'c' vale: </StringConstant>
+</IdInitNode>
+<IdInitNode>
 <IdentifierExpression>
-<value> c</value>
+<value> isLe</value>
 </IdentifierExpression>
-</Writeln>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> isGe</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> isNe</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>STRING</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> concatenata</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
 <AssignStat>
 <IdentifierExpression>
-<value> c</value>
+<value> concatenata</value>
 </IdentifierExpression>
 <FunCallExpr>
 <IdentifierExpression>
-<value> funz2</value>
+<value> compareString</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> c</value>
 </IdentifierExpression>
 <IdentifierExpression>
 <value> p</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isEq</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isGt</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isLt</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isGe</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isLe</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> isNe</value>
 </IdentifierExpression>
 </FunCallExpr>
 </AssignStat>
 <Writeln>
-<StringConstant> Funz2 eseguita: la variabile 'p' vale: </StringConstant>
 <IdentifierExpression>
-<value> p</value>
-</IdentifierExpression>
-<StringConstant> mentre la variabile 'c' vale: </StringConstant>
-<IdentifierExpression>
-<value> c</value>
-</IdentifierExpression>
-</Writeln>
-<FunCallStat>
-<IdentifierExpression>
-<value> funz3</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> p</value>
-</IdentifierExpression>
-</FunCallStat>
-<Writeln>
-<StringConstant> Funz3 eseguita: la variabile 'p' vale: </StringConstant>
-<IdentifierExpression>
-<value> p</value>
+<value> isEq</value>
 </IdentifierExpression>
 </Writeln>
 <Writeln>
-<StringConstant> pow: </StringConstant>
+<IdentifierExpression>
+<value> isGt</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<IdentifierExpression>
+<value> isLt</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<IdentifierExpression>
+<value> isGe</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<IdentifierExpression>
+<value> isLe</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<IdentifierExpression>
+<value> isNe</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
+<IdentifierExpression>
+<value> concatenata</value>
+</IdentifierExpression>
+</Writeln>
+<Writeln>
 <BinaryExpression>
-<IntegerConstant> 2</IntegerConstant>
-<Operation> POW</Operation>
-<IntegerConstant> 2</IntegerConstant>
+<IdentifierExpression>
+<value> dkdkd</value>
+</IdentifierExpression>
+<Operation> STR_CONCAT</Operation>
+<StringConstant> ciaooooooo</StringConstant>
 </BinaryExpression>
-</Writeln>
-<ReadStat>
-<StringConstant> Inserisci una stringa in 'p'</StringConstant>
-<IdentifierExpression>
-<value> p</value>
-</IdentifierExpression>
-</ReadStat>
-<Writeln>
-<StringConstant> Hai inserito: </StringConstant>
-<IdentifierExpression>
-<value> p</value>
-</IdentifierExpression>
 </Writeln>
 </Body>
 </FuncDeclNode>

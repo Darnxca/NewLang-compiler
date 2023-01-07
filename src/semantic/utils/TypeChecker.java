@@ -79,6 +79,9 @@ public class TypeChecker {
             else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
                 return Symbols.BOOL;
             }
+            else if( typeLeft == Symbols.STRING && typeRight == Symbols.STRING){
+                return Symbols.BOOL;
+            }
 
         } else if (operation == Symbols.ASSIGN){
 
@@ -98,9 +101,6 @@ public class TypeChecker {
                 return Symbols.CHAR;
             }
             else if( typeLeft == Symbols.STRING && typeRight == Symbols.STRING) {
-                return Symbols.STRING;
-            }
-            else if( typeLeft == Symbols.STRING && typeRight == Symbols.CHAR) {
                 return Symbols.STRING;
             }
             else if( typeLeft == Symbols.BOOL && typeRight == Symbols.BOOL){

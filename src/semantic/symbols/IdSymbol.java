@@ -22,7 +22,6 @@ public class IdSymbol extends Symbol {
         this.isPointer = isPointer;
         this.isParameter = isParameter;
     }
-
     public boolean isParameter() {
         return isParameter;
     }
