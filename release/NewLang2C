@@ -10,17 +10,30 @@ then
 fi
 
 input=$1
-opzioni=$2
-echo $opzioni;
+opzioni=$2$3$4
+
 newlang_filename=$input
 c_filename="CodiciC\\"${input%.nl}.c
 outputfile=${input%.nl}
 
-mkdir "XMLTreeCode"
+if [[ "$opzioni" == *"-xml"* ]]
+then
+	mkdir "XMLTreeCode"
+fi
+
 mkdir "CodiciC"
 
 java -jar NewLang.jar $newlang_filename $opzioni
-gcc $c_filename -lm -o $outputfile 
+gcc $c_filename -lm -o $outputfile
 
-rm -rf "XMLTreeCode"
+if [[ "$opzioni" == *"-xml"* ]]
+then
+	rm -rf "XMLTreeCode"
+fi
+
+if [[ "$opzioni" == *"-sc"* ]]
+then
+	cp -r $c_filename ${input%.nl}.c
+fi
+
 rm -rf "CodiciC"
