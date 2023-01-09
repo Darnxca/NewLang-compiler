@@ -43,9 +43,12 @@ public class Tester {
             Parser p = new Parser(lexer, csf);
 
             ProgramNode program = (ProgramNode) p.parse().value;
-            XMLTreeGenerator tr = new XMLTreeGenerator(filename);
-            program.accept(tr);
-            tr.flush();
+
+            if (opzioniAggiuntive.contains("xml")){
+                XMLTreeGenerator tr = new XMLTreeGenerator(filename);
+                program.accept(tr);
+                tr.flush();
+            }
 
             ScopeVisitor sv = new ScopeVisitor();
             program.accept(sv);

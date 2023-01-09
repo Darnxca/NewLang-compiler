@@ -131,6 +131,8 @@ public class SemanticVisitor implements Visitor{
                 }
         }
 
+
+
         stack.exitScope(); //Ripristino lo scope precedente
 
         return null;

@@ -76,20 +76,11 @@ public class ScopeVisitor implements Visitor{
 
     @Override
     public Object visit(IdInitNode item) {
-        if (item.getIdentifier().getValue().equalsIgnoreCase("correctInputCheck")){
-            throw new UseOfKeyWord("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
-                    ", colonna: "+ item.getIdentifier().getLeft().getColumn()+") \n-> "+item.getIdentifier().getValue()+
-                    " è una parola chiave non può essere usata :P");
-        }
         if(stack.probe(item.getIdentifier().getValue())){
             throw new MultipleVariableDeclaration("Errore (riga: "+item.getIdentifier().getLeft().getLine()+
                     ", colonna: "+ item.getIdentifier().getLeft().getColumn()+") \n->Variabile "+item.getIdentifier().getValue()+
                      " già dichiarata precedentemente! :P");
         }
-
-       //Prelevo lo scope precedente e lo aggiorno
-        if(item.getType() == Symbols.STRING) //Controllo se l'identificatore è di tipo Stringa
-            item.getIdentifier().setPointer(true); //In C la stringa è un puntatore, l'identificatore sarà un pointer
 
         //Aggiornamento scope
         stack.addId(new IdSymbol(item.getIdentifier().getValue(), item.getType()));
@@ -149,7 +140,7 @@ public class ScopeVisitor implements Visitor{
         for (ParamDeclNode param : item.getParamDecl())
             param.accept(this);
 
-        stack.addId(new IdSymbol("correctInputCheck", Symbols.INTEGER, false, false));
+
 
         item.getBody().accept(this);
 

@@ -228,8 +228,6 @@ public class CGenVisitor implements Visitor{
 
         inserisciTab();
         writer.print("// Dichiarazione variabili\n");
-        inserisciTab();
-        writer.println("int correctInputCheck = 0;");
         // creazione del codice c per le inizializzazioni di variabili
         ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
 
@@ -238,33 +236,9 @@ public class CGenVisitor implements Visitor{
         }
 
         for (StatementNode st : item.getStmtNodeList()) {
-            //Salto i return per poter generare prima i free
-            if(!(st instanceof ReturnStatNode)) {
                 inserisciTab();
                 st.accept(this);
-            }
         }
-
-        //Generazione delle free in base a se un identificatore è un puntatore o meno
-        for(VarDeclNode var : vd){
-            for(IdInitNode idIN: var.getIdIList()){
-                if (idIN.getIdentifier().isPointer()){
-                    inserisciTab();
-                    writer.println("free("+idIN.getIdentifier().getValue()+");");
-                }
-            }
-        }
-
-        // Genero i return se ci sono
-        for (StatementNode st : item.getStmtNodeList()) {
-            if(st instanceof ReturnStatNode) {
-                inserisciTab();
-                st.accept(this);
-            }
-        }
-
-
-
 
         return null;
     }
@@ -353,12 +327,11 @@ public class CGenVisitor implements Visitor{
     public Object visit(ReadStatNode item) {
 
         StringConstantNode stringConst;
-        String scanf = "";
+
         if ((stringConst = item.getStringCostant()) != null){
-            scanf += "\tprintf(\""+ stringConst.getValue()+"\\n\");\n";
+
             writer.println("printf(\""+ stringConst.getValue()+"\\n\");");
             inserisciTab();
-            scanf += getTab()+"\t\tfflush(stdout);\n";
             writer.println("fflush(stdout);");
         }
 
@@ -367,46 +340,36 @@ public class CGenVisitor implements Visitor{
         for (int i = 0; i < item.getIdentifierList().size(); i++){
             if (item.getIdentifierList().get(i).getType() == Symbols.STRING){
                 inserisciTab();
-                scanf += getTab()+"\t\tfree("+ item.getIdentifierList().get(i).getValue()+ ");\n";
-                scanf += getTab()+"\t\t"+item.getIdentifierList().get(i).getValue() + " = " + "malloc(20*sizeof(char));\n";
                 writer.println(item.getIdentifierList().get(i).getValue() + " = " + "malloc(20*sizeof(char));");
             }
         }
         inserisciTab();
 
-        scanf +=getTab()+"\t\tcorrectInputCheck = scanf(\"";
-        writer.print("correctInputCheck = scanf(\"");
+        writer.print("scanf(\"");
 
-        String formatSpecifiers ="";
         for (int i = 0; i < item.getIdentifierList().size(); i++){
-            formatSpecifiers += scanfFormatSpecifiers(item.getIdentifierList().get(i).getType());
+            scanfFormatSpecifiers(item.getIdentifierList().get(i).getType());
             if (i != item.getIdentifierList().size()-1)
                 writer.print(" ");
         }
 
-        scanf += formatSpecifiers;
 
-        scanf += "\", ";
         writer.print("\", ");
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
             if (item.getIdentifierList().get(i).getType() != Symbols.STRING) {
-                scanf += "&";
                 writer.print("&");
             }
-            scanf += item.getIdentifierList().get(i).getValue();
+
             item.getIdentifierList().get(i).accept(this);
             if (i != item.getIdentifierList().size()-1) {
-                scanf += ", ";
+
                 writer.print(", ");
             }
         }
 
-        scanf += ");";
         writer.println(");");
-        inserisciTab();
 
-        gestioneErroreLetturaScanf(item.getIdentifierList().size(), scanf);
 
         return null;
     }
@@ -827,31 +790,24 @@ public class CGenVisitor implements Visitor{
         }
     }
 
-    private String scanfFormatSpecifiers(int token){
-        String scanf = "";
+    private void scanfFormatSpecifiers(int token){
         switch (token){
             case Symbols.INTEGER :
-                scanf+= " %d";
                 writer.print("%d");
                 break;
             case Symbols.FLOAT:
-                scanf+= " %f";
                 writer.print("%f");
                 break;
             case Symbols.CHAR:
-                scanf+= " %c";
                 writer.print("%c");
                 break;
             case Symbols.BOOL:
-                scanf+= " %d";
                 writer.print("%d");
                 break;
             case Symbols.STRING:
-                scanf+= " %s";
                 writer.print("%s");
                 break;
         }
-        return scanf;
     }
 
     private static String getTypeFromToken(int token){
@@ -884,31 +840,5 @@ public class CGenVisitor implements Visitor{
         int livello_di_profondita = stack.getStack().size();
         for (int i = 0; i < livello_di_profondita-1; i++)
             writer.print("\t");
-    }
-
-    private String getTab(){
-        int livello_di_profondita = stack.getStack().size();
-        String tab = "";
-        for (int i = 0; i < livello_di_profondita-1; i++)
-            tab +="\t";
-
-        return tab;
-    }
-    private void gestioneErroreLetturaScanf(int numElementi, String scanf){
-
-        writer.println("if (correctInputCheck != " + numElementi + ") {");
-        inserisciTab();
-        writer.println("\tdo{");
-        inserisciTab();
-        writer.println("\t\twhile (getchar() != '\\n' ); // ripulisce lo standard input"); // ripulisce lo standard input
-        inserisciTab();
-        writer.println("\t"+scanf);
-        inserisciTab();
-        writer.print("\t\tprintf(\"\\n\");\n");
-        inserisciTab();
-        writer.print("\t}");
-        writer.println("while ( correctInputCheck !="+ numElementi +");\n");
-        inserisciTab();
-        writer.println("}");
     }
 }
