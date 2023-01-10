@@ -1,0 +1,114 @@
+ciaooo_i || ID
+bkb2jkb4jk23b4324 || ID
+ZaskoksodkS || ID
+ch j || ID ID
+klk alsk lkl klk || ID ID ID ID
+12.34 || REAL_CONST
+12.03004 || REAL_CONST
+-213 || MINUS INTEGER_CONST
+-12323.131 ||MINUS REAL_CONST
+if ||IF
+IF || ID
+If || ID
+start: || MAIN
+start || ID
+then || then
+else || ELSE
+else else || ELSE ELSE
+WHILE || ID
+while || WHILE
+FOR || ID
+foR || ID
+FOr || ID
+for || FOR
+loop || LOOP
+loOp || ID
+lo0p || ID
+LOOP || ID
+to || TO
+tO || ID
+t_0 || ID
+def || DEF
+DEF || ID
+deF || ID
+out || OUT
+oUT || ID
+OUT || ID
+return || RETURN
+returN || ID
+return_N || ID
+true || TRUE
+TRUE || ID
+false || FALSE
+FALSE || ID
+integer || INTEGER
+int || ID
+intero || ID
+float || FLOAT
+FLOAT || ID
+floaT || ID
+var || VAR
+VAR || ID
+boolean || BOOL
+BOOL || ID
+Bool || ID
+B00l || ID
+string || STRING
+char* || CHAR TIMES
+char ** || CHAR TIMES TIMES
+VOID || ID
+void || VOID
+V1D || ID
+<-- || READ
+-- || MINUS MINUS
+<- || LT MINUS
+<--- || READ MINUS
+--> || WRITE
+-- > || WRITE
+-- || MINUS MINUs
+-> || MINUS GT
+---> || MINUS WRITE
+-->! || WRITELN
+--->! || MINUS WRITELN
+<< || ASSIGN
+<<< || ASSIGN LT
+<<<< || ASSIGN ASSIGN
+> || GT
+< || LT
+>> || GT GT
+<= || LE
+>= || GE
+>=< || GE LT
+>=> || GE GT
+!= || NE
+<> || NE
+!=<> || NE NE
+* || TIMES
++ || PLUS
+- || MINUS
+/ || DIV
++*-/ || PLUS TIMES MINUS DIV
+and || AND
+AND || ID
+OR || ID
+or || OR
+not || NOT
+NOT || ID
+^ || POW
+^^ || POW POW
+ciao^2 || ID POW INTEGER_CONST
+& || STR_CONCAT
+&& || STR_CONCAT STR_CONCAT
+: || COLON
+; || SEMI
+, || COMMA
+|
+( || LPAR
+) || RPAR
+{ || LBRAC
+} || RBRAC
+"sdsjdjsd sdjh jshdj sjhj shdhs jdh " ||STRING_CONST
+"kslklsdlsd.sfkdsflsmdklfnsfknds"&"sndjksnnskdnjk" || STRING_CONST STR_CONCAT STRING_CONST
+' ' || CHAR_CONST
+'a' || CHAR_CONST
+"23a3" || STRING_CONST

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="TestAssignmentStat" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="main.java.Tester" />
+    <option name="MAIN_CLASS_NAME" value="main.java.NewLangTranspiler" />
     <module name="dangelo-della-rocca_es5" />
     <option name="PROGRAM_PARAMETERS" value="test/TestAssignStat.nl" />
     <method v="2">

@@ -7,20 +7,17 @@ import java_cup.runtime.ScannerBuffer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import parser.newLangTree.nodes.ProgramNode;
 import visitor.*;
 import parser.*;
 import lexer.*;
 
-import javax.print.Doc;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -29,7 +26,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-public class Tester {
+public class NewLangTranspiler {
     private static ComplexSymbolFactory csf = new ComplexSymbolFactory();
 
     public static void main(String[] args) throws ParserConfigurationException {

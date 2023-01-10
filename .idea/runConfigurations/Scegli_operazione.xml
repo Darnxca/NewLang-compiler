@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Scegli operazione" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="main.java.Tester" />
+    <option name="MAIN_CLASS_NAME" value="main.java.NewLangTranspiler" />
     <module name="dangelo-della-rocca_es5" />
     <option name="PROGRAM_PARAMETERS" value="newLang_codici/newLangFunzioneMenu.nl -xml" />
     <method v="2">

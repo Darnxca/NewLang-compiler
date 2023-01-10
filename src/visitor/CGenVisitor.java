@@ -534,7 +534,7 @@ public class CGenVisitor implements Visitor{
             writer.print(item.getValue());
         }
         else if(idSym.isPointer() ){
-            writer.print("* "+ item.getValue());
+            writer.print("*"+ item.getValue());
         }
         else{
             writer.print(item.getValue());
@@ -826,7 +826,7 @@ public class CGenVisitor implements Visitor{
                 type += "int";
                 break;
             case Symbols.STRING:
-                type += "char* ";
+                type += "char*";
                 break;
             case Symbols.VOID:
                 type += "void";

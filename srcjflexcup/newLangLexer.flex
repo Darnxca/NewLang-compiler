@@ -71,7 +71,7 @@ digit1 = [1-9]
 digits = {digit}+
 
 
-Identifier = ({letter_$}|({letter_$}+{digit}*))
+Identifier = ({letter_$}|({letter_$}+{digit}*)*)
 FloatNumber = (({digit1}+{digit}* | {zero}))(\.{digits})?
 IntegerNumber = (({digit1}+{digit}* | {zero}))
 

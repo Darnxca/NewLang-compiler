@@ -53,7 +53,7 @@
                 <archive>
                     <manifest>
                         <addClasspath>true</addClasspath>
-                        <mainClass>main.java.Tester</mainClass>
+                        <mainClass>main.java.NewLangTranspiler</mainClass>
                     </manifest>
                 </archive>
                 <descriptorRefs>
