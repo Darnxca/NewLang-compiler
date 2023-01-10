@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> ottieni_dopo_virgola</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> num_virgola</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> MINUS</Operation>
+<IdentifierExpression>
+<value> num</value>
+</IdentifierExpression>
+</BinaryExpression>
+</IdInitNode>
+</VarDeclNode>
+<ReturnStat>
+<IdentifierExpression>
+<value> num_virgola</value>
+</IdentifierExpression>
+</ReturnStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> prodotto_tramite_addizione</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> Inserisci primo numero: </StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</ReadStat>
+<ReadStat>
+<StringConstant> Inserisci secondo numero: </StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</ReadStat>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</WhileStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<FunCallExpr>
+<IdentifierExpression>
+<value> ottieni_dopo_virgola</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</FunCallExpr>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</IfStat>
+<Writeln>
+<StringConstant> Il prodotto tra </StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<StringConstant> e</StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<StringConstant>  è </StringConstant>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+</Writeln>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

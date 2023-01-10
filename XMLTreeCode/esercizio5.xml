@@ -1,0 +1,887 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
+<ProgramNode>
+<Declist>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> prodotto_tramite_addizione</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> tmp1</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> tmp2</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> Inserisci primo numero: </StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</ReadStat>
+<ReadStat>
+<StringConstant> Inserisci secondo numero: </StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</ReadStat>
+<IfStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> tmp1</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<UnaryExpression>
+<Operation> MINUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</UnaryExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> tmp2</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<Operation> TIMES</Operation>
+<UnaryExpression>
+<Operation> MINUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</UnaryExpression>
+</BinaryExpression>
+</AssignStat>
+</Body>
+<Else>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> tmp1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> tmp2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</AssignStat>
+</Body>
+</Else>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> tmp2</value>
+</IdentifierExpression>
+<Operation> GE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IdentifierExpression>
+<value> tmp2</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> tmp1</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</WhileStat>
+</Body>
+<Else>
+<Body>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IdentifierExpression>
+<value> tmp1</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> tmp2</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<AssignStat>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</WhileStat>
+</Body>
+</Else>
+</IfStat>
+<Writeln>
+<StringConstant> Il prodotto tra </StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<StringConstant> e</StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<StringConstant>  è </StringConstant>
+<IdentifierExpression>
+<value> totale</value>
+</IdentifierExpression>
+</Writeln>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='INTEGER'>
+<IdentifierExpression>
+<value> Nfibonacci</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<ReturnStat>
+<IntegerConstant> 0</IntegerConstant>
+</ReturnStat>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+<Body>
+<ReturnStat>
+<IntegerConstant> 1</IntegerConstant>
+</ReturnStat>
+</Body>
+</IfStat>
+<ReturnStat>
+<BinaryExpression>
+<FunCallExpr>
+<IdentifierExpression>
+<value> Nfibonacci</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+<Operation> MINUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</FunCallExpr>
+<Operation> PLUS</Operation>
+<FunCallExpr>
+<IdentifierExpression>
+<value> Nfibonacci</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+<Operation> MINUS</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+</FunCallExpr>
+</BinaryExpression>
+</ReturnStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> stampaMenu</value>
+</IdentifierExpression>
+<Body>
+<Writeln>
+<StringConstant> Che operazione vuoi eseguire</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 1 - Somma di due numeri</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 2 - moltiplicazione di due numeri utilizzando la somma</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 3 - divisione intera fra due numeri positivi</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 4 - l’elevamento a potenza</StringConstant>
+</Writeln>
+<Writeln>
+<StringConstant> 5 - successione di fibonacci</StringConstant>
+</Writeln>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='BOOL'>
+<IdentifierExpression>
+<value> dividi_interi</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</ParamDecl>
+<ParamDecl>
+<Type-out>INTEGER</Type-out>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</AssignStat>
+<ReturnStat>
+<BooleanConstant> false</BooleanConstant>
+</ReturnStat>
+</Body>
+<Else>
+<Body>
+<AssignStat>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> a</value>
+</IdentifierExpression>
+<Operation> DIV</Operation>
+<IdentifierExpression>
+<value> b</value>
+</IdentifierExpression>
+</BinaryExpression>
+</AssignStat>
+<ReturnStat>
+<BooleanConstant> true</BooleanConstant>
+</ReturnStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</FuncDeclNode>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> stampaSequenzaFibonacci</value>
+</IdentifierExpression>
+<ParamDecl>
+<Type-in>INTEGER</Type-in>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</ParamDecl>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<WhileStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> LT</Operation>
+<IdentifierExpression>
+<value> n</value>
+</IdentifierExpression>
+</BinaryExpression>
+<Body>
+<Writeln>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<StringConstant>  -> </StringConstant>
+<FunCallExpr>
+<IdentifierExpression>
+<value> Nfibonacci</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+</FunCallExpr>
+</Writeln>
+<AssignStat>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> i</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</AssignStat>
+</Body>
+</WhileStat>
+</Body>
+</FuncDeclNode>
+</Declist>
+<Main>
+<FuncDeclNode Type='VOID'>
+<IdentifierExpression>
+<value> main</value>
+</IdentifierExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IntegerConstant> 0</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>VAR</Type>
+<IdInitObbNode>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<RealConstant> 0.0</RealConstant>
+</IdInitObbNode>
+</VarDeclNode>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<IntegerConstant> 1</IntegerConstant>
+</IdInitNode>
+</VarDeclNode>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaMenu</value>
+</IdentifierExpression>
+</FunCallStat>
+<ReadStat>
+<StringConstant> Scegli l'operazione da effettuare</StringConstant>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+</ReadStat>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> GE</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> LE</Operation>
+<IntegerConstant> 5</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+<Body>
+<ReadStat>
+<StringConstant> Inserisci il primo numero</StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</ReadStat>
+<ReadStat>
+<StringConstant> Inserisci il secondo numero</StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</ReadStat>
+<Writeln>
+<StringConstant> La somma tra </StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<StringConstant>  e </StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<StringConstant>  e' </StringConstant>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<Operation> PLUS</Operation>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</BinaryExpression>
+</Writeln>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 2</IntegerConstant>
+</BinaryExpression>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> prodotto_tramite_addizione</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 3</IntegerConstant>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> Inserisci il primo numero</StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</ReadStat>
+<ReadStat>
+<StringConstant> Inserisci il secondo numero</StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</ReadStat>
+<IfStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<Operation> GE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<Operation> GE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<IfStat>
+<FunCallExpr>
+<IdentifierExpression>
+<value> dividi_interi</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</FunCallExpr>
+<Body>
+<Writeln>
+<StringConstant> il risultato della divisione tra </StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<StringConstant>  e </StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<StringConstant> </StringConstant>
+<IdentifierExpression>
+<value> result</value>
+</IdentifierExpression>
+</Writeln>
+</Body>
+<Else>
+<Body>
+<Writeln>
+<StringConstant> Attenzione denominatore uguale a 0</StringConstant>
+</Writeln>
+</Body>
+</Else>
+</IfStat>
+</Body>
+<Else>
+<Body>
+<Writeln>
+<StringConstant> Errore uno dei due numeri inseriti non è un intero positivo</StringConstant>
+</Writeln>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 4</IntegerConstant>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>FLOAT</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> esponente</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> Inserisci numero</StringConstant>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+</ReadStat>
+<ReadStat>
+<StringConstant> Inserisci esponente </StringConstant>
+<IdentifierExpression>
+<value> esponente</value>
+</IdentifierExpression>
+</ReadStat>
+<Writeln>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<StringConstant> ^</StringConstant>
+<IdentifierExpression>
+<value> esponente</value>
+</IdentifierExpression>
+<StringConstant>  e' </StringConstant>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num1</value>
+</IdentifierExpression>
+<Operation> POW</Operation>
+<IdentifierExpression>
+<value> esponente</value>
+</IdentifierExpression>
+</BinaryExpression>
+</Writeln>
+</Body>
+</IfStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 5</IntegerConstant>
+</BinaryExpression>
+<Body>
+<VarDeclNode>
+<Type>INTEGER</Type>
+<IdInitNode>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</IdInitNode>
+<IdInitNode>
+<IdentifierExpression>
+<value> esponente</value>
+</IdentifierExpression>
+</IdInitNode>
+</VarDeclNode>
+<ReadStat>
+<StringConstant> Inserisci quanti numeri della sequenza di fibonacci visualizzare</StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</ReadStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<Operation> LE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Body>
+<Writeln>
+<StringConstant> Errore!: numero inserito negativo oppure uguale a 0</StringConstant>
+</Writeln>
+</Body>
+<Else>
+<Body>
+<Writeln>
+<StringConstant> La sequenza di fibonacci per </StringConstant>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+<StringConstant>  e':</StringConstant>
+</Writeln>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaSequenzaFibonacci</value>
+</IdentifierExpression>
+<IdentifierExpression>
+<value> num2</value>
+</IdentifierExpression>
+</FunCallStat>
+</Body>
+</Else>
+</IfStat>
+</Body>
+</IfStat>
+<ReadStat>
+<StringConstant> Vuoi continuare? (0: NO, 1: SI)</StringConstant>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+</ReadStat>
+<WhileStat>
+<BinaryExpression>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IntegerConstant> 0</IntegerConstant>
+</BinaryExpression>
+<Operation> AND</Operation>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> NE</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+</BinaryExpression>
+<Body>
+<ReadStat>
+<StringConstant> Inserire 0 per terminare, 1 per continuare!</StringConstant>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+</ReadStat>
+</Body>
+</WhileStat>
+<IfStat>
+<BinaryExpression>
+<IdentifierExpression>
+<value> continuaScelta</value>
+</IdentifierExpression>
+<Operation> EQ</Operation>
+<IntegerConstant> 1</IntegerConstant>
+</BinaryExpression>
+<Body>
+<FunCallStat>
+<IdentifierExpression>
+<value> stampaMenu</value>
+</IdentifierExpression>
+</FunCallStat>
+<ReadStat>
+<StringConstant> Scegli loperazione da effettuare</StringConstant>
+<IdentifierExpression>
+<value> sceltaOp</value>
+</IdentifierExpression>
+</ReadStat>
+</Body>
+</IfStat>
+</Body>
+</WhileStat>
+<Writeln>
+<StringConstant> Il programma è terminato!!!</StringConstant>
+</Writeln>
+</Body>
+</FuncDeclNode>
+</Main>
+</ProgramNode>

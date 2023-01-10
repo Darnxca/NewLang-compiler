@@ -16,7 +16,6 @@ int main();
 //-----------Implementazione funzioni-----------
 void stampaMenu ( ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	printf("%s\n","Che operazione vuoi eseguire");
 	fflush(stdout);
 	printf("%s\n","2 - Somma");
@@ -30,7 +29,6 @@ void stampaMenu ( ){
 }
 float somma (float a, float b, float * result ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	float l;
 	float ldl;
 	float wdw;
@@ -42,33 +40,27 @@ float somma (float a, float b, float * result ){
 }
 void sottrai (float a, float b, float * result ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	* result = (a - b);
 }
 void moltiplica (float a, float b, float * result ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	* result = (a * b);
 }
 int dividi (float a, float b, float * result ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	if((b == 0)){
 		// Dichiarazione variabili
-		int correctInputCheck = 0;
 		* result = 0;
 		return 0;
 	}
 	else{
 		// Dichiarazione variabili
-		int correctInputCheck = 0;
 		* result = (a / b);
 		return 1;
 	}
 }
 int main ( ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	int sceltaOp;
 	float result;
 	int continuaScelta = 1;
@@ -82,7 +74,6 @@ int main ( ){
 	scanf("%d", &sceltaOp);
 	while(((continuaScelta != 0) && ((sceltaOp > 1) && (sceltaOp < 6)))){
 		// Dichiarazione variabili
-		int correctInputCheck = 0;
 		printf("Inserisci il primo numero\n");
 		fflush(stdout);
 		scanf("%f", &num1);
@@ -91,25 +82,20 @@ int main ( ){
 		scanf("%f", &num2);
 		if((sceltaOp == 2)){
 			// Dichiarazione variabili
-			int correctInputCheck = 0;
 			somma(num1, num2, &result);
 		}
 		if((sceltaOp == 3)){
 			// Dichiarazione variabili
-			int correctInputCheck = 0;
 			sottrai(num1, num2, &result);
 		}
 		if((sceltaOp == 4)){
 			// Dichiarazione variabili
-			int correctInputCheck = 0;
 			moltiplica(num1, num2, &result);
 		}
 		if((sceltaOp == 5)){
 			// Dichiarazione variabili
-			int correctInputCheck = 0;
 			if(( !dividi(num1, num2, &result))){
 				// Dichiarazione variabili
-				int correctInputCheck = 0;
 				printf("%s","Errore operazione di divisione non effettuabile!!!");
 				fflush(stdout);
 			}
@@ -121,14 +107,12 @@ int main ( ){
 		scanf("%d", &continuaScelta);
 		while(((continuaScelta != 0) && (continuaScelta != 1))){
 			// Dichiarazione variabili
-			int correctInputCheck = 0;
 			printf("Inserire 0 per terminare, 1 per continuare!\n");
 			fflush(stdout);
 			scanf("%d", &continuaScelta);
 		}
 		if((continuaScelta == 1)){
 			// Dichiarazione variabili
-			int correctInputCheck = 0;
 			stampaMenu();
 			printf("Scegli loperazione da effettuare\n");
 			fflush(stdout);

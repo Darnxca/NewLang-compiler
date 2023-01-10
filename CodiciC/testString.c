@@ -17,7 +17,6 @@ char*  dkdkd = "clclc";
 //-----------Implementazione funzioni-----------
 char*  funz1 (char*  * p ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	int da;
 	* p = "ciao";
 da = 5;
@@ -25,26 +24,21 @@ da = 5;
 }
 char*  funz3 (char*  * p ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	int da;
 	char*  d = " car";
 	* p = "ciao";
 	* p = strcat(* p=strdup(* p) , d=strdup(d));
-	free(d);
 }
 char*  funz2 (char*  * p ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	int da;
 	char*  d = " car";
 	* p = "ciao";
 	* p = d;
-	free(d);
 	return d;
 }
 char*  compareString (char*  a, char*  b, int * isEq, int * isGt, int * isLt, int * isGe, int * isLe, int * isNe ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	* isEq =  strcmp(a, b) == 0;
 	* isGt =  strcmp(a, b) > 0;
 	* isLt =  strcmp(a, b) < 0;
@@ -58,7 +52,6 @@ int main(int argc, char *argv[]){
 }
 void test ( ){
 	// Dichiarazione variabili
-	int correctInputCheck = 0;
 	char*  pa;
 	int isEq;
 	int isGt;
@@ -86,8 +79,4 @@ void test ( ){
 	fflush(stdout);
 	printf("%s\n",strcat(dkdkd=strdup(dkdkd) , "ciaooooooo"));
 	fflush(stdout);
-	free(pa);
-	free(concatenata);
-	free(p);
-	free(c);
 }

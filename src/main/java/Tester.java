@@ -13,12 +13,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
 import parser.newLangTree.nodes.ProgramNode;
 import visitor.*;
 import parser.*;
 import lexer.*;
 
+import javax.print.Doc;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 public class Tester {
     private static ComplexSymbolFactory csf = new ComplexSymbolFactory();
@@ -45,9 +54,9 @@ public class Tester {
             ProgramNode program = (ProgramNode) p.parse().value;
 
             if (opzioniAggiuntive.contains("xml")){
-                XMLTreeGenerator tr = new XMLTreeGenerator(filename);
-                program.accept(tr);
-                tr.flush();
+                XMLTreeGenerator tr = new XMLTreeGenerator();
+                Document xml = (Document) program.accept(tr);
+                generaXML(xml, filename);
             }
 
             ScopeVisitor sv = new ScopeVisitor();
@@ -86,5 +95,29 @@ public class Tester {
         else
             throw new FileExtensionNotMatch("Errore nella lettura del file \n -> Il file "+ filename + " non ha estensione newLang");
     }
+
+    private static void generaXML(Document document, String filename){
+        String xmlFilePath = "XMLTreeCode/"+filename+".xml";
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+
+            DOMSource domSource = new DOMSource(document);
+            StreamResult streamResult = new StreamResult(new File(xmlFilePath));
+
+            transformer.transform(domSource, streamResult);
+
+            System.out.println("File Xml creato!");
+
+        } catch (TransformerException tfe) {
+            tfe.printStackTrace();
+        }
+    }
+
 
 }

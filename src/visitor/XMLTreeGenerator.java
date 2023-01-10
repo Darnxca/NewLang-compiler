@@ -1,5 +1,6 @@
 package visitor;
 
+import org.w3c.dom.Document;
 import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.FunCallExprNode;
 import parser.newLangTree.nodes.expression.BinaryExpressionNode;
@@ -9,374 +10,459 @@ import parser.newLangTree.nodes.expression.UnaryExpressionNode;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
 import org.w3c.dom.Element;
+
 import parser.Symbols;
 
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class XMLTreeGenerator implements  Visitor{
 
+    private DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+
+    private DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+
+    private Document document = documentBuilder.newDocument();
+
     PrintWriter writer;
 
-    public XMLTreeGenerator(String filename)  {
-        try {
-            writer = new PrintWriter( "XMLTreeCode/"+filename+".xml");
-            writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            writer.println("<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->");
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
-    public void flush() {
-        writer.flush();
-        writer.close();
-    }
+    //https://countwordsfree.com/xmlviewer
+    public XMLTreeGenerator() throws ParserConfigurationException {}
 
 
     @Override
     public Object visit(ProgramNode item) {
 
-        writer.println("<ProgramNode>");
+        Element root = document.createElement("Programm");
 
-        writer.println("<Declist>");
+        Element declNode, mainNode;
 
-        item.getDecl().accept(this);
+        declNode = (Element) item.getDecl().accept(this);
+        mainNode = (Element) item.getMainFuncDecl().accept(this);
 
-        writer.println("</Declist>");
+        root.appendChild(declNode);
+        root.appendChild(mainNode);
 
-        item.getMainFuncDecl().accept(this);
+        document.appendChild(root);
 
-        writer.println("</ProgramNode>");
-        return null;
+        return document;
     }
 
     @Override
     public Object visit(DeclNode item) {
 
-        for (VarDeclNode i : item.getVarDeclList())
-             i.accept(this);
+        Element varDeclNode, fundDeclNode;
+        Element root = document.createElement("DeclNode");
 
-        for (FunDeclNode i : item.getFunDeclList())
-             i.accept(this);
+        for (VarDeclNode i : item.getVarDeclList()) {
+            varDeclNode = (Element) i.accept(this);
+            root.appendChild(varDeclNode);
+        }
 
-        return null;
+        for (FunDeclNode i : item.getFunDeclList()) {
+            fundDeclNode = (Element) i.accept(this);
+            root.appendChild(fundDeclNode);
+        }
+
+
+        return root;
     }
 
     @Override
     public Object visit(MainFuncDeclNode item) {
 
-        writer.println("<Main>");
+        Element funDeclNode;
+        Element root = document.createElement("Main");
 
-        item.getFunDeclNode().accept(this);
 
-        writer.println("</Main>");
-        return null;
+        funDeclNode = (Element) item.getFunDeclNode().accept(this);
+
+        root.appendChild(funDeclNode);
+        return root;
     }
 
     @Override
     public Object visit(VarDeclNode item) {
-        writer.println("<VarDeclNode>");
 
-        writer.println("<Type>" + Symbols.terminalNames[item.getType()] + "</Type>");
+        Element type, IdInitNode, IdInitObbNode;
+        Element root = document.createElement("VarDeclNode");
 
-        for (IdInitNode i : item.getIdIList())
-            i.accept(this);
+        type = document.createElement("Type");
+        type.appendChild(document.createTextNode(Symbols.terminalNames[item.getType()]));
 
-        for (IdInitObbNode i : item.getIdIObList())
-             i.accept(this);
+        root.appendChild(type);
 
-        writer.println("</VarDeclNode>");
-        return null;
+        for (IdInitNode i : item.getIdIList()) {
+            IdInitNode = (Element) i.accept(this);
+            root.appendChild(IdInitNode);
+        }
+
+        for (IdInitObbNode i : item.getIdIObList()) {
+            IdInitObbNode = (Element) i.accept(this);
+            root.appendChild(IdInitObbNode);
+        }
+
+        return root;
     }
 
     @Override
     public Object visit(IdInitNode item){
-        writer.println("<IdInitNode>");
 
-        item.getIdentifier().accept(this);
+        Element identifier, expression;
+        Element root = document.createElement("IdInitNode");
 
-        if (item.getExpression() != null)
-            item.getExpression().accept(this);
 
-        writer.println("</IdInitNode>");
-        return null;
+        identifier = (Element) item.getIdentifier().accept(this);
+        root.appendChild(identifier);
+
+        if (item.getExpression() != null) {
+            expression = (Element) item.getExpression().accept(this);
+            root.appendChild(expression);
+        }
+
+
+        return root;
     }
 
     @Override
     public Object visit(IdInitObbNode item){
-        writer.println("<IdInitObbNode>");
 
-        item.getIdentifier().accept(this);
+        Element identifier, constantEl;
+        Element root = document.createElement("IdInitObbNode");
+
+
+        identifier = (Element) item.getIdentifier().accept(this);
+        root.appendChild(identifier);
 
         ExpressionNode constant = (ExpressionNode) item.getCostantValue();
-        Element Constant = (Element) constant.accept(this);
+        constantEl = (Element) constant.accept(this);
+        root.appendChild(constantEl);
 
-        writer.println("</IdInitObbNode>");
-        return null;
+
+        return root;
     }
 
     @Override
     public Object visit(FunDeclNode item){
-        writer.println("<FuncDeclNode Type='"+Symbols.terminalNames[item.getTypeOrVoid()]+"'>");
 
-        item.getIdentifier().accept(this);
+        Element identifier, param, body;
+
+        Element root = document.createElement("FuncDeclNode");
+        root.setAttribute("Type",Symbols.terminalNames[item.getTypeOrVoid()] );
+
+        identifier = (Element) item.getIdentifier().accept(this);
+        root.appendChild(identifier);
 
         for (ParamDeclNode i : item.getParamDecl()) {
-            i.accept(this);
+            param = (Element) i.accept(this);
+            root.appendChild(param);
         }
 
-        item.getBody().accept(this);
+        body = (Element) item.getBody().accept(this);
+        root.appendChild(body);
 
-        writer.println("</FuncDeclNode>");
-
-        return  null;
+        return root;
     }
 
     @Override
     public Object visit(ParamDeclNode item){
 
-        writer.println("<ParamDecl>");
+        Element identifier;
+        Element root = document.createElement("ParamDecl");
 
         //Se ho parametri di ritorno devo mettere il tipo
         if(item.isOut()){
-            writer.println("<Type-out>"+ Symbols.terminalNames[item.getType()]+"</Type-out>");
+            Element out = document.createElement("Type-out");
+            out.appendChild(document.createTextNode(Symbols.terminalNames[item.getType()]));
+            root.appendChild(out);
         }
         else{
-            writer.println("<Type-in>"+ Symbols.terminalNames[item.getType()]+"</Type-in>");
+            Element in = document.createElement("Type-in");
+            in.appendChild(document.createTextNode(Symbols.terminalNames[item.getType()]));
+            root.appendChild(in);
         }
 
         for (IdentifierExprNode i : item.getIdentifierList()) {
-            i.accept(this);
+            identifier = (Element) i.accept(this);
+            root.appendChild(identifier);
         }
 
-        writer.println("</ParamDecl>");
 
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(BodyNode item){
 
-        writer.println("<Body>");
+        Element varDeclNode, statementNode;
 
-        for(VarDeclNode i : item.getVarDeclList())
-            i.accept(this);
+        Element root = document.createElement("Body");
+
+        for(VarDeclNode i : item.getVarDeclList()) {
+            varDeclNode = (Element) i.accept(this);
+            root.appendChild(varDeclNode);
+        }
 
 
-        for(StatementNode i : item.getStmtNodeList())
-            i.accept(this);
+        for(StatementNode i : item.getStmtNodeList()) {
+            statementNode = (Element) i.accept(this);
+            root.appendChild(statementNode);
+        }
 
-        writer.println("</Body>");
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(IfStatNode item){
-        writer.println("<IfStat>");
 
-        item.getExpression().accept(this);
+        Element body, expression, elseEl;
+        Element root = document.createElement("IfStat");
 
-        item.getBodyThen().accept(this);
+        expression = (Element) item.getExpression().accept(this);
+        root.appendChild(expression);
+
+        body = (Element) item.getBodyThen().accept(this);
+        root.appendChild(body);
 
         if(item.getBodyElse() != null){
-            writer.println("<Else>");
-            item.getBodyElse().accept(this);
-            writer.println("</Else>");
+            Element root_else = document.createElement("ElseStat");
+            elseEl = (Element) item.getBodyElse().accept(this);
+            root_else.appendChild(elseEl);
+            root.appendChild(root_else);
         }
 
-        writer.println("</IfStat>");
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(AssignStatNode item){
-        writer.println("<AssignStat>");
 
-        for (IdentifierExprNode i : item.getIdentifierList())
-            i.accept(this);
+        Element identifier, expression;
 
+        Element root = document.createElement("AssignStat");
 
-        for (ExpressionNode e : item.getExpressionList())
-            e.accept(this);
+        for (IdentifierExprNode i : item.getIdentifierList()) {
+            identifier = (Element) i.accept(this);
+            root.appendChild(identifier);
+        }
 
-        writer.println("</AssignStat>");
+        for (ExpressionNode e : item.getExpressionList()) {
+            expression = (Element) e.accept(this);
+            root.appendChild(expression);
+        }
 
-
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(ForStatNode item){
-        writer.println("<ForStat fromValue='"+((IntegerConstantNode)item.getCostantFrom()).getValue()+"' toValue='"+((IntegerConstantNode)item.getCostantTo()).getValue()+"'>");
 
+        Element identifier, body;
 
-        item.getIdentifier().accept(this);
+        Element root = document.createElement("ForStat");
+        root.setAttribute("fromValue", String.valueOf(((IntegerConstantNode)item.getCostantFrom()).getValue()));
+        root.setAttribute("toValue", String.valueOf(((IntegerConstantNode)item.getCostantTo()).getValue()));
 
-        item.getBody().accept(this);
+        identifier = (Element) item.getIdentifier().accept(this);
+        root.appendChild(identifier);
 
-        writer.println("</ForStat>");
-        return null;
+        body = (Element) item.getBody().accept(this);
+        root.appendChild(body);
+
+        return root;
     }
 
     @Override
     public Object visit(ReadStatNode item){
-        writer.println("<ReadStat>");
 
-        item.getStringCostant().accept(this);
+        Element string_constant, expression;
+        Element root = document.createElement("ReadStat");
+
+        string_constant = (Element) item.getStringCostant().accept(this);
+        root.appendChild(string_constant);
 
         for(IdentifierExprNode i : item.getIdentifierList()){
-            i.accept(this);
+            expression = (Element) i.accept(this);
+            root.appendChild(expression);
         }
 
-        writer.println("</ReadStat>");
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(ReturnStatNode item){
 
-        writer.println("<ReturnStat>");
+        Element expression;
+        Element root = document.createElement("ReturnStat");
 
-        if(item.getExpression() != null)
-            item.getExpression().accept(this);
+        if(item.getExpression() != null) {
+            expression = (Element) item.getExpression().accept(this);
+            root.appendChild(expression);
+        }
 
-        writer.println("</ReturnStat>");
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(WhileStatNode item){
-        writer.println("<WhileStat>");
 
-        item.getExpression().accept(this);
+        Element expression, body;
 
-        item.getBody().accept(this);
+        Element root = document.createElement("WhileStat");
 
-        writer.println("</WhileStat>");
-        return null;
+        expression = (Element) item.getExpression().accept(this);
+        root.appendChild(expression);
+
+        body = (Element) item.getBody().accept(this);
+        root.appendChild(body);
+
+        return root;
     }
 
     @Override
     public Object visit(WriteStatNode item){
-        if(item.isNewLine())
-        {
-            writer.println("<Writeln>");
 
+        Element root, expression;
+
+        if(item.isNewLine()) {
+            root = document.createElement("Writeln");
         }
         else {
-            writer.println("<Write>");
+            root = document.createElement("Write");
         }
 
-
-        for(ExpressionNode i : item.getExpressionList())
-        {
-           i.accept(this);
+        for(ExpressionNode i : item.getExpressionList()) {
+           expression = (Element) i.accept(this);
+           root.appendChild(expression);
         }
 
-        if(item.isNewLine())
-        {
-            writer.println("</Writeln>");
-
-        }
-        else {
-            writer.println("</Write>");
-        }
-
-        return null;
-
+        return root;
     }
 
     @Override
     public Object visit(IntegerConstantNode item){
 
+        Element root = document.createElement("IntegerConstant");
+        root.appendChild(document.createTextNode(String.valueOf(item.getValue())));
 
-        writer.println("<IntegerConstant> " + item.getValue() + "</IntegerConstant>");
-
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(BooleanConstantNode item){
-        writer.println("<BooleanConstant> " + item.getValue() + "</BooleanConstant>");
 
-        return null;
+        Element root = document.createElement("BooleanConstant");
+        root.appendChild(document.createTextNode(String.valueOf(item.getValue())));
+
+        return root;
     }
 
     @Override
     public Object visit(RealConstantNode item){
-        writer.println("<RealConstant> " + item.getValue() + "</RealConstant>");
 
-        return null;
+        Element root = document.createElement("RealConstant");
+        root.appendChild(document.createTextNode(String.valueOf(item.getValue())));
+
+        return root;
     }
 
     @Override
     public Object visit(StringConstantNode item){
-        writer.println("<StringConstant> " + item.getValue() + "</StringConstant>");
 
-        return null;
+        Element root = document.createElement("StringConstant");
+        root.appendChild(document.createTextNode(String.valueOf(item.getValue())));
+
+        return root;
     }
 
     @Override
     public Object visit(CharConstantNode item){
 
-        writer.println("<CharConstant> " + item.getValue() + "</CharConstant>");
+        Element root = document.createElement("CharConstant");
+        root.appendChild(document.createTextNode(String.valueOf(item.getValue())));
 
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(FunCallExprNode item){
-        writer.println("<FunCallExpr>");
+        Element identifier, expression;
+        Element root = document.createElement("FunCallExpr");
 
-        item.getIdentifier().accept(this);
+        identifier = (Element) item.getIdentifier().accept(this);
+        root.appendChild(identifier);
 
+        for (ExpressionNode i : item.getListOfExpr()) {
+            expression = (Element) i.accept(this);
+            root.appendChild(expression);
+        }
 
-        for (ExpressionNode i : item.getListOfExpr())
-            i.accept(this);
-
-        writer.println("</FunCallExpr>");
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(FunCallStatNode item){
-        writer.println("<FunCallStat>");
 
-        item.getIdentifier().accept(this);
+        Element identifier, expression;
+        Element root = document.createElement("FunCallStat");
 
+        identifier = (Element) item.getIdentifier().accept(this);
+        root.appendChild(identifier);
 
-        for (ExpressionNode i : item.getListOfExpr())
-            i.accept(this);
+        for (ExpressionNode i : item.getListOfExpr()) {
+            expression = (Element) i.accept(this);
+            root.appendChild(expression);
+        }
 
-        writer.println("</FunCallStat>");
-        return null;
+        return root;
     }
 
     @Override
     public Object visit(IdentifierExprNode item){
-        writer.println("<IdentifierExpression>");
-        writer.println("<value> " + item.getValue()+ "</value>");
-        writer.println("</IdentifierExpression>");
-        return null;
+
+        Element root = document.createElement("IdentifierExpression");
+        root.appendChild(document.createTextNode(String.valueOf(item.getValue())));
+
+        return root;
 
     }
 
     @Override
     public Object visit(BinaryExpressionNode item){
-        writer.println("<BinaryExpression>");
-        item.getLeftExpression().accept(this);
-        writer.println("<Operation> " + Symbols.terminalNames[item.getOperation()] + "</Operation>");
-        item.getRightExpression().accept(this);
-        writer.println("</BinaryExpression>");
-        return null;
+
+        Element left, right;
+        Element root = document.createElement("BinaryExpression");
+
+
+        left = (Element) item.getLeftExpression().accept(this);
+        root.appendChild(left);
+
+        Element op = document.createElement("Operation");
+        op.appendChild(document.createTextNode(Symbols.terminalNames[item.getOperation()]));
+        root.appendChild(op);
+
+        right = (Element) item.getRightExpression().accept(this);
+        root.appendChild(right);
+
+        return root;
     }
     @Override
     public Object visit(UnaryExpressionNode item){
-        writer.println("<UnaryExpression>");
-        writer.println("<Operation> " + Symbols.terminalNames[item.getOperation()] + "</Operation>");
-        item.getRightExpression().accept(this);
-        writer.println("</UnaryExpression>");
-        return null;
+
+        Element right;
+        Element root = document.createElement("UnaryExpression");
+
+        Element op = document.createElement("Operation");
+        op.appendChild(document.createTextNode(Symbols.terminalNames[item.getOperation()]));
+        root.appendChild(op);
+
+        right = (Element) item.getRightExpression().accept(this);
+        root.appendChild(right);
+
+        return root;
     }
 }
