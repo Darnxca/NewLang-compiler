@@ -95,4 +95,6 @@ def dividi(float a,b | out float result) : boolean{
 	}
 }
 
+integer x <<y;
+integer y << x;
 ||string a << "S" & "&" & "&" & "casa" & "&2222" & "&fefwfw";

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Programm>
     <DeclNode>
+        <VarDeclNode>
+            <Type>INTEGER</Type>
+            <IdInitNode>
+                <IdentifierExpression>x</IdentifierExpression>
+                <IdentifierExpression>y</IdentifierExpression>
+            </IdInitNode>
+        </VarDeclNode>
+        <VarDeclNode>
+            <Type>INTEGER</Type>
+            <IdInitNode>
+                <IdentifierExpression>y</IdentifierExpression>
+                <IdentifierExpression>x</IdentifierExpression>
+            </IdInitNode>
+        </VarDeclNode>
         <FuncDeclNode Type="VOID">
             <IdentifierExpression>stampaMenu</IdentifierExpression>
             <Body>

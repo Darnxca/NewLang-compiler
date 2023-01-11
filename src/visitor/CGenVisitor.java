@@ -5,6 +5,7 @@ import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
 import parser.newLangTree.nodes.expression.constants.*;
 import parser.newLangTree.nodes.statements.*;
+import semantic.SymbolTable;
 import semantic.SymbolTableStack;
 import semantic.symbols.SymbolTypes;
 import semantic.symbols.FunSymbol;
@@ -53,6 +54,15 @@ public class CGenVisitor implements Visitor{
             }
         });
 
+        writer.println("// inizializzazione delle variabili globali");
+
+        item.getSymbolTableProgramScope().forEach((key, sym) ->{
+            if(sym instanceof IdSymbol){
+                IdSymbol is = (IdSymbol) sym;
+                generaDichiarazioneVariabile(is);
+            }
+        });
+
         writer.println("");
         item.getDecl().accept(this);
 
@@ -64,12 +74,14 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(DeclNode item) {
 
-        writer.println("// inizializzazione delle variabili");
-
+        writer.println("void initialize_global() {");
+        stack.enterScope(new SymbolTable());
         ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
         for (VarDeclNode var : vd){
             var.accept(this);
         }
+        writer.println("}");
+        stack.exitScope();
 
         writer.println("\n//-----------Implementazione funzioni-----------");
 
@@ -90,6 +102,7 @@ public class CGenVisitor implements Visitor{
         if(!nomeFunz.equals("main")){
             writer.println("int main(int argc, char *argv[]){");
 
+            writer.println("\tinitialize_global();");
             FunSymbol function = (FunSymbol) stack.lookup(nomeFunz, SymbolTypes.FUNCTION);
 
             List<ParamFunSymbol> parametriFormali =  function.getListOfParams();
@@ -130,16 +143,13 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(VarDeclNode item) {
 
-
         for (IdInitNode id : item.getIdIList()){
             inserisciTab();
-                writer.print(getTypeFromToken(id.getType())+ " ");
-                id.accept(this);
+            id.accept(this);
         }
 
         for (IdInitObbNode id : item.getIdIObList()){
             inserisciTab();
-            writer.print(getTypeFromToken(id.getType())+ " ");
             id.accept(this);
         }
 
@@ -199,6 +209,11 @@ public class CGenVisitor implements Visitor{
 
         writer.print(" )");
         writer.println("{");
+
+        if (item.getIdentifier().getValue().equals("main")){
+            writer.println("\tinitialize_global();");
+        }
+
         item.getBody().accept(this);
 
         writer.println("}");
@@ -226,20 +241,40 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(BodyNode item) {
 
-        inserisciTab();
-        writer.print("// Dichiarazione variabili\n");
+
+        final int[] una_volta = {0};
+
+        stack.getCurrentScope().forEach((key, sym) ->{
+            if(sym instanceof IdSymbol && !((IdSymbol) sym).isParameter()){
+                if(una_volta[0] == 0){ inserisciTab(); writer.print("// Dichiarazione variabili\n"); una_volta[0]++;};
+                IdSymbol is = (IdSymbol) sym;
+                inserisciTab();
+                generaDichiarazioneVariabile(is);
+            }
+        });
         // creazione del codice c per le inizializzazioni di variabili
         ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
 
-        for (VarDeclNode var : vd){
-            var.accept(this);
+        if (item.getVarDeclList().size() != 0) {
+            inserisciTab();
+            writer.print("// Assegnazione variabili");
         }
 
+        for (VarDeclNode var : vd){
+            writer.println();
+            var.accept(this);
+
+        }
+
+        if (item.getStmtNodeList().size() != 0){
+            inserisciTab();
+            writer.println("// Inizio Statement");
+        }
         for (StatementNode st : item.getStmtNodeList()) {
                 inserisciTab();
                 st.accept(this);
         }
-
+        writer.println();
         return null;
     }
 
@@ -274,7 +309,9 @@ public class CGenVisitor implements Visitor{
 
     @Override
     public Object visit(AssignStatNode item) {
+
         for (int i = 0; i < item.getIdentifierList().size(); i++){
+            if(i>0)inserisciTab();
             item.getIdentifierList().get(i).accept(this);
             writer.print(" = ");
             item.getExpressionList().get(i).accept(this);
@@ -721,7 +758,6 @@ public class CGenVisitor implements Visitor{
         ArrayList<IdInitNode> initConstant = new ArrayList<>();
         ArrayList<IdInitObbNode> initVarConstant = new ArrayList<>();
         ArrayList<IdInitNode> initExpr = new ArrayList<>();
-        ArrayList<IdInitNode> initId = new ArrayList<>();
 
         // creazione del codice c per le inizializzazioni di variabili con una costante
         for (VarDeclNode var : vd){
@@ -744,19 +780,7 @@ public class CGenVisitor implements Visitor{
             }
         }
 
-        for (VarDeclNode var : vd){
-            for (IdInitNode id : var.getIdIList()){
-                if (id.getExpression() == null) {
-                    initId.add(id);
-                }
-            }
-        }
-
         ArrayList<VarDeclNode> varDeclNode = new ArrayList<>();
-
-        VarDeclNode vardDeclId = new VarDeclNode();
-        vardDeclId.setIdInitNodeVarDeclNode(initId);
-        varDeclNode.add(vardDeclId);
 
         VarDeclNode vardDeclConstant = new VarDeclNode();
         vardDeclConstant.setIdInitNodeVarDeclNode(initConstant);

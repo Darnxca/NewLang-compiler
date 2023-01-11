@@ -9,36 +9,55 @@ char*  compareString(char*  a,char*  b,int *isEq, int *isGt, int *isLt, int *isG
 char*  funz1(char*  *p);
 char*  funz2(char*  *p);
 char*  funz3(char*  *p);
+// inizializzazione delle variabili globali
+char*  stringa;
+char*  dkdkd;
 
-// inizializzazione delle variabili
-char* stringa;
-char* dkdkd = "clclc";
+void initialize_global() {
+	dkdkd = "clclc";
+}
 
 //-----------Implementazione funzioni-----------
 char* funz1 (char* *p ){
 	// Dichiarazione variabili
 	int da;
+	// Assegnazione variabili
+
+	// Inizio Statement
 	*p = "ciao";
-da = 5;
-*p = "carmine";
+	da = 5;
+	*p = "carmine";
+
 }
 char* funz3 (char* *p ){
 	// Dichiarazione variabili
+	char*  d;
 	int da;
-	char* d = " car";
+	// Assegnazione variabili
+	d = " car";
+
+	// Inizio Statement
 	*p = "ciao";
 	*p = strcat(*p=strdup(*p) , d=strdup(d));
+
 }
 char* funz2 (char* *p ){
 	// Dichiarazione variabili
+	char*  d;
 	int da;
-	char* d = " car";
+	// Assegnazione variabili
+	d = " car";
+
+	// Inizio Statement
 	*p = "ciao";
 	*p = d;
 	return d;
+
 }
 char* compareString (char* a, char* b, int *isEq, int *isGt, int *isLt, int *isGe, int *isLe, int *isNe ){
-	// Dichiarazione variabili
+
+
+	// Inizio Statement
 	*isEq =  strcmp(a, b) == 0;
 	*isGt =  strcmp(a, b) > 0;
 	*isLt =  strcmp(a, b) < 0;
@@ -46,22 +65,29 @@ char* compareString (char* a, char* b, int *isEq, int *isGt, int *isLt, int *isG
 	*isLe =  strcmp(a, b) <= 0;
 	*isNe =  strcmp(a, b) != 0;
 	return strcat(a=strdup(a) , b=strdup(b));
+
 }
 int main(int argc, char *argv[]){
+	initialize_global();
 	test();
 }
 void test ( ){
 	// Dichiarazione variabili
-	char* pa;
-	int isEq;
 	int isGt;
-	int isLt;
+	char*  pa;
+	char*  concatenata;
 	int isLe;
+	char*  c;
+	int isEq;
 	int isGe;
+	char*  p;
+	int isLt;
 	int isNe;
-	char* concatenata;
-	char* p = "a";
-	char* c = "a";
+	// Assegnazione variabili
+	p = "a";
+	c = "a";
+
+	// Inizio Statement
 	concatenata = compareString(c, p, &isEq, &isGt, &isLt, &isGe, &isLe, &isNe);
 	printf("%d\n",isEq);
 	fflush(stdout);
@@ -79,4 +105,5 @@ void test ( ){
 	fflush(stdout);
 	printf("%s\n",strcat(dkdkd=strdup(dkdkd) , "ciaooooooo"));
 	fflush(stdout);
+
 }
