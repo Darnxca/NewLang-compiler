@@ -1,3 +1,7 @@
+def somma(out integer x) : void {}
+
 start: def main():integer{
-    integer x << "casa";
+    integer x;
+
+    somma(y);
 }

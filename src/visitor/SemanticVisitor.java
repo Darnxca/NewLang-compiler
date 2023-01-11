@@ -206,12 +206,12 @@ public class SemanticVisitor implements Visitor{
         //Se ho più variabili a sinistra -> integer x, y << 3 [è un errore]
         //Se ho più espressioni a destra -> integer x << 3,6 [è un errore]
         if(numIden > numExpr){
-            throw new MissingAssignArguments("Errore (riga :\" +item.getIdentifierList().get(0).getLeft().getLine()+" +
-                    ", colonna :"+item.getExpressionList().get(numExpr-1).getRight().getColumn()+") +" +
+            throw new MissingAssignArguments("Errore (riga : "+item.getIdentifierList().get(0).getLeft().getLine()+
+                    ", colonna :"+item.getExpressionList().get(numExpr-1).getRight().getColumn()+") " +
                     "\n->Assegnazione tra "+ numIden+  " identificatore/i e "+ numExpr+" espressione/i ");
         }
         else if(numIden < numExpr){
-            throw new MissingAssignArguments("Errore (riga :\" +item.getIdentifierList().get(0).getLeft().getLine()" +
+            throw new MissingAssignArguments("Errore (riga : "+item.getIdentifierList().get(0).getLeft().getLine()+
                     ", colonna :"+item.getIdentifierList().get(numIden-1).getRight().getColumn()+") "+
                     "\n-> Assegnazione tra "+ numIden+  " identificatore/i e "+ numExpr+" espressione/i ");
         }
@@ -239,7 +239,7 @@ public class SemanticVisitor implements Visitor{
         for(int i = 0; i < tipiIden.size(); i ++){
             if (TypeChecker.checkBinaryExpr(Symbols.ASSIGN,tipiIden.get(i), tipiExpr.get(i)) == -1){
                 throw  new TypeMismatch("Errore (riga :"+errorIden.get(i).getLeft().getLine()+
-                        ", colonna: \"+\n" + errorIden.get(i).getLeft().getColumn() + ")"+
+                        ", colonna: " + errorIden.get(i).getLeft().getColumn() + ")"+
                         "\n ->Tipo non corrispondente "+ terminalNames[tipiIden.get(i)].toLowerCase() +
                         " e " + terminalNames[tipiExpr.get(i)].toLowerCase());
             }
@@ -369,8 +369,8 @@ public class SemanticVisitor implements Visitor{
 
         //Controllo se nella funzione chiamata i parametri attuali inseriti sono uguali ai formali
         if(paramType.size() != function.getListOfParams().size()){
-            throw new MissingParametersFunction("Errore (riga :\" +item.getIdentifier().getLeft().getLine() +\n" +
-                    " colonna :\" + item.getIdentifier().getRight().getColumn()+ " +
+            throw new MissingParametersFunction("Errore (riga :" +item.getIdentifier().getLeft().getLine()  +
+                    ", colonna :" + item.getIdentifier().getRight().getColumn()+ ")"+
                     "\n-> Parametri della funzione mancanti ");
         }
 
@@ -378,8 +378,8 @@ public class SemanticVisitor implements Visitor{
         for (int i =0; i < paramType.size(); i++){
             //Check tipo parametri
             if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getListOfParams().get(i).getPrimitiveTypeOfParam())){
-                throw new TypeMismatch("Errore ( riga :\"+item.getIdentifier().getLeft().getLine()+\n" +
-                        "                        \" colonna :\" + item.getIdentifier().getRight().getColumn()+ " +
+                throw new TypeMismatch("Errore ( riga :"+item.getIdentifier().getLeft().getLine()+
+                        ", colonna :" + item.getIdentifier().getRight().getColumn()+ ")" +
                         "\n-> Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde" );
             }
             /*Controllo se ad una variabile di tipo out è stato assegnato un valore costante
@@ -405,9 +405,9 @@ public class SemanticVisitor implements Visitor{
         //Controllo nello scope precedente se la funzione da utilizzare è stata dichiarata
         FunSymbol function;
         if((function = (FunSymbol) stack.lookup(item.getIdentifier().getValue(), SymbolTypes.FUNCTION)) == null)
-            throw new FunctionNotDeclared("Errore (riga: \"+ item.getLeft().getLine()+ " +
+            throw new FunctionNotDeclared("Errore (riga: "+ item.getLeft().getLine()+
                     ", colonna: "+ item.getRight().getColumn()+
-                    "\n-> Funzione "+ item.getIdentifier().getValue()+ "non dichiarata");
+                    ")\n-> Funzione "+ item.getIdentifier().getValue()+ " non dichiarata");
 
         LinkedList<Integer> paramType = new LinkedList<>();
         LinkedList<ExpressionNode> expressionType = new LinkedList<>();
@@ -419,7 +419,7 @@ public class SemanticVisitor implements Visitor{
 
         //Controllo se nella funzione chiamata i parametri attuali inseriti sono uguali ai formali
         if(paramType.size() != function.getListOfParams().size()){
-            throw new MissingParametersFunction("Errore (riga :\" +item.getIdentifier().getLeft().getLine() +\n" +
+            throw new MissingParametersFunction("Errore (riga :" +item.getIdentifier().getLeft().getLine() +
                     ", colonna :" + item.getIdentifier().getRight().getColumn()+")"
                     + "\n->Parametri della funzione mancanti" );
         }
@@ -429,7 +429,7 @@ public class SemanticVisitor implements Visitor{
             if(!TypeChecker.checkCallParamTypes(paramType.get(i), function.getListOfParams().get(i).getPrimitiveTypeOfParam())){
                 throw new TypeMismatch("Errore ( riga :"+item.getIdentifier().getLeft().getLine()+
                 " colonna :" + item.getIdentifier().getRight().getColumn()+
-                "\n->Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde" );
+                ")\n->Tipo dei parametri della funzione " +item.getIdentifier().getValue() + " non corrisponde" );
             }
             /*Controllo se ad una variabile di tipo out è stato assegnato un valore costante
              * somma(integer a,b | float out result) ... somma(4, 5, 6) -> Non valido
@@ -438,7 +438,7 @@ public class SemanticVisitor implements Visitor{
             if ( (expressionType.get(i) instanceof Constant) && function.getListOfParams().get(i).isOut()){
                 throw new TypeMismatch("Errore ( riga : "+ expressionType.get(i).getLeft().getLine() +
                         ", colonna :" + expressionType.get(i).getRight().getColumn() +
-                                "\n-> Non si può assegnare una costante ad un variabile di tipo out ");
+                                ")\n-> Non si può assegnare una costante ad un variabile di tipo out ");
             }
         }
 
