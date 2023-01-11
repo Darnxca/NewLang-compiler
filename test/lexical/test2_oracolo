@@ -1,0 +1,2 @@
+exception.LexicalError: Errore (riga: 3, colonna: 17)
+-> Questo carattere (.) potrebbe essere un futuro simbolo del linguaggio... ma non lo è oggi! :(
