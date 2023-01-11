@@ -9,23 +9,25 @@ then
 	usage
 fi
 
+
 input=$1
 opzioni=$2$3$4
-
-newlang_filename=$input
-c_filename="CodiciC\\"${input%.nl}.c
-outputfile=${input%.nl}
 
 if [ "$opzioni" != *"-xml"* ] || [ "$opzioni" != *"-sp"* ] || [ "$opzioni" != *"-sc"* ]
 then
 	echo "Comando/i non trovato/i : "$opzioni
 fi
 
+newlang_filename=$input
+c_filename="CodiciC\\"${input%.nl}.c
+xml_filename="XMLTreeCode\\"${input%.nl}.xml
+outputfile=${input%.nl}
+
 if [[ "$opzioni" == *"-xml"* ]]
 then
 	mkdir "XMLTreeCode"
-	cp -r XMLTreeCode\\${input%.nl}.xml ${input%.nl}.xml
 fi
+
 
 mkdir "CodiciC"
 
@@ -34,6 +36,7 @@ gcc $c_filename -lm -o $outputfile
 
 if [[ "$opzioni" == *"-xml"* ]]
 then
+	cp -r $xml_filename  ${input%.nl}.xml
 	rm -rf "XMLTreeCode"
 fi
 
