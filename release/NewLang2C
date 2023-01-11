@@ -16,9 +16,15 @@ newlang_filename=$input
 c_filename="CodiciC\\"${input%.nl}.c
 outputfile=${input%.nl}
 
+if [ "$opzioni" != *"-xml"* ] || [ "$opzioni" != *"-sp"* ] || [ "$opzioni" != *"-sc"* ]
+then
+	echo "Comando/i non trovato/i : "$opzioni
+fi
+
 if [[ "$opzioni" == *"-xml"* ]]
 then
 	mkdir "XMLTreeCode"
+	cp -r XMLTreeCode\\${input%.nl}.xml ${input%.nl}.xml
 fi
 
 mkdir "CodiciC"

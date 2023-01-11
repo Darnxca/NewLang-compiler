@@ -1,4 +1,3 @@
-C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\main\java\Tester.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\Symbols.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\visitor\Visitor.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\FunCallExprNode.java
@@ -22,6 +21,7 @@ C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\par
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\MissingAssignArguments.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\FunDeclNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\IdInitNode.java
+C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\tests\TestLexer.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\IdentifierExprNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\MissingParametersFunction.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\ForStatNode.java
@@ -57,6 +57,7 @@ C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\vis
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\statements\AssignStatNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\VarDeclNode.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\parser\newLangTree\nodes\expression\BinaryExpressionNode.java
+C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\main\java\NewLangTranspiler.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\exception\MultipleVariableDeclaration.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\visitor\CGenVisitor.java
 C:\Users\darnx\Desktop\Esercitazioni Compilatori\dangelo-della-rocca_es5\src\semantic\symbols\FunSymbol.java
