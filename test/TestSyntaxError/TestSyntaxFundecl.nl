@@ -1,2 +1,3 @@
-start: def main(integer x):integer{
-
+start: def main():integer{
+    integer x << "casa";
+}

@@ -79,6 +79,9 @@ public class TypeChecker {
             else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
                 return Symbols.BOOL;
             }
+            else if( typeLeft == Symbols.CHAR && typeRight == Symbols.CHAR){
+                return Symbols.BOOL;
+            }
             else if( typeLeft == Symbols.STRING && typeRight == Symbols.STRING){
                 return Symbols.BOOL;
             }
