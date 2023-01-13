@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Test2" type="Application" factoryName="Application" folderName="LexicalTest">
+    <option name="MAIN_CLASS_NAME" value="tests.TestLexer" />
+    <module name="dangelo-della-rocca_es5" />
+    <option name="PROGRAM_PARAMETERS" value="test/lexical/test2 test/lexical/test2_oracolo" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
