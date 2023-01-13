@@ -1,11 +1,12 @@
-/*****************************************************/
-/* stampa.c */
-/* Primo programma in C: Stampa un messaggio a video */
-/*****************************************************/
+|*
+ stampa.c
+ Primo programma in C: Stampa un messaggio a video
+ Ignorati
+|
 
 
 void main(){ /* Inizio del main */
     int a <-- 5.6E-2;
     printf("Questa e' la prima stampa");
-    /* funzione di stampa */
+    /* funzione di stampa */ vengono visti come token
 }
