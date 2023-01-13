@@ -10,12 +10,13 @@ then
 fi
 
 
+
 input=$1
 opzioni=$2$3$4
 
-if [ "$opzioni" != *"-xml"* ] || [ "$opzioni" != *"-sp"* ] || [ "$opzioni" != *"-sc"* ]
+if [[ "$opzioni" != *"-xml"* ]] && [[ "$opzioni" != *"-sp"* ]] && [[ "$opzioni" != *"-sc"* ]] && [[ "$opzioni" != "" ]]
 then
-	echo "Comando/i non trovato/i : "$opzioni
+	echo "Comando/i "$opzioni" non trovato/i"
 fi
 
 newlang_filename=$input
