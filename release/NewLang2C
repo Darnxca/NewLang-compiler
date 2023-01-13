@@ -1,23 +1,60 @@
 #!/bin/bash
-usage(){
-	echo "USAGE: ./NewLang2C FILENAME"
+Help(){
+	echo "Uso: ./NewLang2C nome_del_file [-comando_opzionale1 -comando_opzionale2 -comando_opzionale3 -comando_opzionale4 ]"
+	echo
+	echo "Comandi opzionali: "
+	echo "-help   Mostra come usare lo script"
+	echo "-xml    Salva l'labero di parser xml del file NewLang"
+	echo "-sp     Mostra lo scope del programma (lettura dal basso verso l'alto"
+	echo "-sc     Salva il file .c prodotto"
+	echo
 	exit 1
+}
+
+checkOpzioni(){
+	if [[ "$1" != "-xml" ]] && [[ "$1" != "-sp" ]] && [[ "$1" != "-sc" ]] && [[ "$1" != "-help" ]]  && [[ "$1" != "" ]]
+	then
+		echo "Comando/i "$1" non trovato/i, per vedere i comandi disponibili usare -help"
+		exit 2
+	fi
+
+	if [[ "$2" != "-xml" ]] && [[ "$2" != "-sp" ]] && [[ "$2" != "-sc" ]] && [[ "$2" != "-help" ]]  && [[ "$2" != "" ]]
+	then
+		echo "Comando/i "$2" non trovato/i, per vedere i comandi disponibili usare -help"
+		exit 2
+	fi
+
+	if [[ "$3" != "-xml" ]] && [[ "$3" != "-sp" ]] && [[ "$3" != "-sc" ]] && [[ "$3" != "-help" ]]  && [[ "$3" != "" ]]
+	then
+		echo "Comando/i "$3" non trovato/i, per vedere i comandi disponibili usare -help"
+		exit 2
+	fi
+	if [[ "$4" != "-xml" ]] && [[ "$4" != "-sp" ]] && [[ "$4" != "-sc" ]] && [[ "$4" != "-help" ]] && [[ "$4" != "" ]]
+	then
+		echo "Comando/i "$4" non trovato/i, per vedere i comandi disponibili usare -help"
+		exit 2
+	fi
+	if [[ "$1" == "-help" ]] || [[ "$2" == "-help" ]] || [[ "$3" == "-help" ]] || [[ "$4" == "-help" ]]
+	then
+		Help
+	fi
 }
 
 if [[ $# -lt 1 ]]
 then
-	usage
+	Help
 fi
 
-
+if [[ $# -gt 5 ]]
+then
+	echo "hai inserito più argomenti di quelli possibili forse ti è utile utilizzare -help"
+	exit 3
+fi
 
 input=$1
 opzioni=$2$3$4
 
-if [[ "$opzioni" != *"-xml"* ]] && [[ "$opzioni" != *"-sp"* ]] && [[ "$opzioni" != *"-sc"* ]] && [[ "$opzioni" != "" ]]
-then
-	echo "Comando/i "$opzioni" non trovato/i"
-fi
+checkOpzioni $2 $3 $4 $5
 
 newlang_filename=$input
 c_filename="CodiciC\\"${input%.nl}.c
