@@ -57,8 +57,8 @@ opzioni=$2$3$4
 checkOpzioni $2 $3 $4 $5
 
 newlang_filename=$input
-c_filename="CodiciC\\"${input%.nl}.c
-xml_filename="XMLTreeCode\\"${input%.nl}.xml
+c_filename="CodiciC//"${input%.nl}.c
+xml_filename="XMLTreeCode//"${input%.nl}.xml
 outputfile=${input%.nl}
 
 if [[ "$opzioni" == *"-xml"* ]]
