@@ -29,6 +29,7 @@ public class CGenVisitor implements Visitor{
             writer = new PrintWriter( "CodiciC/"+filename+".c");
             generaLibrerie();
 
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
