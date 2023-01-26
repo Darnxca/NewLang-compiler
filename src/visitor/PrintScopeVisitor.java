@@ -248,4 +248,24 @@ public class PrintScopeVisitor implements Visitor{
     public Object visit(BinaryExpressionNode item) {
         return null;
     }
+
+    @Override
+    public Object visit(InitLoopCondNode item) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopNode item) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopStepNode item) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode item) {
+        return null;
+    }
 }

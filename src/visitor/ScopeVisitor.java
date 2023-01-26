@@ -312,4 +312,37 @@ public class ScopeVisitor implements Visitor{
     public Object visit(BinaryExpressionNode item) {
         return null;
     }
+
+    @Override
+    public Object visit(InitLoopCondNode item) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopNode item) {
+        if(item.getIdInitNodeList() != null) {
+            for (IdInitNode idNode : item.getIdInitNodeList()) {
+                idNode.setType(item.getType());
+                idNode.accept(this);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopStepNode item) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode item) {
+        //Cambio scope, quindi aggiorno quello corrente
+        stack.enterScope(item.getSymbolTableInDoForStepScope());
+        item.getInitLoop().accept(this);
+
+        //Ristabilire lo stack del padre
+        stack.exitScope(); //Ripristino lo scope padre
+        return null;
+    }
 }

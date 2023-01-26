@@ -612,6 +612,61 @@ public class CGenVisitor implements Visitor{
         return null;
     }
 
+    @Override
+    public Object visit(InitLoopCondNode item) {
+        if(item.getExpression() != null){
+            inserisciTab();
+            writer.print("while(");
+            item.getExpression().accept(this);
+            writer.print(")");
+
+        }else {
+            inserisciTab();
+            writer.print("while(1)");
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopNode item) {
+        for(IdInitNode idN : item.getIdInitNodeList()){
+            writer.print(getTypeFromToken(item.getType())+ " ");
+            idN.accept(this);
+            inserisciTab();
+        }
+        inserisciTab();
+        writer.print("do{");
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopStepNode item) {
+        for(ExpressionNode expr : item.getExpressionList()){
+            inserisciTab();
+            expr.accept(this);
+            writer.println(";");
+        }
+
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode item) {
+        stack.enterScope(item.getSymbolTableInDoForStepScope());
+        item.getInitLoop().accept(this);
+        for(StatementNode stm : item.getStatementList()) {
+            inserisciTab();
+            stm.accept(this);
+        }
+        item.getLoopStep().accept(this);
+        item.getLoopCond().accept(this);
+        writer.println(";");
+        return null;
+    }
+
 
     private static void generaLibrerie(){
         writer.println("#include <stdio.h>");
@@ -668,6 +723,7 @@ public class CGenVisitor implements Visitor{
             case Symbols.LE: writer.print(" <= "); break;
             case Symbols.EQ: writer.print(" == "); break;
             case Symbols.NE: writer.print(" != "); break;
+            case Symbols.ASSIGN: writer.print(" = "); break;
         }
 
     }

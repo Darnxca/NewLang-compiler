@@ -503,4 +503,64 @@ public class SemanticVisitor implements Visitor{
         return null;
     }
 
+    @Override
+    public Object visit(InitLoopCondNode item) {
+
+        if(item.getExpression() != null){
+            item.getExpression().accept(this);
+
+            if(item.getExpression().getType() != Symbols.BOOL){ //Check tipo
+                throw new TypeMismatch("Errore (riga: "+item.getExpression().getLeft().getLine()+
+                        ", colonna: "+item.getExpression().getRight().getColumn()+ " ) " +
+                        "\n-> Espressione inserita di tipo " +
+                        terminalNames[item.getExpression().getType()].toLowerCase()+ ", il for si aspetta un tipo boolean!!");
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopNode item) {
+        if(item.getIdInitNodeList() != null) {
+            for(IdInitNode idN : item.getIdInitNodeList())
+                idN.accept(this);
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitLoopStepNode item) {
+        if(item.getExpressionList() != null ){
+            for(ExpressionNode exp : item.getExpressionList())
+                exp.accept(this);
+        }
+
+
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode item) {
+
+        //Cambio scope, aggiorno scope corrente
+        stack.enterScope(item.getSymbolTableInDoForStepScope());
+
+        item.getInitLoop().accept(this); // INIT
+
+        if(item.getStatementList() != null){
+            for(StatementNode st : item.getStatementList()) //STMTS
+                st.accept(this);
+        }
+
+
+        item.getLoopCond().accept(this);        //LOOP COND
+        item.getLoopStep().accept(this);        // STEP
+        stack.exitScope();
+
+        return null;
+    }
+
 }

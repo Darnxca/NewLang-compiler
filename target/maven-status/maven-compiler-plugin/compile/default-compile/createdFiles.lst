@@ -1,6 +1,10 @@
+parser\newLangTree\nodes\statements\InitLoopNode.class
 exception\LexicalError.class
 lexer\Lexer.class
+parser\newLangTree\nodes\statements\InitDoForStepNode.class
 parser\Parser.class
 semantic\SymbolTableStack.class
 semantic\SymbolTable.class
+parser\newLangTree\nodes\statements\InitLoopStepNode.class
+parser\newLangTree\nodes\statements\InitLoopCondNode.class
 parser\Parser$CUP$Parser$actions.class

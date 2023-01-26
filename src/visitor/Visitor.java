@@ -33,4 +33,10 @@ public interface Visitor {
     public Object visit(IdentifierExprNode item);
     public Object visit(UnaryExpressionNode item);
     public Object visit(BinaryExpressionNode item);
+
+    public Object visit(InitLoopCondNode item);
+    public Object visit(InitLoopNode item);
+    public Object visit(InitLoopStepNode item);
+
+    public Object visit(InitDoForStepNode item);
 }

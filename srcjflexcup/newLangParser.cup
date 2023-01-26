@@ -59,7 +59,7 @@ terminal MAIN, DEF;
 terminal SEMI, COMMA, LPAR, RPAR, COLON, LBRAC, RBRAC, PIPE, OUT; //Separatori
 terminal Integer  CHAR, STRING, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
 
-terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN; //Statements
+terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN, INIT, DO, STEP; //Statements
 terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT, UMINUS; //Operatori aritmetici, stringhe
 
 terminal String    STRING_CONST, ID;
@@ -98,7 +98,10 @@ non terminal AssignStatNode             AssignStat;
 non terminal FunCallStatNode            FunCall;
 non terminal List<ExpressionNode>       ExprList;
 non terminal ExpressionNode             Expr;
-
+non terminal InitLoopNode               InitLoop;
+non terminal InitLoopCondNode           InitLoopCond;
+non terminal InitLoopStepNode           InitLoopStep;
+non terminal InitDoForStepNode          InitDoForStep;
 
 /* Precedenze */
 
@@ -288,6 +291,10 @@ Stat ::= IfStat:ifs                                                 {: RESULT = 
                                                                        ReturnStatNode rs = new ReturnStatNode(rxleft,rxright);
                                                                        RESULT = rs;
                                                                     :}
+         | InitDoForStep:idfs                                       {:
+                                                                       RESULT = idfs;
+                                                                    :}
+
 ;
 IfStat ::= IF Expr:e THEN Body:bt                                   {:
                                                                         IfStatNode is = new IfStatNode(e, bt);
@@ -388,4 +395,32 @@ Expr ::=   TRUE:t                               {: RESULT = new BooleanConstantN
 	     | MINUS:o Expr:e                       {: RESULT = new UnaryExpressionNode(Symbols.MINUS,e,oxright,oxleft); :}
 	     | NOT:o Expr:e                         {: RESULT = new UnaryExpressionNode(Symbols.NOT,e,oxright,oxleft); :}
 	     | LPAR Expr:e RPAR                     {: RESULT = e; :}
+	     | ID:i ASSIGN:a Expr:e                   {: RESULT = new BinaryExpressionNode(new IdentifierExprNode(i,ixleft,ixright), Symbols.ASSIGN, e, axright,axleft); :}
+ ;
+InitLoop ::= INIT LPAR Type:t IdInitList:il RPAR {: InitLoopNode intLoopNode = new InitLoopNode(t, il);
+                                                    RESULT = intLoopNode;   :}
+            |       INIT LPAR RPAR                {: InitLoopNode intLoopNode = new InitLoopNode();
+                                                     RESULT = intLoopNode;   :}
+;
+InitLoopCond ::= FOR LPAR Expr:e RPAR            {: InitLoopCondNode intLoopCond = new InitLoopCondNode(e);
+                                                     RESULT = intLoopCond;   :}
+            | FOR LPAR RPAR                      {: InitLoopCondNode intLoopCond = new InitLoopCondNode();
+                                                     RESULT = intLoopCond;   :}
+;
+InitLoopStep ::= STEP LPAR ExprList:el RPAR SEMI  {: InitLoopStepNode intLoopStep = new InitLoopStepNode(el);
+                                                     RESULT = intLoopStep;
+                                                  :}
+                  | STEP LPAR RPAR SEMI           {:
+                                                    InitLoopStepNode intLoopStep = new InitLoopStepNode();
+                                                    RESULT = intLoopStep;
+                                                  :}
+;
+InitDoForStep ::= InitLoop:il  DO LBRAC StatList:sl RBRAC InitLoopCond:ilc InitLoopStep:ils
+                    {:
+                    InitDoForStepNode initDoForStep = new InitDoForStepNode(ilxleft,ilxright, il, sl, ilc, ils);
+                    RESULT = initDoForStep;  :}
+                | InitLoop:il  DO LBRAC RBRAC InitLoopCond:ilc InitLoopStep:ils
+                {:
+                   InitDoForStepNode initDoForStep = new InitDoForStepNode(ilxleft,ilxright, il, ilc, ils);
+                    RESULT = initDoForStep;  :}
 ;

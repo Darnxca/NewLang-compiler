@@ -97,6 +97,10 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
 "return"        {return symbol("RETURN", RETURN);}
 "true"          {return symbol("TRUE", TRUE);}
 "false"         {return symbol("FALSE", FALSE);}
+"init"          {return symbol("INIT", INIT);}
+"do"            {return symbol("DO", DO);}
+"step"          {return symbol("STEP", STEP);}
+
 
 //Tipi
 "integer"       {return symbol("INTEGER", INTEGER, INTEGER);}

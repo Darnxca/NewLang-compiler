@@ -450,6 +450,60 @@ public class XMLTreeGenerator implements  Visitor{
 
         return root;
     }
+
+    @Override
+    public Object visit(InitLoopCondNode item) {
+        Element root = document.createElement("InitLoopCond");
+
+        if(item.getExpression() != null ){
+            Element expr = (Element) item.getExpression().accept(this);
+            root.appendChild(expr);
+        }
+
+
+        return root;
+    }
+
+    @Override
+    public Object visit(InitLoopNode item) {
+
+        Element root = document.createElement("InitLoop");
+
+        for (IdInitNode i : item.getIdInitNodeList()) {
+            Element IdInitNode = (Element) i.accept(this);
+            root.appendChild(IdInitNode);
+        }
+
+        return root;
+    }
+
+    @Override
+    public Object visit(InitLoopStepNode item) {
+        Element root = document.createElement("InitLoopStep");
+
+        for (ExpressionNode e : item.getExpressionList()) {
+            Element expr = (Element) e.accept(this);
+            root.appendChild(expr);
+        }
+
+        return root;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode item) {
+        Element root = document.createElement("InitDoForStep");
+
+        root.appendChild((Element) item.getInitLoop().accept(this));
+        for(StatementNode st : item.getStatementList()) {
+            Element stmt = (Element) st.accept(this);
+            root.appendChild(stmt);
+        }
+        root.appendChild((Element) item.getLoopCond().accept(this));
+        root.appendChild((Element) item.getLoopStep().accept(this));
+
+        return root;
+    }
+
     @Override
     public Object visit(UnaryExpressionNode item){
 
