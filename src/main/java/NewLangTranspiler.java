@@ -34,6 +34,7 @@ public class NewLangTranspiler {
         String filename = isNewLangFile(new File(args[0]));
         String secondoparametro = "";
 
+
         if (args.length == 1){
             secondoparametro ="-nsp";
         }else{
