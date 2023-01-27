@@ -11,11 +11,20 @@ public class WhileStatNode extends StatementNode {
     private ExpressionNode expression;
     private BodyNode body;
 
+    private ElseLoopNode elseLoop; //Opzionale
+
 
     public WhileStatNode(ExpressionNode expression, BodyNode body) {
         super();
         this.expression = expression;
         this.body = body;
+        this.elseLoop = null;
+    }
+
+    public WhileStatNode(ExpressionNode expression, BodyNode body, ElseLoopNode elseLoop) {
+        this.expression = expression;
+        this.body = body;
+        this.elseLoop = elseLoop;
     }
 
     @Override
@@ -33,6 +42,10 @@ public class WhileStatNode extends StatementNode {
 
     public SymbolTable getSymbolTableWhile() {
         return symbolTableWhile;
+    }
+
+    public ElseLoopNode getElseLoop() {
+        return elseLoop;
     }
 
     public void setSymbolTableWhile(SymbolTable symbolTableWhile) {

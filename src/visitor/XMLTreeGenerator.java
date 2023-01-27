@@ -320,6 +320,10 @@ public class XMLTreeGenerator implements  Visitor{
         body = (Element) item.getBody().accept(this);
         root.appendChild(body);
 
+        if(item.getElseLoop() != null){
+            root.appendChild((Element) item.getElseLoop().accept(this));
+        }
+
         return root;
     }
 
@@ -516,6 +520,26 @@ public class XMLTreeGenerator implements  Visitor{
 
         right = (Element) item.getRightExpression().accept(this);
         root.appendChild(right);
+
+        return root;
+    }
+
+    @Override
+    public Object visit(ElseLoopNode item) {
+        Element root = document.createElement("ElseLoop");
+
+        for(VarDeclNode vd : item.getVarDeclList()){
+            Element v = (Element) vd.accept(this);
+            root.appendChild(v);
+        }
+
+        for(StatementNode st : item.getStatList()){
+            Element s = (Element) st.accept(this);
+            root.appendChild(s);
+        }
+
+        root.appendChild((Element) item.getCondizione2().accept(this));
+        //item.getCondizione1().accept(this); //Condizione da negare
 
         return root;
     }

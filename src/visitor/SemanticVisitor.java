@@ -307,6 +307,10 @@ public class SemanticVisitor implements Visitor{
 
         stack.exitScope(); //Ripristino dello scope precedente
 
+        if(item.getElseLoop() != null){
+            item.getElseLoop().accept(this); //Avrà un nuovo scope all'interno
+        }
+
         return null;
     }
 
@@ -563,4 +567,32 @@ public class SemanticVisitor implements Visitor{
         return null;
     }
 
+    @Override
+    public Object visit(ElseLoopNode item) {
+
+        stack.enterScope(item.getSymbolTableElseLoop());
+
+        for(VarDeclNode vd : item.getVarDeclList()){
+            vd.accept(this);
+        }
+
+        for(StatementNode st : item.getStatList()){
+            st.accept(this);
+        }
+
+        item.getCondizione2().accept(this);
+
+        if(item.getCondizione2().getType() != Symbols.BOOL){ //Check tipo
+            throw new TypeMismatch("Errore (riga: "+item.getCondizione2().getLeft().getLine()+
+                    ", colonna: "+item.getCondizione2().getRight().getColumn()+ " ) " +
+                    "\n-> Espressione inserita di tipo " +
+                    terminalNames[item.getCondizione2().getType()].toLowerCase()+ ", l'else loop si aspetta un tipo boolean!!");
+        }
+
+        stack.exitScope();
+
+
+
+        return null;
+    }
 }

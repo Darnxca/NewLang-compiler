@@ -1,6 +1,5 @@
 package visitor;
 
-import exception.UseOfKeyWord;
 import parser.Symbols;
 import parser.newLangTree.nodes.*;
 import parser.newLangTree.nodes.expression.*;
@@ -245,8 +244,11 @@ public class ScopeVisitor implements Visitor{
 
         item.getBody().accept(this);
 
-        //Ristabilire lo stack del padre
         stack.exitScope(); //Ripristino lo scope padre
+
+        if(item.getElseLoop() != null){
+            item.getElseLoop().accept(this);
+        }
 
         return null;
     }
@@ -343,6 +345,25 @@ public class ScopeVisitor implements Visitor{
 
         //Ristabilire lo stack del padre
         stack.exitScope(); //Ripristino lo scope padre
+        return null;
+    }
+
+    @Override
+    public Object visit(ElseLoopNode item) {
+        stack.enterScope(item.getSymbolTableElseLoop());
+
+        for(VarDeclNode vd : item.getVarDeclList()){
+            vd.accept(this);
+        }
+
+        for(StatementNode st : item.getStatList()){
+            st.accept(this);
+        }
+
+        item.getCondizione2().accept(this); //Condizione da tenere
+        item.getCondizione1().accept(this); //Condizione da negare
+
+        stack.exitScope();
         return null;
     }
 }

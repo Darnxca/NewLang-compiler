@@ -100,6 +100,8 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
 "init"          {return symbol("INIT", INIT);}
 "do"            {return symbol("DO", DO);}
 "step"          {return symbol("STEP", STEP);}
+"elseloop"      {return symbol("ELSELOOP", ELSELOOP);}
+"when"          {return symbol("WHEN", WHEN);}
 
 
 //Tipi

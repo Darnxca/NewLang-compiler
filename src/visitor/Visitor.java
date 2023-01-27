@@ -39,4 +39,6 @@ public interface Visitor {
     public Object visit(InitLoopStepNode item);
 
     public Object visit(InitDoForStepNode item);
+
+    public Object visit(ElseLoopNode item);
 }

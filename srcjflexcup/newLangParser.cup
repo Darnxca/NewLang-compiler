@@ -59,7 +59,7 @@ terminal MAIN, DEF;
 terminal SEMI, COMMA, LPAR, RPAR, COLON, LBRAC, RBRAC, PIPE, OUT; //Separatori
 terminal Integer  CHAR, STRING, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
 
-terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN, INIT, DO, STEP; //Statements
+terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN, INIT, DO, STEP, ELSELOOP, WHEN; //Statements
 terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT, UMINUS; //Operatori aritmetici, stringhe
 
 terminal String    STRING_CONST, ID;
@@ -102,6 +102,7 @@ non terminal InitLoopNode               InitLoop;
 non terminal InitLoopCondNode           InitLoopCond;
 non terminal InitLoopStepNode           InitLoopStep;
 non terminal InitDoForStepNode          InitDoForStep;
+
 
 /* Precedenze */
 
@@ -309,6 +310,12 @@ WhileStat ::= WHILE Expr:e LOOP Body:b                              {:
                                                                         WhileStatNode ws = new WhileStatNode(e, b);
                                                                         RESULT = ws;
                                                                     :}
+            | WHILE Expr:e LOOP Body:b
+              ELSELOOP LPAR VarDeclList:vdl RPAR LBRAC StatList:sl RBRAC WHEN LPAR  Expr:e2 RPAR SEMI
+              {:  WhileStatNode ws = new WhileStatNode(e, b, new ElseLoopNode(vdl, sl, e2, e));
+                  RESULT = ws;
+              :}
+
 ;
 ForStat ::= FOR ID:i ASSIGN INTEGER_CONST:fr TO INTEGER_CONST:to LOOP Body:b        {:
                                                                                         IdentifierExprNode id = new IdentifierExprNode(i,ixleft,ixright);

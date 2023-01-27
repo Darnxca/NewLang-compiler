@@ -442,6 +442,10 @@ public class CGenVisitor implements Visitor{
         inserisciTab();
         writer.println("}");
 
+        if(item.getElseLoop() != null ){
+            item.getElseLoop().accept(this);
+        }
+
 
         return null;
     }
@@ -667,6 +671,50 @@ public class CGenVisitor implements Visitor{
         return null;
     }
 
+    @Override
+    public Object visit(ElseLoopNode item) {
+        /**
+         * <dichiarazioni2>
+         * do {
+         * <istruzioni2>
+         * } while (! < condizione1> && < condizione2>);
+         */
+
+        final int[] una_volta = {0};
+        stack.enterScope(item.getSymbolTableElseLoop());
+
+        //Prendo le variabili nello scope
+        stack.getCurrentScope().forEach((key, sym) ->{
+            if(sym instanceof IdSymbol && !((IdSymbol) sym).isParameter()){
+                if(una_volta[0] == 0){ inserisciTab(); writer.print("// Dichiarazione variabili\n"); una_volta[0]++;};
+                IdSymbol is = (IdSymbol) sym;
+                inserisciTab();
+                generaDichiarazioneVariabile(is);
+            }
+        });
+
+        ArrayList<VarDeclNode> vdl = ordinaVarDecl(item.getVarDeclList()); // Prima le dichiarazioni poi le init
+        for(VarDeclNode vd : vdl){
+            writer.println();
+            vd.accept(this);
+        }
+
+        inserisciTab();
+        writer.println("do{");
+        for(StatementNode st : item.getStatList()){
+            inserisciTab();
+            st.accept(this);
+        }
+        inserisciTab();
+        writer.print("} while (!");
+        item.getCondizione1().accept(this);
+        writer.print(" && ");
+        item.getCondizione2().accept(this);
+        writer.print(");");
+        stack.exitScope();
+
+        return null;
+    }
 
     private static void generaLibrerie(){
         writer.println("#include <stdio.h>");

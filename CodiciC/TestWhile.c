@@ -5,36 +5,59 @@
 
 // prototipi delle funzioni
 int main();
+// inizializzazione delle variabili globali
 
-// inizializzazione delle variabili
+void initialize_global() {
+}
 
 //-----------Implementazione funzioni-----------
 int main ( ){
+	initialize_global();
+	// Dichiarazione variabili
+	int i;
+	// Assegnazione variabili
+	i = 0;
 
-// Dichiarazione variabili
-int i = 0;
-while((((i + 5) < 2) && ((i * 9) > 2))){
+	// Inizio Statement
+	while((((i + 5) < 2) && ((i * 9) > 2))){
+		// Dichiarazione variabili
+		int x;
+		// Assegnazione variabili
+		x = 0;
 
-// Dichiarazione variabili
-int x = 0;
-while((1 ||  !((i + 3) < 0))){
+		// Inizio Statement
+		while((1 || ( !((i + 3) < 0)))){
+			// Dichiarazione variabili
+			int z;
+			int vero;
+			// Assegnazione variabili
+			z = 3;
+			vero = 0;
 
-// Dichiarazione variabili
-int z = 3;
-int vero = 0;
-while((((x + 2) > 3) &&  !vero)){
+			// Inizio Statement
+			while((((x + 2) > 3) && ( !vero))){
 
-// Dichiarazione variabili
-vero = (1 && 0);
-if((vero || 1)){
 
-// Dichiarazione variabili
-char*  helloWorld = strcpy(malloc(13*sizeof(char)),"Hello world!");
-char*  nome = strcpy(malloc(14*sizeof(char)),"Lionel Messi!");
-printf("%s\n",strcat(helloWorld,nome));
-fflush(stdout);
-}
-}
-}
-}
+				// Inizio Statement
+				vero = (1 && 0);
+				if((vero || 1)){
+					// Dichiarazione variabili
+					char*  helloWorld;
+					char*  nome;
+					// Assegnazione variabili
+					helloWorld = "Hello world!";
+					nome = "Lionel Messi!";
+
+					// Inizio Statement
+					printf("%s\n",strcat(helloWorld=strdup(helloWorld) , nome=strdup(nome)));
+					fflush(stdout);
+
+				}
+
+			}
+
+		}
+
+	}
+
 }

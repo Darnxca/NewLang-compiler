@@ -268,4 +268,9 @@ public class PrintScopeVisitor implements Visitor{
     public Object visit(InitDoForStepNode item) {
         return null;
     }
+
+    @Override
+    public Object visit(ElseLoopNode elseLoopNode) {
+        return null;
+    }
 }
