@@ -282,8 +282,10 @@ public class XMLTreeGenerator implements  Visitor{
         Element string_constant, expression;
         Element root = document.createElement("ReadStat");
 
-        string_constant = (Element) item.getStringCostant().accept(this);
-        root.appendChild(string_constant);
+        if (item.getStringCostant() != null) {
+            string_constant = (Element) item.getStringCostant().accept(this);
+            root.appendChild(string_constant);
+        }
 
         for(IdentifierExprNode i : item.getIdentifierList()){
             expression = (Element) i.accept(this);
@@ -336,8 +338,8 @@ public class XMLTreeGenerator implements  Visitor{
         }
 
         for(ExpressionNode i : item.getExpressionList()) {
-           expression = (Element) i.accept(this);
-           root.appendChild(expression);
+            expression = (Element) i.accept(this);
+            root.appendChild(expression);
         }
 
         return root;
