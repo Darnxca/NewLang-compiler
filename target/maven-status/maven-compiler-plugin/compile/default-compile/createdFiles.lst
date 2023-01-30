@@ -2,5 +2,6 @@ exception\LexicalError.class
 lexer\Lexer.class
 parser\Parser.class
 semantic\SymbolTableStack.class
+exception\MissinReturnInBodyFunction.class
 semantic\SymbolTable.class
 parser\Parser$CUP$Parser$actions.class

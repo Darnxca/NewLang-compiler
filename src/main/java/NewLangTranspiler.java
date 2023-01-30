@@ -95,7 +95,7 @@ public class NewLangTranspiler {
     }
 
     private static void generaXML(Document document, String filename){
-        String xmlFilePath = "XMLTreeCode/"+filename+".xml";
+        String xmlFilePath = "XMLTreeCode"+File.separator +filename+".xml";
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

@@ -13,6 +13,7 @@ import semantic.symbols.IdSymbol;
 import semantic.symbols.ParamFunSymbol;
 
 import javax.swing.text.html.StyleSheet;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -26,8 +27,9 @@ public class CGenVisitor implements Visitor{
     public CGenVisitor(String filename){
         try {
             stack = new SymbolTableStack();
-            writer = new PrintWriter( "CodiciC/"+filename+".c");
+            writer = new PrintWriter( "CodiciC"+File.separator+filename+".c");
             generaLibrerie();
+            generaConversioni();
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -162,8 +164,14 @@ public class CGenVisitor implements Visitor{
         item.getIdentifier().accept(this);
         if (item.getExpression() != null){
             writer.print(" = ");
-            item.getExpression().accept(this);
-            writer.println(";");
+            if(item.getExpression().getType() == Symbols.STRING) {
+                writer.print("strdup(");
+                item.getExpression().accept(this);
+                writer.println(");");
+            }else  {
+                item.getExpression().accept(this);
+                writer.println(";");
+            }
         }else {
             writer.println(";");
         }
@@ -176,9 +184,14 @@ public class CGenVisitor implements Visitor{
         item.getIdentifier().accept(this);
         writer.print(" = ");
         ExpressionNode costantValue = (ExpressionNode) item.getCostantValue();
-        costantValue.accept(this);
-        writer.println(";");
-
+        if(costantValue instanceof StringConstantNode) {
+            writer.print("strdup(");
+            costantValue.accept(this);
+            writer.println(");");
+        }else {
+            costantValue.accept(this);
+            writer.println(";");
+        }
         return null;
     }
 
@@ -271,8 +284,8 @@ public class CGenVisitor implements Visitor{
             writer.println("// Inizio Statement");
         }
         for (StatementNode st : item.getStmtNodeList()) {
-                inserisciTab();
-                st.accept(this);
+            inserisciTab();
+            st.accept(this);
         }
         writer.println();
         return null;
@@ -312,10 +325,17 @@ public class CGenVisitor implements Visitor{
 
         for (int i = 0; i < item.getIdentifierList().size(); i++){
             if(i>0)inserisciTab();
-            item.getIdentifierList().get(i).accept(this);
-            writer.print(" = ");
-            item.getExpressionList().get(i).accept(this);
-            writer.println(";");
+            if(item.getIdentifierList().get(i).getType() == Symbols.STRING) {
+                item.getIdentifierList().get(i).accept(this);
+                writer.print("= strdup(");
+                item.getExpressionList().get(i).accept(this);
+                writer.println(");");
+            }else {
+                item.getIdentifierList().get(i).accept(this);
+                writer.print(" = ");
+                item.getExpressionList().get(i).accept(this);
+                writer.println(";");
+            }
         }
         return null;
     }
@@ -594,6 +614,8 @@ public class CGenVisitor implements Visitor{
 
         if(item.getLeftExpression().getType() == Symbols.STRING && item.getRightExpression().getType() == Symbols.STRING){
             generaEspressioniBinarieStringhe(item.getLeftExpression(), item.getOperation(), item.getRightExpression());
+        }else if(item.getOperation() == Symbols.STR_CONCAT) {
+            generaEspressioniConcatenazione(item.getLeftExpression(), item.getRightExpression());
         }
         else if (item.getOperation() == Symbols.POW){
             writer.print("pow(");
@@ -619,6 +641,26 @@ public class CGenVisitor implements Visitor{
         writer.println("#include <math.h>");
         writer.println("");
     }
+    private static void generaConversioni(){
+        writer.println("char* int_to_string(int num) {\n" +
+                "   char* str = malloc(10 * sizeof(char));\n" +
+                "   sprintf(str, \"%d\", num);\n" +
+                "   return str;\n" +
+                "}");
+        writer.println("char* float_to_string(float num) {\n" +
+                "    char* str = malloc(10 * sizeof(char));\n" +
+                "    snprintf(str,10,\"%f\", num);\n" +
+                "    return str;\n" +
+                "}");
+        writer.println("char* char_to_string(char c) {\n" +
+                "    char* str = malloc(sizeof(char));\n" +
+                "    snprintf(str,sizeof str,\"%c\", c);\n" +
+                "    return str;\n" +
+                "}");
+    }
+
+
+
     private static void generaPrototipoFunzione(FunSymbol fs){
         writer.print(fs.getTypeFromToken(fs.getReturnType()) +
                 " "+ fs.getIdentifier()+"(");
@@ -650,7 +692,7 @@ public class CGenVisitor implements Visitor{
 
     private static void generaDichiarazioneVariabile(IdSymbol is){
         writer.println(is.getTypeFromToken(is.getType()) +
-                " "+ is.getIdentifier()+";");
+                " " + is.getIdentifier() + ";");
     }
 
     private static void generaEspressioniBinarie(int operazione){
@@ -671,32 +713,83 @@ public class CGenVisitor implements Visitor{
 
     }
 
+
+    private void generaEspressioniConcatenazione(ExpressionNode leftExpression, ExpressionNode rightExpression) {
+        writer.print("strcat(");
+        if (leftExpression instanceof Constant){
+            if(leftExpression instanceof StringConstantNode){
+                writer.print("strdup(");
+                leftExpression.accept(this);
+                writer.print(")");
+            } else {
+                printConversion(leftExpression);
+                leftExpression.accept(this);
+                writer.print(")");
+            }
+        }else if(leftExpression.getType()  != Symbols.STRING){
+            printConversionBytype(leftExpression.getType());
+            leftExpression.accept(this);
+            writer.print(")");
+        }else {
+            leftExpression.accept(this);
+        }
+
+
+        writer.print((","));
+        if (rightExpression instanceof Constant){
+            if(rightExpression instanceof StringConstantNode){
+                writer.print("strdup(");
+                rightExpression.accept(this);
+                writer.print(")");
+            } else {
+                printConversion(rightExpression);
+                rightExpression.accept(this);
+                writer.print(")");
+            }
+        }else if(rightExpression.getType()  != Symbols.STRING){
+            printConversionBytype(rightExpression.getType());
+            rightExpression.accept(this);
+            writer.print(")");
+        }else {
+            rightExpression.accept(this);
+        }
+        writer.print(")");
+    }
+
+    private void printConversion(ExpressionNode expression){
+        if(expression instanceof IntegerConstantNode || expression instanceof  BooleanConstantNode)
+            writer.print("int_to_string(");
+        if(expression instanceof RealConstantNode)
+            writer.print("float_to_string(");
+        if(expression instanceof CharConstantNode)
+            writer.print("char_to_string(");
+    }
+
+    private void printConversionBytype(Integer Type){
+        if(Type == Symbols.INTEGER || Type == Symbols.BOOL)
+            writer.print("int_to_string(");
+        if(Type == Symbols.FLOAT)
+            writer.print("float_to_string(");
+        if(Type == Symbols.CHAR)
+            writer.print("char_to_string(");
+    }
+
     private void generaEspressioniBinarieStringhe(ExpressionNode leftExpr, int operazione, ExpressionNode rightExpr){
         switch (operazione){
             case Symbols.STR_CONCAT:
-                if(!(leftExpr instanceof StringConstantNode)) {
-                    writer.print("strcat(");
-                    leftExpr.accept(this);
-                    writer.print("=");
+                writer.print("strcat(");
+                if(leftExpr instanceof StringConstantNode){
                     writer.print("strdup(");
                     leftExpr.accept(this);
-                    writer.print(") , ");
-                }
-                else {
-                    leftExpr.accept(this);
-                }
-                if(!(rightExpr instanceof StringConstantNode)) {
-                    rightExpr.accept(this);
-                    writer.print("=");
+                    writer.print(")");
+                } else { leftExpr.accept(this); }
+                writer.print(",");
+                if(leftExpr instanceof StringConstantNode){
                     writer.print("strdup(");
                     rightExpr.accept(this);
                     writer.print(")");
-                }
-                else {
-                    rightExpr.accept(this);
-                }
+                } else { rightExpr.accept(this); }
                 writer.print(")");
-
                 break;
             case Symbols.EQ :
                 writer.print(" strcmp(");

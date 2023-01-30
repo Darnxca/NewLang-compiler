@@ -3,6 +3,8 @@ package semantic.utils;
 import parser.Symbols;
 import parser.newLangTree.nodes.statements.*;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class TypeChecker {
 
     public static int checkUnaryExpr(Integer operation, Integer type){
@@ -38,14 +40,17 @@ public class TypeChecker {
             }
             else if( typeLeft == Symbols.FLOAT && typeRight == Symbols.INTEGER){
                 return Symbols.FLOAT;
+            }else if( typeLeft == Symbols.CHAR && typeRight == Symbols.CHAR){
+                return Symbols.CHAR;
+            }else if( typeLeft == Symbols.CHAR && typeRight == Symbols.INTEGER){
+                return Symbols.CHAR;
+            }else if( typeLeft == Symbols.INTEGER && typeRight == Symbols.CHAR){
+                return Symbols.CHAR;
             }
 
         }
         else if( operation == Symbols.STR_CONCAT){
-            if(typeLeft == Symbols.STRING && typeRight == Symbols.STRING){
-                return Symbols.STRING;
-            }
-
+            return Symbols.STRING;
         } else if(isMathOperation(operation)){
             if(typeLeft == Symbols.INTEGER && typeRight == Symbols.INTEGER){
                 return Symbols.FLOAT;
@@ -195,5 +200,4 @@ public class TypeChecker {
             return true;
         }
     }
-
 }

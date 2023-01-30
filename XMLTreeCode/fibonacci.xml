@@ -1,183 +1,132 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Per visualizzare l'albero https://countwordsfree.com/xmlviewer -->
-<ProgramNode>
-<Declist>
-<FuncDeclNode Type='INTEGER'>
-<IdentifierExpression>
-<value> Nfibonacci</value>
-</IdentifierExpression>
-<ParamDecl>
-<Type-in>INTEGER</Type-in>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-</ParamDecl>
-<Body>
-<IfStat>
-<BinaryExpression>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<Operation> EQ</Operation>
-<IntegerConstant> 0</IntegerConstant>
-</BinaryExpression>
-<Body>
-<ReturnStat>
-<IntegerConstant> 0</IntegerConstant>
-</ReturnStat>
-</Body>
-</IfStat>
-<IfStat>
-<BinaryExpression>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<Operation> EQ</Operation>
-<IntegerConstant> 1</IntegerConstant>
-</BinaryExpression>
-<Body>
-<ReturnStat>
-<IntegerConstant> 1</IntegerConstant>
-</ReturnStat>
-</Body>
-</IfStat>
-<ReturnStat>
-<BinaryExpression>
-<FunCallExpr>
-<IdentifierExpression>
-<value> Nfibonacci</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<Operation> MINUS</Operation>
-<IntegerConstant> 1</IntegerConstant>
-</BinaryExpression>
-</FunCallExpr>
-<Operation> PLUS</Operation>
-<FunCallExpr>
-<IdentifierExpression>
-<value> Nfibonacci</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<Operation> MINUS</Operation>
-<IntegerConstant> 2</IntegerConstant>
-</BinaryExpression>
-</FunCallExpr>
-</BinaryExpression>
-</ReturnStat>
-</Body>
-</FuncDeclNode>
-<FuncDeclNode Type='VOID'>
-<IdentifierExpression>
-<value> stampaSequenzaFibonacci</value>
-</IdentifierExpression>
-<ParamDecl>
-<Type-in>INTEGER</Type-in>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-</ParamDecl>
-<Body>
-<VarDeclNode>
-<Type>INTEGER</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
-<IntegerConstant> 0</IntegerConstant>
-</IdInitNode>
-</VarDeclNode>
-<WhileStat>
-<BinaryExpression>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
-<Operation> LT</Operation>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-</BinaryExpression>
-<Body>
-<Writeln>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
-<StringConstant>  -> </StringConstant>
-<FunCallExpr>
-<IdentifierExpression>
-<value> Nfibonacci</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
-</FunCallExpr>
-</Writeln>
-<AssignStat>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
-<BinaryExpression>
-<IdentifierExpression>
-<value> i</value>
-</IdentifierExpression>
-<Operation> PLUS</Operation>
-<IntegerConstant> 1</IntegerConstant>
-</BinaryExpression>
-</AssignStat>
-</Body>
-</WhileStat>
-</Body>
-</FuncDeclNode>
-</Declist>
-<Main>
-<FuncDeclNode Type='VOID'>
-<IdentifierExpression>
-<value> main</value>
-</IdentifierExpression>
-<Body>
-<VarDeclNode>
-<Type>INTEGER</Type>
-<IdInitNode>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<IntegerConstant> 7</IntegerConstant>
-</IdInitNode>
-</VarDeclNode>
-<Writeln>
-<StringConstant> Il </StringConstant>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<StringConstant>  numero di fibonacci e'</StringConstant>
-<FunCallExpr>
-<IdentifierExpression>
-<value> Nfibonacci</value>
-</IdentifierExpression>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-</FunCallExpr>
-</Writeln>
-<Writeln>
-<StringConstant> La sequenza di fibonacci per </StringConstant>
-<IdentifierExpression>
-<value> n</value>
-</IdentifierExpression>
-<StringConstant>  e':</StringConstant>
-</Writeln>
-<FunCallStat>
-<IdentifierExpression>
-<value> stampaSequenzaFibonacci</value>
-</IdentifierExpression>
-<IntegerConstant> 7</IntegerConstant>
-</FunCallStat>
-</Body>
-</FuncDeclNode>
-</Main>
-</ProgramNode>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Programm>
+    <DeclNode>
+        <FuncDeclNode Type="INTEGER">
+            <IdentifierExpression>Nfibonacci</IdentifierExpression>
+            <ParamDecl>
+                <Type-in>INTEGER</Type-in>
+                <IdentifierExpression>n</IdentifierExpression>
+            </ParamDecl>
+            <Body>
+                <IfStat>
+                    <BinaryExpression>
+                        <IdentifierExpression>n</IdentifierExpression>
+                        <Operation>EQ</Operation>
+                        <IntegerConstant>0</IntegerConstant>
+                    </BinaryExpression>
+                    <Body>
+                        <ReturnStat>
+                            <IntegerConstant>0</IntegerConstant>
+                        </ReturnStat>
+                    </Body>
+                </IfStat>
+                <IfStat>
+                    <BinaryExpression>
+                        <IdentifierExpression>n</IdentifierExpression>
+                        <Operation>EQ</Operation>
+                        <IntegerConstant>1</IntegerConstant>
+                    </BinaryExpression>
+                    <Body>
+                        <ReturnStat>
+                            <IntegerConstant>1</IntegerConstant>
+                        </ReturnStat>
+                    </Body>
+                </IfStat>
+                <ReturnStat>
+                    <BinaryExpression>
+                        <FunCallExpr>
+                            <IdentifierExpression>Nfibonacci</IdentifierExpression>
+                            <BinaryExpression>
+                                <IdentifierExpression>n</IdentifierExpression>
+                                <Operation>MINUS</Operation>
+                                <IntegerConstant>1</IntegerConstant>
+                            </BinaryExpression>
+                        </FunCallExpr>
+                        <Operation>PLUS</Operation>
+                        <FunCallExpr>
+                            <IdentifierExpression>Nfibonacci</IdentifierExpression>
+                            <BinaryExpression>
+                                <IdentifierExpression>n</IdentifierExpression>
+                                <Operation>MINUS</Operation>
+                                <IntegerConstant>2</IntegerConstant>
+                            </BinaryExpression>
+                        </FunCallExpr>
+                    </BinaryExpression>
+                </ReturnStat>
+            </Body>
+        </FuncDeclNode>
+        <FuncDeclNode Type="VOID">
+            <IdentifierExpression>stampaSequenzaFibonacci</IdentifierExpression>
+            <ParamDecl>
+                <Type-in>INTEGER</Type-in>
+                <IdentifierExpression>n</IdentifierExpression>
+            </ParamDecl>
+            <Body>
+                <VarDeclNode>
+                    <Type>INTEGER</Type>
+                    <IdInitNode>
+                        <IdentifierExpression>i</IdentifierExpression>
+                        <IntegerConstant>0</IntegerConstant>
+                    </IdInitNode>
+                </VarDeclNode>
+                <WhileStat>
+                    <BinaryExpression>
+                        <IdentifierExpression>i</IdentifierExpression>
+                        <Operation>LT</Operation>
+                        <IdentifierExpression>n</IdentifierExpression>
+                    </BinaryExpression>
+                    <Body>
+                        <Writeln>
+                            <IdentifierExpression>i</IdentifierExpression>
+                            <StringConstant> -&gt; </StringConstant>
+                            <FunCallExpr>
+                                <IdentifierExpression>Nfibonacci</IdentifierExpression>
+                                <IdentifierExpression>i</IdentifierExpression>
+                            </FunCallExpr>
+                        </Writeln>
+                        <AssignStat>
+                            <IdentifierExpression>i</IdentifierExpression>
+                            <BinaryExpression>
+                                <IdentifierExpression>i</IdentifierExpression>
+                                <Operation>PLUS</Operation>
+                                <IntegerConstant>1</IntegerConstant>
+                            </BinaryExpression>
+                        </AssignStat>
+                    </Body>
+                </WhileStat>
+            </Body>
+        </FuncDeclNode>
+    </DeclNode>
+    <Main>
+        <FuncDeclNode Type="VOID">
+            <IdentifierExpression>main</IdentifierExpression>
+            <Body>
+                <VarDeclNode>
+                    <Type>INTEGER</Type>
+                    <IdInitNode>
+                        <IdentifierExpression>n</IdentifierExpression>
+                        <IntegerConstant>7</IntegerConstant>
+                    </IdInitNode>
+                </VarDeclNode>
+                <Writeln>
+                    <StringConstant>Il </StringConstant>
+                    <IdentifierExpression>n</IdentifierExpression>
+                    <StringConstant> numero di fibonacci e'</StringConstant>
+                    <FunCallExpr>
+                        <IdentifierExpression>Nfibonacci</IdentifierExpression>
+                        <IdentifierExpression>n</IdentifierExpression>
+                    </FunCallExpr>
+                </Writeln>
+                <Writeln>
+                    <StringConstant>La sequenza di fibonacci per </StringConstant>
+                    <IdentifierExpression>n</IdentifierExpression>
+                    <StringConstant> e':</StringConstant>
+                </Writeln>
+                <FunCallStat>
+                    <IdentifierExpression>stampaSequenzaFibonacci</IdentifierExpression>
+                    <IntegerConstant>7</IntegerConstant>
+                </FunCallStat>
+            </Body>
+        </FuncDeclNode>
+    </Main>
+</Programm>
