@@ -18,6 +18,7 @@ var stringhello << "ciao";
 var charactello << 'P';
 var booleanello << true;
 var booleanello2 << false;
+var marello << 2;
 
 start: def main() : integer {
 
