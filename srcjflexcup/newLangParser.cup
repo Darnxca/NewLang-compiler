@@ -55,7 +55,7 @@ parser code {:
     }
 :};
 
-terminal MAIN, DEF;
+terminal MAIN, DEF, BREAK, ASFNAZZA, MUNNEZZ;
 terminal SEMI, COMMA, LPAR, RPAR, COLON, LBRAC, RBRAC, PIPE, OUT; //Separatori
 terminal Integer  CHAR, STRING, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
 
@@ -98,6 +98,9 @@ non terminal AssignStatNode             AssignStat;
 non terminal FunCallStatNode            FunCall;
 non terminal List<ExpressionNode>       ExprList;
 non terminal ExpressionNode             Expr;
+non terminal MunnezzStatNode            MunnezzStat;
+non terminal AsfnazzaCaseStatNode       AsfnazzaCase;
+non terminal List<AsfnazzaCaseStatNode> AsfnazzasList;
 
 
 /* Precedenze */
@@ -288,6 +291,7 @@ Stat ::= IfStat:ifs                                                 {: RESULT = 
                                                                        ReturnStatNode rs = new ReturnStatNode(rxleft,rxright);
                                                                        RESULT = rs;
                                                                     :}
+         | MunnezzStat: ms                                          {: RESULT = ms; :}
 ;
 IfStat ::= IF Expr:e THEN Body:bt                                   {:
                                                                         IfStatNode is = new IfStatNode(e, bt);
@@ -388,4 +392,30 @@ Expr ::=   TRUE:t                               {: RESULT = new BooleanConstantN
 	     | MINUS:o Expr:e                       {: RESULT = new UnaryExpressionNode(Symbols.MINUS,e,oxright,oxleft); :}
 	     | NOT:o Expr:e                         {: RESULT = new UnaryExpressionNode(Symbols.NOT,e,oxright,oxleft); :}
 	     | LPAR Expr:e RPAR                     {: RESULT = e; :}
+;
+
+MunnezzStat ::= MUNNEZZ LPAR Expr:e RPAR LBRAC AsfnazzasList:aL RBRAC   {: MunnezzStatNode ms = new MunnezzStatNode(e, aL);
+                                                                           RESULT = ms;
+                                                                        :}
+                | MUNNEZZ LPAR Expr:e RPAR LBRAC RBRAC   {: MunnezzStatNode ms = new MunnezzStatNode(e);
+                                                            RESULT = ms;
+                                                         :}
+;
+
+AsfnazzasList ::= AsfnazzaCase:aC AsfnazzasList:aL  {:
+                                                       aL.add(0, aC);
+                                                       RESULT = aL;
+                                                     :}
+
+                | AsfnazzaCase:aC                   {: List<AsfnazzaCaseStatNode> aL = new LinkedList<>();
+                                                       aL.add(aC);
+                                                       RESULT = aL;
+                                                     :}
+;
+AsfnazzaCase ::= ASFNAZZA Expr:e COLON StatList:sl BREAK SEMI {: AsfnazzaCaseStatNode acs = new AsfnazzaCaseStatNode(e, sl);
+                                                                 RESULT = acs;
+                                                               :}
+                |  ASFNAZZA Expr:e COLON BREAK SEMI      {: AsfnazzaCaseStatNode acs = new AsfnazzaCaseStatNode(e);
+                                                            RESULT = acs;
+                                                         :}
 ;

@@ -33,4 +33,6 @@ public interface Visitor {
     public Object visit(IdentifierExprNode item);
     public Object visit(UnaryExpressionNode item);
     public Object visit(BinaryExpressionNode item);
+    public Object visit(MunnezzStatNode item);
+    public Object visit(AsfnazzaCaseStatNode item);
 }

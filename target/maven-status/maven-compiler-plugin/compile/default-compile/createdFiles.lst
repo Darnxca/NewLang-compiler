@@ -3,5 +3,7 @@ lexer\Lexer.class
 parser\Parser.class
 semantic\SymbolTableStack.class
 exception\MissinReturnInBodyFunction.class
+parser\newLangTree\nodes\statements\AsfnazzaCaseStatNode.class
 semantic\SymbolTable.class
 parser\Parser$CUP$Parser$actions.class
+parser\newLangTree\nodes\statements\MunnezzStatNode.class

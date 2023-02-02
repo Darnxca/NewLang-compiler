@@ -312,4 +312,20 @@ public class ScopeVisitor implements Visitor{
     public Object visit(BinaryExpressionNode item) {
         return null;
     }
+
+    @Override
+    public Object visit(MunnezzStatNode item) {
+
+        return null;
+    }
+
+    @Override
+    public Object visit(AsfnazzaCaseStatNode item) {
+
+        return null;
+    }
 }
+
+
+
+

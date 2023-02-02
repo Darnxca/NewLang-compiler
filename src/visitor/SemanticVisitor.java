@@ -519,4 +519,47 @@ public class SemanticVisitor implements Visitor{
         return null;
     }
 
+    @Override
+    public Object visit(MunnezzStatNode item) {
+
+        item.getExprCond().accept(this);
+        //La condizione dello switch può essere solo di tipo intero o char
+        if(item.getExprCond().getType() != Symbols.INTEGER && item.getExprCond().getType() != Symbols.CHAR){
+            throw new TypeMismatch("Errore  (riga: "+item.getExprCond().getLeft().getLine()
+                    +", colonna: "+ item.getExprCond().getRight().getColumn()+")"+
+                    "\n-> Il tipo di condizione inserito nello switch è "+
+                    terminalNames[item.getExprCond().getType()].toLowerCase()+
+                    ", mentre lo switch può avere solo tipo intero o char");
+        }
+
+        if(item.getCaseStatNodeList() != null){
+            for(AsfnazzaCaseStatNode as : item.getCaseStatNodeList()) {
+                as.accept(this);
+            }
+
+            for(AsfnazzaCaseStatNode as : item.getCaseStatNodeList()) {
+                if(as.getExprCase().getType() != item.getExprCond().getType()){
+                    throw new TypeMismatch("Errore (riga: "+as.getExprCase().getLeft().getLine()+
+                            ", colonna: "+as.getExprCase().getRight().getColumn()+ ") " +
+                            "\n-> Espressione inserita di tipo " +
+                            terminalNames[as.getExprCase().getType()].toLowerCase()+
+                            ", il case deve avere la stessa condizione dello switch!!");
+                }
+
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object visit (AsfnazzaCaseStatNode item) {
+
+        item.getExprCase().accept(this);
+        for(StatementNode st : item.getStatementNodeList())
+            st.accept(this);
+
+        return null;
+    }
+
 }

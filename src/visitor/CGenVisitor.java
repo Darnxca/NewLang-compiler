@@ -45,9 +45,7 @@ public class CGenVisitor implements Visitor{
 
     @Override
     public Object visit(ProgramNode item) {
-
         stack.enterScope(item.getSymbolTableProgramScope());
-
         writer.println("// prototipi delle funzioni");
         item.getSymbolTableProgramScope().forEach((key, sym) ->{
             if(sym instanceof FunSymbol){
@@ -56,14 +54,18 @@ public class CGenVisitor implements Visitor{
             }
         });
 
-        writer.println("// inizializzazione delle variabili globali");
+        if(item.getDecl().getVarDeclList().size() != 0) {
 
-        item.getSymbolTableProgramScope().forEach((key, sym) ->{
-            if(sym instanceof IdSymbol){
-                IdSymbol is = (IdSymbol) sym;
-                generaDichiarazioneVariabile(is);
-            }
-        });
+            writer.println("// inizializzazione delle variabili globali");
+
+            item.getSymbolTableProgramScope().forEach((key, sym) -> {
+                if (sym instanceof IdSymbol) {
+                    IdSymbol is = (IdSymbol) sym;
+                    generaDichiarazioneVariabile(is);
+                }
+            });
+
+        }
 
         writer.println("");
         item.getDecl().accept(this);
@@ -76,14 +78,17 @@ public class CGenVisitor implements Visitor{
     @Override
     public Object visit(DeclNode item) {
 
-        writer.println("void initialize_global() {");
-        stack.enterScope(new SymbolTable());
-        ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
-        for (VarDeclNode var : vd){
-            var.accept(this);
+        if(item.getVarDeclList().size() != 0){
+            writer.println("void initialize_global() {");
+            stack.enterScope(new SymbolTable());
+            ArrayList<VarDeclNode> vd = ordinaVarDecl(item.getVarDeclList());
+            for (VarDeclNode var : vd){
+                var.accept(this);
+            }
+            writer.println("}");
+            stack.exitScope();
         }
-        writer.println("}");
-        stack.exitScope();
+
 
         writer.println("\n//-----------Implementazione funzioni-----------");
 
@@ -630,6 +635,43 @@ public class CGenVisitor implements Visitor{
             item.getRightExpression().accept(this);
             writer.print(")");
         }
+        return null;
+    }
+
+    @Override
+    public Object visit(MunnezzStatNode item) {
+        writer.print("switch(");
+        item.getExprCond().accept(this);
+        writer.println("){");
+
+        if(item.getCaseStatNodeList() != null){
+            for(AsfnazzaCaseStatNode ac : item.getCaseStatNodeList()){
+                ac.accept(this);
+            }
+        }
+        inserisciTab();
+        writer.println("}");
+
+        return null;
+    }
+
+    @Override
+    public Object visit(AsfnazzaCaseStatNode item) {
+        inserisciTab();
+        inserisciTab();
+        writer.print("case ");
+        item.getExprCase().accept(this);
+        writer.println(":");
+        for(StatementNode st : item.getStatementNodeList()){
+            inserisciTab();
+            inserisciTab();
+            st.accept(this);
+        }
+        inserisciTab();
+        inserisciTab();
+        writer.println("break;");
+
+
         return null;
     }
 

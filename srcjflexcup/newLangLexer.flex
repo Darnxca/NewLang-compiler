@@ -97,6 +97,9 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
 "return"        {return symbol("RETURN", RETURN);}
 "true"          {return symbol("TRUE", TRUE);}
 "false"         {return symbol("FALSE", FALSE);}
+"munnezz"       {return symbol("MUNNEZZ", MUNNEZZ);}
+"asfnazza"      {return symbol("ASFNAZZA", ASFNAZZA);}
+"break"         {return symbol("BREAK", BREAK);}
 
 //Tipi
 "integer"       {return symbol("INTEGER", INTEGER, INTEGER);}
