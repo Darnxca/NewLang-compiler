@@ -4,7 +4,7 @@ start: def main () : integer {
 
     integer a << 2;
     integer x << 2;
-    string sa << "CIAO";
+    string saa << "CIAO";
 
     if x > a then {
         integer x3 << 2;
@@ -16,7 +16,7 @@ start: def main () : integer {
         ("Stampaaaaaa ", x) -->!;
     }
 
-    for sa << 1 to 4 loop {
+    for saa << 1 to 4 loop {
 
     }
 
