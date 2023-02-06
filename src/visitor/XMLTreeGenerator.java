@@ -464,6 +464,26 @@ public class XMLTreeGenerator implements  Visitor{
     }
 
     @Override
+    public Object visit(StepNode stepNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitNode initNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode initDoForStepNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(ForStepNode forStepNode) {
+        return null;
+    }
+
+    @Override
     public Object visit(UnaryExpressionNode item){
 
         Element right;

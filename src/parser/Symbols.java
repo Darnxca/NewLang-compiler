@@ -8,14 +8,15 @@ package parser;
 /** CUP generated interface containing symbol constants. */
 public interface Symbols {
   /* terminals */
-  public static final int CHAR_CONST = 48;
+  public static final int CHAR_CONST = 51;
   public static final int POW = 41;
   public static final int CHAR = 16;
-  public static final int GE = 52;
+  public static final int GE = 55;
   public static final int UMINUS = 43;
-  public static final int INTEGER_CONST = 46;
+  public static final int INTEGER_CONST = 49;
   public static final int INTEGER = 20;
   public static final int SEMI = 7;
+  public static final int INIT = 44;
   public static final int OUT = 15;
   public static final int RBRAC = 13;
   public static final int MINUS = 35;
@@ -24,7 +25,7 @@ public interface Symbols {
   public static final int ASFNAZZA = 5;
   public static final int NOT = 40;
   public static final int AND = 38;
-  public static final int LT = 53;
+  public static final int LT = 56;
   public static final int RPAR = 10;
   public static final int OR = 39;
   public static final int BOOL = 21;
@@ -37,16 +38,16 @@ public interface Symbols {
   public static final int MAIN = 2;
   public static final int IF = 25;
   public static final int WRITELN = 30;
-  public static final int ID = 45;
-  public static final int LE = 54;
+  public static final int ID = 48;
+  public static final int LE = 57;
   public static final int EOF = 0;
-  public static final int RETURN = 57;
-  public static final int TRUE = 49;
+  public static final int RETURN = 60;
+  public static final int TRUE = 52;
   public static final int error = 1;
   public static final int PIPE = 14;
   public static final int BREAK = 4;
   public static final int VOID = 18;
-  public static final int EQ = 55;
+  public static final int EQ = 58;
   public static final int TIMES = 36;
   public static final int COLON = 11;
   public static final int ELSE = 27;
@@ -55,17 +56,19 @@ public interface Symbols {
   public static final int WHILE = 26;
   public static final int STR_CONCAT = 42;
   public static final int FLOAT = 22;
-  public static final int REAL_CONST = 47;
+  public static final int REAL_CONST = 50;
   public static final int THEN = 31;
-  public static final int NE = 56;
+  public static final int NE = 59;
   public static final int LPAR = 9;
   public static final int STRING = 17;
   public static final int DEF = 3;
   public static final int LBRAC = 12;
-  public static final int FALSE = 50;
-  public static final int STRING_CONST = 44;
-  public static final int GT = 51;
+  public static final int FALSE = 53;
+  public static final int STRING_CONST = 47;
+  public static final int GT = 54;
   public static final int VAR = 19;
+  public static final int DO = 45;
+  public static final int STEP = 46;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -111,6 +114,9 @@ public interface Symbols {
   "POW",
   "STR_CONCAT",
   "UMINUS",
+  "INIT",
+  "DO",
+  "STEP",
   "STRING_CONST",
   "ID",
   "INTEGER_CONST",

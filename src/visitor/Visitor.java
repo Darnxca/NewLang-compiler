@@ -35,4 +35,12 @@ public interface Visitor {
     public Object visit(BinaryExpressionNode item);
     public Object visit(MunnezzStatNode item);
     public Object visit(AsfnazzaCaseStatNode item);
+
+    Object visit(StepNode stepNode);
+
+    Object visit(InitNode initNode);
+
+    Object visit(InitDoForStepNode initDoForStepNode);
+
+    Object visit(ForStepNode forStepNode);
 }

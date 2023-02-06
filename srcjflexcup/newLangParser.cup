@@ -62,6 +62,7 @@ terminal Integer  CHAR, STRING, VOID, VAR, INTEGER, BOOL, FLOAT; //Tipi
 terminal FOR, TO, IF, WHILE, ELSE, READ, WRITE, WRITELN, THEN, LOOP, ASSIGN; //Statements
 terminal PLUS, MINUS, TIMES, DIV, AND, OR, NOT, POW, STR_CONCAT, UMINUS; //Operatori aritmetici, stringhe
 
+terminal INIT, DO, STEP; //NEWS
 terminal String    STRING_CONST, ID;
 terminal Integer   INTEGER_CONST;
 terminal Float     REAL_CONST;
@@ -101,6 +102,11 @@ non terminal ExpressionNode             Expr;
 non terminal MunnezzStatNode            MunnezzStat;
 non terminal AsfnazzaCaseStatNode       AsfnazzaCase;
 non terminal List<AsfnazzaCaseStatNode> AsfnazzasList;
+non terminal InitDoForStepNode          Init_do_for_step;
+non terminal InitNode                   Init;
+non terminal ForStepNode                ForStep;
+non terminal VarDeclNode                InitExpr;
+non terminal StepNode                   Step;
 
 
 /* Precedenze */
@@ -292,6 +298,7 @@ Stat ::= IfStat:ifs                                                 {: RESULT = 
                                                                        RESULT = rs;
                                                                     :}
          | MunnezzStat: ms                                          {: RESULT = ms; :}
+         | Init_do_for_step:idfs  SEMI                                  {:  RESULT = idfs; :}
 ;
 IfStat ::= IF Expr:e THEN Body:bt                                   {:
                                                                         IfStatNode is = new IfStatNode(e, bt);
@@ -392,6 +399,7 @@ Expr ::=   TRUE:t                               {: RESULT = new BooleanConstantN
 	     | MINUS:o Expr:e                       {: RESULT = new UnaryExpressionNode(Symbols.MINUS,e,oxright,oxleft); :}
 	     | NOT:o Expr:e                         {: RESULT = new UnaryExpressionNode(Symbols.NOT,e,oxright,oxleft); :}
 	     | LPAR Expr:e RPAR                     {: RESULT = e; :}
+	     | Expr:e1 ASSIGN:a Expr:e2               {: RESULT = new BinaryExpressionNode(e1,Symbols.ASSIGN,e2,axright,axleft); :}
 ;
 
 MunnezzStat ::= MUNNEZZ LPAR Expr:e RPAR LBRAC AsfnazzasList:aL RBRAC   {: MunnezzStatNode ms = new MunnezzStatNode(e, aL);
@@ -418,4 +426,52 @@ AsfnazzaCase ::= ASFNAZZA Expr:e COLON StatList:sl BREAK SEMI {: AsfnazzaCaseSta
                 |  ASFNAZZA Expr:e COLON BREAK SEMI      {: AsfnazzaCaseStatNode acs = new AsfnazzaCaseStatNode(e);
                                                             RESULT = acs;
                                                          :}
+;
+
+InitExpr ::= Type:t IdInitList:il                       {:
+                                                               VarDeclNode vd = new VarDeclNode(t);
+                                                               vd.setIdInitNodeVarDeclNode(il);
+                                                               RESULT = vd;
+                                                            :}
+	         | VAR IdInitObblList:il                   {:
+	                                                           VarDeclNode vd = new VarDeclNode(Symbols.VAR);
+	                                                           vd.setIdInitObbNode(il);
+	                                                           RESULT = vd;
+	                                                        :}
+;
+Init_do_for_step ::= Init:i DO LBRAC StatList:sl RBRAC ForStep:fs Step:s {:
+                                                                            InitDoForStepNode idfs = new InitDoForStepNode(i, sl, fs, s);
+                                                                            RESULT = idfs;
+                                                                         :}
+                | Init:i DO LBRAC RBRAC ForStep:fs Step:s               {:
+                                                                            InitDoForStepNode idfs = new InitDoForStepNode(i, fs, s);
+                                                                            RESULT = idfs;
+                                                                        :}
+;
+
+Init ::= INIT LPAR InitExpr:ie RPAR     {:  InitNode id = new InitNode(ie);
+                                            RESULT = id;
+                                         :}
+    | INIT LPAR RPAR                    {:
+                                            InitNode id = new InitNode();
+                                            RESULT = id;
+                                        :}
+;
+ForStep ::= FOR LPAR Expr:e RPAR        {:
+                                            ForStepNode fs = new ForStepNode(e);
+                                            RESULT = fs;
+                                        :}
+            | FOR LPAR RPAR              {:
+                                            ForStepNode fs = new ForStepNode();
+                                            RESULT = fs;
+                                        :}
+;
+Step ::= STEP LPAR ExprList:el RPAR        {:
+                                            StepNode fs = new StepNode(el);
+                                            RESULT = fs;
+                                        :}
+         | STEP LPAR RPAR               {:
+                                            StepNode fs = new StepNode();
+                                            RESULT = fs;
+                                        :}
 ;

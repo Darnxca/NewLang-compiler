@@ -1,9 +1,13 @@
 exception\LexicalError.class
+parser\newLangTree\nodes\statements\ForStepNode.class
 lexer\Lexer.class
+parser\newLangTree\nodes\statements\InitDoForStepNode.class
+parser\newLangTree\nodes\statements\InitNode.class
 parser\Parser.class
 semantic\SymbolTableStack.class
 exception\MissinReturnInBodyFunction.class
 parser\newLangTree\nodes\statements\AsfnazzaCaseStatNode.class
 semantic\SymbolTable.class
 parser\Parser$CUP$Parser$actions.class
+parser\newLangTree\nodes\statements\StepNode.class
 parser\newLangTree\nodes\statements\MunnezzStatNode.class

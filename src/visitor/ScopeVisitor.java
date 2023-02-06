@@ -324,6 +324,44 @@ public class ScopeVisitor implements Visitor{
 
         return null;
     }
+
+    @Override
+    public Object visit(StepNode stepNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitNode initNode) {
+        if(initNode.getInitExpr() !=  null)
+            initNode.getInitExpr().accept(this);
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode initDoForStepNode) {
+
+        stack.enterScope(initDoForStepNode.getSymbolTableInitDoForStep());
+        initDoForStepNode.getInit().accept(this);
+
+        if( initDoForStepNode.getStatList() != null){
+            for (StatementNode s : initDoForStepNode.getStatList())
+                s.accept(this);
+        }
+
+        initDoForStepNode.getForStep().accept(this);
+        initDoForStepNode.getStep().accept(this);
+
+        stack.exitScope();
+
+        return null;
+    }
+
+    @Override
+    public Object visit(ForStepNode forStepNode) {
+        return null;
+    }
+
+
 }
 
 

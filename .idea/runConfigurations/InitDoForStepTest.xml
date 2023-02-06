@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="InitDoForStepTest" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="main.java.NewLangTranspiler" />
+    <module name="dangelo-della-rocca_es5" />
+    <option name="PROGRAM_PARAMETERS" value="test/TestInitDoForStep.nl" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

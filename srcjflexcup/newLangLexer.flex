@@ -100,6 +100,9 @@ IntegerNumber = (({digit1}+{digit}* | {zero}))
 "munnezz"       {return symbol("MUNNEZZ", MUNNEZZ);}
 "asfnazza"      {return symbol("ASFNAZZA", ASFNAZZA);}
 "break"         {return symbol("BREAK", BREAK);}
+"init"          {return symbol("INIT", INIT);}
+"do"            {return symbol("DO", DO);}
+"step"          {return symbol("STEP", STEP);}
 
 //Tipi
 "integer"       {return symbol("INTEGER", INTEGER, INTEGER);}

@@ -258,4 +258,24 @@ public class PrintScopeVisitor implements Visitor{
     public Object visit(AsfnazzaCaseStatNode item) {
         return null;
     }
+
+    @Override
+    public Object visit(StepNode stepNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitNode initNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(InitDoForStepNode initDoForStepNode) {
+        return null;
+    }
+
+    @Override
+    public Object visit(ForStepNode forStepNode) {
+        return null;
+    }
 }
