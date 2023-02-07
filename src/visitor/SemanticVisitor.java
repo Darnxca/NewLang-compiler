@@ -401,6 +401,12 @@ public class SemanticVisitor implements Visitor{
                         ", colonna :" + expressionType.get(i).getRight().getColumn() + ")" +
                         "\n-> Non si può assegnare una costante ad un variabile di tipo out!");
             }
+
+            if ( !(expressionType.get(i) instanceof IdentifierExprNode) && function.getListOfParams().get(i).isOut()){
+                throw new TypeMismatch("Errore ( riga : "+ expressionType.get(i).getLeft().getLine() +
+                        ", colonna :" + expressionType.get(i).getRight().getColumn() +
+                        "\n-> Non si può assegnare un'espessione ad una variabile di tipo out ");
+            }
         }
 
         item.setType(function.getReturnType());
