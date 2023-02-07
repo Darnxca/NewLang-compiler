@@ -176,6 +176,9 @@
                         </Body>
                     </ElseStat>
                 </IfStat>
+                <ReturnStat>
+                    <BooleanConstant>false</BooleanConstant>
+                </ReturnStat>
             </Body>
         </FuncDeclNode>
     </DeclNode>
@@ -345,7 +348,11 @@
                                     </UnaryExpression>
                                     <Body>
                                         <Write>
-                                            <StringConstant>Errore operazione di divisione non effettuabile!!!</StringConstant>
+                                            <BinaryExpression>
+                                                <StringConstant>Errore operazione di divisione non effettuabile!!!</StringConstant>
+                                                <Operation>STR_CONCAT</Operation>
+                                                <StringConstant>dsfs</StringConstant>
+                                            </BinaryExpression>
                                         </Write>
                                     </Body>
                                 </IfStat>
@@ -401,6 +408,9 @@
                         </IfStat>
                     </Body>
                 </WhileStat>
+                <ReturnStat>
+                    <IntegerConstant>0</IntegerConstant>
+                </ReturnStat>
             </Body>
         </FuncDeclNode>
     </Main>

@@ -40,7 +40,7 @@ start: def main(): integer {
 			   altrimenti, errore (divisione per zero)
             |
 			if(not dividi(num1, num2, result)) then {
-				("Errore operazione di divisione non effettuabile!!!") -->;
+				("Errore operazione di divisione non effettuabile!!!"&"dsfs") -->;
 			}
 
 		}
@@ -59,6 +59,8 @@ start: def main(): integer {
 			sceltaOp <-- "Scegli loperazione da effettuare";
 		}
 	}
+
+	return 0;
 }
 
 def somma(float a,b | out float result) : float {
@@ -93,6 +95,8 @@ def dividi(float a,b | out float result) : boolean{
 		result << a / b;
 		return true;
 	}
+
+	return false;
 }
 
 integer x <<y;

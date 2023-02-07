@@ -3,6 +3,21 @@
 #include <string.h>
 #include <math.h>
 
+char* int_to_string(int num) {
+   char* str = malloc(10 * sizeof(char));
+   sprintf(str, "%d", num);
+   return str;
+}
+char* float_to_string(float num) {
+    char* str = malloc(10 * sizeof(char));
+    snprintf(str,10,"%f", num);
+    return str;
+}
+char* char_to_string(char c) {
+    char* str = malloc(sizeof(char));
+    snprintf(str,sizeof str,"%c", c);
+    return str;
+}
 // prototipi delle funzioni
 void sottrai(float a,float b,float *result);
 float somma(float a,float b,float *result);
@@ -87,6 +102,7 @@ int dividi (float a, float b, float *result ){
 		return 1;
 
 	}
+	return 0;
 
 }
 int main ( ){
@@ -103,7 +119,7 @@ int main ( ){
 	continuaScelta = 1;
 	num1 = 0;
 	num2 = 0.0;
-	ciao = "CISIDIIDI";
+	ciao = strdup("CISIDIIDI");
 
 	casa = (2 + (2 + (2.2 * (2 / ( -1)))));
 	// Inizio Statement
@@ -150,7 +166,7 @@ int main ( ){
 
 
 				// Inizio Statement
-				printf("%s","Errore operazione di divisione non effettuabile!!!");
+				printf("%s",strcat(strdup("Errore operazione di divisione non effettuabile!!!"),strdup("dsfs")));
 				fflush(stdout);
 
 			}
@@ -182,5 +198,6 @@ int main ( ){
 		}
 
 	}
+	return 0;
 
 }
